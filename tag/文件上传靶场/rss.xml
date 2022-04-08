@@ -7,8 +7,8 @@
         <language>en</language>
         <pubDate>Wed, 25 Nov 2020 21:24:52 +0800</pubDate>
         <lastBuildDate>Wed, 25 Nov 2020 21:24:52 +0800</lastBuildDate>
-        <category>ysoserial调试</category>
         <category>Java反序列化</category>
+        <category>ysoserial调试</category>
         <category>文件上传靶场</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
