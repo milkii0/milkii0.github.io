@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://example.com</id>
+    <title>Milkii0的秘密花园 • Posts by &#34;redis,未授权,漏洞利用&#34; tag</title>
+    <link href="http://example.com" />
+    <updated>2022-01-16T03:14:59.000Z</updated>
+    <category term="ysoserial调试" />
+    <category term="Java反序列化" />
+    <category term="文件上传靶场" />
+    <category term="web,HTTP" />
+    <category term="redis,未授权,漏洞利用" />
+    <category term="前后端分离" />
+    <category term="木马,汇总" />
+    <category term="pikachu,web靶场" />
+    <category term="webgoat" />
+    <category term="dorabox,靶场练习" />
+    <category term="sql注入靶场" />
+    <entry>
+        <id>http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</id>
+        <title>redis未授权验证流程</title>
+        <link rel="alternate" href="http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/"/>
+        <content type="html">&lt;h1 id=&#34;&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#&#34;&gt;#&lt;/a&gt; &lt;/h1&gt;
+</content>
+        <category term="redis,未授权,漏洞利用" />
+        <updated>2022-01-16T03:14:59.000Z</updated>
+    </entry>
+</feed>

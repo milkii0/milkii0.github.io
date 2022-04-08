@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://example.com</id>
+    <title>Milkii0的秘密花园 • Posts by &#34;web,http&#34; tag</title>
+    <link href="http://example.com" />
+    <updated>2021-08-03T02:20:54.000Z</updated>
+    <category term="ysoserial调试" />
+    <category term="Java反序列化" />
+    <category term="文件上传靶场" />
+    <category term="web,HTTP" />
+    <category term="redis,未授权,漏洞利用" />
+    <category term="前后端分离" />
+    <category term="木马,汇总" />
+    <category term="pikachu,web靶场" />
+    <category term="webgoat" />
+    <category term="dorabox,靶场练习" />
+    <category term="sql注入靶场" />
+    <entry>
+        <id>http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</id>
+        <title>HTTP请求走私简述</title>
+        <link rel="alternate" href="http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"/>
+        <content type="html">&lt;h1 id=&#34;http请求走私是什么&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#http请求走私是什么&#34;&gt;#&lt;/a&gt; HTTP 请求走私是什么&lt;/h1&gt;
+&lt;p&gt;HTTP 请求走私，一种干扰网站处理来自用户的 HTTP &lt;ins class=&#34;wavy&#34;&gt;请求序列&lt;/ins&gt; 的技术&lt;/p&gt;
+&lt;h2 id=&#34;相关知识点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#相关知识点&#34;&gt;#&lt;/a&gt; 相关知识点&lt;/h2&gt;
+&lt;p&gt;该漏洞的产生主要和 HTTP 请求中的两个头相关：&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;spoiler&#34; title=&#34;...&#34;&gt;Transfer_Encoding&lt;/span&gt;  &amp;amp; &lt;span class=&#34;spoiler&#34; title=&#34;...&#34;&gt;Content-Length&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;transfer-encoding&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#transfer-encoding&#34;&gt;#&lt;/a&gt; &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding&#34;&gt;Transfer-Encoding&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Transfer-Encoding 通用标头字段指示已对消息正文应用了什么（如果有）类型的转换，以便在发送方和接收方之间安全地传输它，在 HTTP1.1 中可用&lt;/p&gt;
+&lt;p&gt;利用该漏洞，需指定参数为 chunked  &lt;code&gt; Transfer-Encoding: chunked&lt;/code&gt; ，表示数据以一系列块发送，而不是等到完整的段可用&lt;/p&gt;
+&lt;p&gt;在 CTE 中，每个块前面都有它的大小（字节为单位）&lt;/p&gt;
+&lt;p&gt;当接收到零长度块时（不可省略），传输结束&lt;/p&gt;
+&lt;p&gt;✋🌰&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;figcaption&gt;&lt;span&gt;数据包喔&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;HTTP/1.1 200 OK &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Type: text/plain&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Transfer-Encoding: chunked&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5\r\n&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Media\r\n&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8\r\n&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Services\r\n&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4\r\n&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Live\r\n&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;0\r\n&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;\r\n&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;第一部分： 当前组块长度（16 进制）+ \r\n&lt;/p&gt;
+&lt;p&gt;第二部分： 块内容 + \r\n&lt;/p&gt;
+&lt;p&gt;（例如 Media 就是 5 个字节长度）&lt;/p&gt;
+&lt;p&gt;倒数第二部分： 终止块 -&amp;gt; 分块编码以任何大小为零的块结束，长度为 0 -&amp;gt; 0\r\n&lt;/p&gt;
+&lt;p&gt;最后一部分： 以空行终止（\r\n）&lt;/p&gt;
+&lt;h3 id=&#34;content-length&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#content-length&#34;&gt;#&lt;/a&gt; Content-Length&lt;/h3&gt;
+&lt;p&gt;该字段指示发送给接受者的实体主体的大小，以十进制的 OCTET 数表示&lt;/p&gt;
+&lt;p&gt;这个可以自己用 burp 发包试试哦，bp 的 repeat 选项中默认开启了 Update Content-Length 选项&lt;/p&gt;
+&lt;h3 id=&#34;注意connection&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#注意connection&#34;&gt;#&lt;/a&gt; ⭐注意 Connection&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;每当传输编码应用于消息体时，传输编码集必须包括 “分块”，除非消息因关闭连接而终止&lt;/p&gt;
+&lt;p&gt;——&lt;a href=&#34;https://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6&#34;&gt;HTTP/1.1: Protocol Parameters&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;也就是说，当连接关闭时，也会导致消息终止&lt;/p&gt;
+&lt;p&gt;那么我们在发送数据包时，就需要注意 &lt;ins&gt;Connection&lt;/ins&gt; 头&lt;/p&gt;
+&lt;p&gt;Connection: keep-alive -&amp;gt; 表示客户端希望保持连接打开，拥有持久连接是 HTTP/1.1 请求的默认设置&lt;/p&gt;
+&lt;p&gt;Connection: close -&amp;gt; 表示客户端或服务器想要关闭连接，这是 HTTP/1.0 请求的默认设置&lt;/p&gt;
+&lt;h1 id=&#34;http请求走私的原理&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#http请求走私的原理&#34;&gt;#&lt;/a&gt; HTTP 请求走私的原理&lt;/h1&gt;
+&lt;p&gt;现很多应用程序使用 HTTP 服务链（2 个或多个服务器）&lt;/p&gt;
+&lt;p&gt;其中前端服务器有时称为负载均衡器或反向代理&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;1.png&#34; alt=&#34;burp图片哦&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这时，若前端后端系统就请求之间的边界没有达成一致，就可以发送一个模棱两可的请求，让前端和后端系统对该请求进行不同的解释&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;👇👇👇&lt;/p&gt;
+&lt;p&gt;由于 HTTP 规范提供了两种方法指定消息长度（Content-Length&amp;amp;Transform-Encoding），所以单个消息​同时使用两种方法时，不同的服务器可能出现不同的解释&lt;/p&gt;
+&lt;p&gt;如果消息头以某种方式模糊了，则可以诱导消息头不处理它&lt;/p&gt;
+&lt;p&gt;👆👆👆&lt;/p&gt;
+&lt;h1 id=&#34;http请求走私利用&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#http请求走私利用&#34;&gt;#&lt;/a&gt; HTTP 请求走私利用&lt;/h1&gt;
+&lt;p&gt;请求走私大致分为 3️⃣种类型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://CL.ET&#34;&gt;CL.ET&lt;/a&gt; -&amp;gt; 前端服务器使用 Content-Length，后端服务器使用 Transfer-Encoding&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://TE.CL&#34;&gt;TE.CL&lt;/a&gt; -&amp;gt; 前端服务器使用 Transfer-Encoding，后端服务器使用 Content-Length&lt;/li&gt;
+&lt;li&gt;TE.TE -&amp;gt; 前后端均使用 Transfer-Encoding，但其中一个服务器可被某种方式诱导不处理该头部字段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;实验环境&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#实验环境&#34;&gt;#&lt;/a&gt; &lt;a href=&#34;https://portswigger.net/web-security/request-smuggling&#34;&gt;实验环境&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;但是不知道为什么我一直没办法注册 portswigger，只能分析一下给出的例子了&lt;/p&gt;
+&lt;h3 id=&#34;clet&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#clet&#34;&gt;#&lt;/a&gt; &lt;a href=&#34;http://CL.ET&#34;&gt;CL.ET&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;攻击数据包&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;figcaption&gt;&lt;span&gt;数据包&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST / HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: vulnerable-website.com&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Transfer-Encoding: chunked&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;SMUGGLED&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;数据同时使用两种方法指定消息长度&lt;/p&gt;
+&lt;p&gt;🎀前服务器处理 Content-Length 头，认为请求主体为 13 字节，刚好至 smuggled 末尾，再将消息转发至后端服务器&lt;/p&gt;
+&lt;p&gt;🎀后服务器处理 Transfer-Encoding 头，由上述 Transfer-Encoding 知识点可知，这是一个终止块，那么接下来的 smuggled 不会被处理，后端服务器会将 smuggled 拼接至下一个请求的开始&lt;/p&gt;
+&lt;h3 id=&#34;tecl&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#tecl&#34;&gt;#&lt;/a&gt; &lt;a href=&#34;http://TE.CL&#34;&gt;TE.CL&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;类似 CL.TE&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;figcaption&gt;&lt;span&gt;数据包&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST / HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: vulnerable-website.com&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Transfer-Encoding: chunked&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;SMUGGLED&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;（⭐burp 上方 repeater 选项取消 Update Content-Length，这个选项会根据实体长度自动更新 Content-Length 头）&lt;/p&gt;
+&lt;p&gt;🎀前服务器处理 Transfer-Encoding 头，第一块 8 个字节，第二块为终止块，请求终止，请求转发至后端服务器&lt;/p&gt;
+&lt;p&gt;🎀后服务器处理 Content-Length 头，实体长度为 3，那么从 S 开始的内容，都将被视为序列中下一个请求的开始&lt;/p&gt;
+&lt;h3 id=&#34;tete&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#tete&#34;&gt;#&lt;/a&gt; TE.TE&lt;/h3&gt;
+&lt;p&gt;混淆 Transfer-Encoding 头的方式很多，例如&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Transfer-Encoding: xchunked&lt;/li&gt;
+&lt;li&gt;Transfer-Encoding : chunked&lt;/li&gt;
+&lt;li&gt;Transfer-Encoding: chunked&lt;br&gt;
+Transfer-Encoding: x&lt;/li&gt;
+&lt;li&gt;Transfer-Encoding:[tab]chunked&lt;/li&gt;
+&lt;li&gt;[space]Transfer-Encoding: chunked&lt;/li&gt;
+&lt;li&gt;X: X[\n]Transfer-Encoding: chunked&lt;/li&gt;
+&lt;li&gt;
+&lt;dl&gt;
+&lt;dt&gt;Transfer-Encoding&lt;/dt&gt;
+&lt;dd&gt;chunked&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;检测http请求走私&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#检测http请求走私&#34;&gt;#&lt;/a&gt; 检测 HTTP 请求走私&lt;/h1&gt;
+&lt;p&gt;实时站点，流量较大，可能将我们的 payload 拼接至别的用户数据包中&lt;/p&gt;
+&lt;p&gt;以下列出一种几乎没有影响其他用户风险的检测手段&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;figcaption&gt;&lt;span&gt;数据包&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST /smuggled HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;HOST: example.com&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Transfer-Encoding: chunked&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Z&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Q&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;clet-2&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#clet-2&#34;&gt;#&lt;/a&gt; &lt;a href=&#34;http://CL.ET&#34;&gt;CL.ET&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;前端检测实体长度为 4 个字节，Q 不会被转发，后端没有接受到终止块，会一直等待至超时，此时会有明显的延迟效果&lt;/p&gt;
+&lt;h2 id=&#34;clcl&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#clcl&#34;&gt;#&lt;/a&gt; &lt;a href=&#34;http://CL.CL&#34;&gt;CL.CL&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;会被两个系统无害处理&lt;/p&gt;
+&lt;h2 id=&#34;tecl-2&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#tecl-2&#34;&gt;#&lt;/a&gt; &lt;a href=&#34;http://TE.CL&#34;&gt;TE.CL&lt;/a&gt;&amp;amp;TE.TE&lt;/h2&gt;
+&lt;p&gt;由于无效的大小块 Q，前端将拒绝该消息，不会将其转发至后端&lt;/p&gt;
+&lt;p&gt;那么怎么区分以上两个呢，且看下面这个数据包&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;figcaption&gt;&lt;span&gt;数据包&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST /smuggled HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;HOST: example.com&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Transfer-Encoding: chunked&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;X&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;为 TE.CL 模式时，前端接收终止块，转发 X（不包括 X）以前的内容至后端服务器，共 7 个字节。后端服务器处理 Content-Length 头，认为实体为 9 个字节（&amp;gt;7），此时也会出现明显延迟&lt;/p&gt;
+&lt;p&gt;为 TE.TE 时，正确的终止块格式，会被系统无害处理&lt;/p&gt;
+&lt;p&gt;⭐burp 商店中也可以找到 HTTP Request Smuggler 模块，可以 scan 出来后，右键 Smuggle attack&lt;/p&gt;
+&lt;p&gt;⭐工具：&lt;a href=&#34;https://github.com/defparam/smuggler&#34;&gt;https://github.com/defparam/smuggler&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;修复http请求走私&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#修复http请求走私&#34;&gt;#&lt;/a&gt; 修复 HTTP 请求走私&lt;/h1&gt;
+&lt;h2 id=&#34;我-不-理-解&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#我-不-理-解&#34;&gt;#&lt;/a&gt; 我 不 理 解&lt;/h2&gt;
+&lt;p&gt;在前端服务器通过同一网络连接将多个请求转发到后端服务器的情况下，会出现 HTTP 请求走私漏洞，并且后端连接所使用的协议有可能会造成边界不统一的风险。防止 HTTP 请求走私漏洞的一些通用方法如下：&lt;/p&gt;
+&lt;p&gt;1. 禁用后端连接的重用，以便每个后端请求通过单独的网络连接发送。&lt;/p&gt;
+&lt;p&gt;2. 使用 HTTP / 2 进行后端连接，因为此协议可防止对请求之间的边界产生歧义。&lt;/p&gt;
+&lt;p&gt;3. 前端服务器和后端服务器使用完全相同的 Web 服务器软件，以便它们就请求之间的界限达成一致。&lt;/p&gt;
+&lt;h1 id=&#34;传送门&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#传送门&#34;&gt;#&lt;/a&gt; 传送门&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://portswigger.net/web-security/request-smuggling&#34;&gt;PortSwigger_HTTP request smuggling&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.freebuf.com/column/221488.html&#34;&gt;HTTP 走私漏洞分析&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzAwMzYxNzc1OA==&amp;amp;mid=2247486547&amp;amp;idx=1&amp;amp;sn=de1f1390b6526eb2e45a0e05c4fd444d&amp;amp;chksm=9b392ae2ac4ea3f4fbc01e19a9494a2d8fec4b20fae5e93041cfc6f874f7eebff14d5420c499&amp;amp;mpshare=1&amp;amp;scene=23&amp;amp;srcid=0824Nx28uGiuA86YDMRjhkR0&amp;amp;sharer_sharetime=1598277825562&amp;amp;sharer_shareid=ff83fe2fe7db7fcd8a1fcbc183d841c4#rd&#34;&gt;由一次渗透测试引发的 HTTP 请求走私思考 (牛的)&lt;/a&gt;&lt;/p&gt;
+</content>
+        <category term="web,HTTP" />
+        <updated>2021-08-03T02:20:54.000Z</updated>
+    </entry>
+</feed>

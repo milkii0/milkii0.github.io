@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>Milkii0的秘密花园 • Posts by &#34;other&#34; category</title>
+        <link>http://example.com</link>
+        <description></description>
+        <language>en</language>
+        <pubDate>Wed, 08 Sep 2021 11:31:34 +0800</pubDate>
+        <lastBuildDate>Wed, 08 Sep 2021 11:31:34 +0800</lastBuildDate>
+        <category>ysoserial调试</category>
+        <category>Java反序列化</category>
+        <category>文件上传靶场</category>
+        <category>web,HTTP</category>
+        <category>redis,未授权,漏洞利用</category>
+        <category>前后端分离</category>
+        <category>木马,汇总</category>
+        <category>pikachu,web靶场</category>
+        <category>webgoat</category>
+        <category>dorabox,靶场练习</category>
+        <category>sql注入靶场</category>
+        <item>
+            <guid isPermalink="true">http://example.com/2021/09/08/other/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</guid>
+            <title>问题及解决记录</title>
+            <link>http://example.com/2021/09/08/other/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</link>
+            <pubDate>Wed, 08 Sep 2021 11:31:34 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;java&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#java&#34;&gt;#&lt;/a&gt; Java&lt;/h1&gt;
+&lt;h2 id=&#34;debug调试报错&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#debug调试报错&#34;&gt;#&lt;/a&gt; debug，调试报错&lt;/h2&gt;
+&lt;p&gt;更换 jdk8 后无法 debug，可以 run&lt;/p&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;D:\语言环境\JDK8_32\bin\java.exe ...&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;FATAL ERROR in native method: JDWP No transports initialized, jvmtiError=AGENT_ERROR_TRANSPORT_LOAD(196)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;ERROR: transport library not found: dt_socket&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;ERROR: JDWP Transport dt_socket failed to initialize, TRANSPORT_LOAD(509)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;JDWP exit error AGENT_ERROR_TRANSPORT_LOAD(196): No transports initialized [debugInit.c:750]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Process finished with exit code 1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;更换 idea 下载后的 jdk8 后解决问题，目测因为自己设置的 jdk 路径包含中文（out-of-ascii path）&lt;/p&gt;
+&lt;h2 id=&#34;idea重置插件&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#idea重置插件&#34;&gt;#&lt;/a&gt; idea 重置插件&lt;/h2&gt;
+&lt;p&gt;idea 无限重置方法&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;settings -&amp;gt; plugins -&amp;gt; 设置图标 -&amp;gt; Manage Repositories，添加：&lt;a href=&#34;https://plugins.zhile.io&#34;&gt;https://plugins.zhile.io&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在插件市场搜索 IDE eval reset&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;linux&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#linux&#34;&gt;#&lt;/a&gt; Linux&lt;/h1&gt;
+&lt;h2 id=&#34;虚拟机物理机互ping&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#虚拟机物理机互ping&#34;&gt;#&lt;/a&gt; 虚拟机物理机互 ping&lt;/h2&gt;
+&lt;h3 id=&#34;nat模式物理机ping不通虚拟机&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#nat模式物理机ping不通虚拟机&#34;&gt;#&lt;/a&gt; nat 模式物理机 ping 不通虚拟机&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;虚拟机 ip：192.168.163.128&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;物理机 ip：192.168.46.197&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不在同一网段，更改虚拟机网卡配置为同一网段&lt;/p&gt;
+&lt;p&gt;编辑 -&amp;gt; 虚拟网络编辑器&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后 linux 下重启网卡 &lt;code&gt; systemctl restart networking&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;获得&lt;strong&gt;虚拟机 ip：192.168.46.128&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;物理机还是 ping 不通的话，打开 &lt;code&gt; 控制面板\网络和 Internet\网络连接&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;我 nat 模式对应 VMnet8 网卡，右击禁用后再启动&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;物理机 ping 通虚拟机&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;nat模式虚拟机ping不通物理机&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#nat模式虚拟机ping不通物理机&#34;&gt;#&lt;/a&gt; nat 模式虚拟机 ping 不通物理机&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;虚拟机 ip：192.168.163.128&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;物理机 ip：192.168.46.128&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;测试过不是防火墙的问题&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://xn--pingbaidu-927nn75bg59o.com&#34;&gt;可以 ping 通 baidu.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;和物理机同一网段&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;物理机可 ping 通虚拟机&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;打开 编辑 -&amp;gt; 虚拟网络编辑器，点击还原默认设置&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;此时发现虚拟机和物理机不是同一网段，但是可以互 ping&lt;/p&gt;
+&lt;p&gt;物理机 ping 虚拟机：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;虚拟机 ping 物理机：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;6.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">http://example.com/2021/07/05/other/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</guid>
+            <title>收藏夹喔</title>
+            <link>http://example.com/2021/07/05/other/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</link>
+            <pubDate>Mon, 05 Jul 2021 11:25:08 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;&lt;ins class=&#34;wavy&#34;&gt;&lt;span class=&#34;rainbow&#34;&gt;好多值得再看的文章系列 o (￣ε￣*)&lt;/span&gt;&lt;/ins&gt;&lt;/p&gt;
+&lt;details class=&#34;danger&#34;&gt;&lt;summary&gt;内网相关&lt;/summary&gt;&lt;div&gt;
+&lt;div class=&#34;note info&#34;&gt;
+&lt;p&gt;内网就。随缘学&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;tab&#34; data-id=&#34;id3&#34; data-title=&#34;内网基础&#34;&gt;
+&lt;p&gt;content&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.4hou.com/posts/Jlo9&#34;&gt;盘点 RUNDLL32.EXE 的多种滥用方式及检测特征 - 41yf1sh&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cnblogs.com/ssooking/articles/6171247.html&#34;&gt;CHM 渗透：从入门到 “入狱” - ssooking - 博客园&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/KfeKpoPj-X7BRNR7O6QAcw&#34;&gt;Linux 计划任务那些事&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;tab&#34; data-id=&#34;id3&#34; data-title=&#34;新思路&#34;&gt;
+&lt;p&gt;content&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/ERJMCgb61dykT5rhQtYgMw&#34;&gt;内网渗透｜基于文件传输的 RDP 反向攻击&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/details&gt;
+&lt;details class=&#34;primary&#34;&gt;&lt;summary&gt;java相关&lt;/summary&gt;&lt;div&gt;
+&lt;div class=&#34;note info&#34;&gt;
+&lt;p&gt;代码审计要好好学喔&lt;/p&gt;
+&lt;p&gt;最重要的是 P 神的知识星球真的超赞🌟，知识星球搜代码审计就能搜到&lt;/p&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://xie.infoq.cn/article/9a9387805a496e1485dc8430f&#34;&gt;java 代理详解&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;/details&gt;
+&lt;details class=&#34;info&#34;&gt;&lt;summary&gt;工具&lt;/summary&gt;&lt;div&gt;
+&lt;div class=&#34;note info&#34;&gt;
+&lt;p&gt;用来记录工具链接&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/No-Github/1earn/blob/master/1earn/Security/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/BurpSuite.md&#34;&gt;burp 使用小技巧&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/details&gt;
+&lt;details class=&#34;warning&#34;&gt;&lt;summary&gt;渗透测试&lt;/summary&gt;&lt;div&gt;
+&lt;div class=&#34;note info&#34;&gt;
+&lt;p&gt;渗透测试相关&lt;/p&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/WAtkMzdOdbOD_9k98JRYBg&#34;&gt;WAF 绕过&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://xz.aliyun.com/t/10043#toc-7&#34;&gt;文件上传绕过思路拓展&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/rAcctU4XArY8SZYwkOAYjA&#34;&gt;XSS 大王&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;/details&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">http://example.com/2016/04/14/other/hello-world/</guid>
+            <title>认识Markdown</title>
+            <link>http://example.com/2016/04/14/other/hello-world/</link>
+            <pubDate>Thu, 14 Apr 2016 09:47:13 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;Welcome to &lt;a href=&#34;https://hexo.io/&#34;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&#34;https://hexo.io/docs/&#34;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&#34;https://hexo.io/docs/troubleshooting.html&#34;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&#34;https://github.com/hexojs/hexo/issues&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;quick-start&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#quick-start&#34;&gt;#&lt;/a&gt; Quick Start&lt;/h2&gt;
+&lt;h3 id=&#34;create-a-new-post&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#create-a-new-post&#34;&gt;#&lt;/a&gt; Create a new post&lt;/h3&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo new &lt;span class=&#34;string&#34;&gt;&amp;quot;My New Post&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/writing.html&#34;&gt;Writing&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;run-server&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#run-server&#34;&gt;#&lt;/a&gt; Run server&lt;/h3&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/server.html&#34;&gt;Server&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;generate-static-files&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#generate-static-files&#34;&gt;#&lt;/a&gt; Generate static files&lt;/h3&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/generating.html&#34;&gt;Generating&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;deploy-to-remote-sites&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#deploy-to-remote-sites&#34;&gt;#&lt;/a&gt; Deploy to remote sites&lt;/h3&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/one-command-deployment.html&#34;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>
