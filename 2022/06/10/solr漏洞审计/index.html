@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="# 环境搭建 各版本源码下载： http:&#x2F;&#x2F;archive.apache.org&#x2F;dist&#x2F;lucene&#x2F;solr&#x2F;7.0.1&#x2F; 此处 win 环境，下载源码  在源码根目录打开 cmd，运行 ant ivy-bootstrap   解压后用 idea 打开  （这里可以使用 ant 编译成 idea 项目后，再用 idea 直接打开，在项目根目录下运行 ant 命令即可） 在 solr 目录下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="solr漏洞审计">
+<meta property="og:url" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Milkii0的秘密花园">
+<meta property="og:description" content="# 环境搭建 各版本源码下载： http:&#x2F;&#x2F;archive.apache.org&#x2F;dist&#x2F;lucene&#x2F;solr&#x2F;7.0.1&#x2F; 此处 win 环境，下载源码  在源码根目录打开 cmd，运行 ant ivy-bootstrap   解压后用 idea 打开  （这里可以使用 ant 编译成 idea 项目后，再用 idea 直接打开，在项目根目录下运行 ant 命令即可） 在 solr 目录下">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/312d3247700c41e7bc385411a9e8ada5">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/6f5d62f573e04359872a5e2d522769cb">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/cba08f47dd2648029ea82c1667c0a32e">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/5c02f7c7549a46e2a814060569170417">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/51de3416f045459f909444415033be1f">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/a75c9e8d1f58409c88e9f1ca628a3c1c">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/2417a9d2aee24484b0d8d60a7945c5bf">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/3ce9c774ef2d49e5a5e2ebdf53c84848">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/4c612e57459d403384463b4165fc4786">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/9366ca25d9524160843ca21a3d69b18d">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/5136fb3fb5994945a840fa8c82b62825">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/b53eef83d3f047f78ea7b9607b951e0f">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/60256974dd3742f98a58144d8dd67750">
+<meta property="og:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/24ec295b558e4aac8846e0ab3e142848">
+<meta property="article:published_time" content="2022-06-10T02:31:38.000Z">
+<meta property="article:modified_time" content="2022-06-10T02:49:02.019Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="solr, 代码审计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/:/312d3247700c41e7bc385411a9e8ada5">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>solr漏洞审计</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Milkii0的秘密花园" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&text=solr漏洞审计"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&is_video=false&description=solr漏洞审计"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=solr漏洞审计&body=Check out this article: http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&name=solr漏洞审计&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&t=solr漏洞审计"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text"> 环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text"> 漏洞原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#cve-2017-12629"><span class="toc-number">2.1.</span> <span class="toc-text"> CVE-2017-12629</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xxe"><span class="toc-number">2.1.1.</span> <span class="toc-text"> XXE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-number">2.1.2.</span> <span class="toc-text"> 漏洞修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rce"><span class="toc-number">2.1.3.</span> <span class="toc-text"> RCE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-2"><span class="toc-number">2.1.4.</span> <span class="toc-text"> 漏洞修复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cve-2019-0193"><span class="toc-number">2.2.</span> <span class="toc-text"> CVE-2019-0193</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-3"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 漏洞修复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remote-streaming-fileread%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">2.3.</span> <span class="toc-text"> Remote-Streaming-Fileread（任意文件读取）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">2.3.1.</span> <span class="toc-text"> 修复建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cve-2019-17558"><span class="toc-number">2.4.</span> <span class="toc-text"> CVE-2019-17558</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        solr漏洞审计
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-10T02:31:38.000Z" itemprop="datePublished">2022-06-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/solr-%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">solr, 代码审计</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="环境搭建"><a class="markdownIt-Anchor" href="#环境搭建">#</a> 环境搭建</h1>
+<p>各版本源码下载：<br>
+<a target="_blank" rel="noopener" href="http://archive.apache.org/dist/lucene/solr/7.0.1/">http://archive.apache.org/dist/lucene/solr/7.0.1/</a></p>
+<p>此处 win 环境，下载源码<br>
+<img src=":/312d3247700c41e7bc385411a9e8ada5" alt="d90b95d958f7a8aa03ec037e23ff6565.png"></p>
+<p>在源码根目录打开 cmd，运行 <code>ant ivy-bootstrap</code> <br>
+<img src=":/6f5d62f573e04359872a5e2d522769cb" alt="65611596abbf48fd002528219ce04da6.png"></p>
+<p>解压后用 idea 打开<br>
+<img src=":/cba08f47dd2648029ea82c1667c0a32e" alt="6398b74ee6a4f3388ea89aa77e051942.png"></p>
+<p>（这里可以使用 ant 编译成 idea 项目后，再用 idea 直接打开，在项目根目录下运行 ant 命令即可）</p>
+<p>在 solr 目录下，运行 <code>ant server</code>  创建 solr server<br>
+<img src=":/5c02f7c7549a46e2a814060569170417" alt="568e847efbb2bd3f814629269b607938.png"></p>
+<p>报错： <code>Could  not find file C:\Users\HAN91\.ant\lib\ivy-2.3.0.jar to generate checksum</code> <br>
+ivy 下载<br>
+<a target="_blank" rel="noopener" href="http://ant.apache.org/ivy/download.cgi"> http://ant.apache.org/ivy/download.cgi</a></p>
+<h1 id="漏洞原理"><a class="markdownIt-Anchor" href="#漏洞原理">#</a> 漏洞原理</h1>
+<h2 id="cve-2017-12629"><a class="markdownIt-Anchor" href="#cve-2017-12629">#</a> CVE-2017-12629</h2>
+<h3 id="xxe"><a class="markdownIt-Anchor" href="#xxe">#</a> XXE</h3>
+<p>Lucene 包含了一个查询解析器支持 XML 格式进行数据查询，并且解析 xml 数据时，未设置任何防御措施，导致我们可引入任意恶意外部实体<br>
+而 Solr 由于使用 Lucenne 作为核心语义分析引擎，因此受到影响</p>
+<p>漏洞点：<br>
+ <code>org.apache.lucene.queryparser.xml.CoreParser#parseXML</code> <br>
+ 此处为解析 xml 数据的方法，其中并未包含任何 xxe 防御措施<br>
+因此可正常解析我们引入的恶意外部实体</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> Document <span class="title">parseXML</span><span class="params">(InputStream pXmlFile)</span> <span class="keyword">throws</span> ParserException </span>&#123;</span><br><span class="line">    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();</span><br><span class="line">    DocumentBuilder db = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      db = dbf.newDocumentBuilder();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception se) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ParserException(<span class="string">&quot;XML Parser configuration error&quot;</span>, se);</span><br><span class="line">    &#125;</span><br><span class="line">    org.w3c.dom.Document doc = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      doc = db.parse(pXmlFile);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception se) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ParserException(<span class="string">&quot;Error parsing XML stream:&quot;</span> + se, se);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> doc;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="漏洞修复"><a class="markdownIt-Anchor" href="#漏洞修复">#</a> 漏洞修复</h3>
+<p>官方修复是增加 XXE 通用防御，这也是我们常用的 xxe 修复方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DocumentBuilderFactory.setFearture(<span class="string">&quot;http://javax.xml.XMLConstants/feature/secure-processing&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>以下列出一些通过设置解析器行为，达到对 xxe 进行限制的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这是优先选择. 如果不允许DTDs (doctypes) ,几乎可以阻止所有的XML实体攻击</span></span><br><span class="line">setFeature(<span class="string">&quot;http://apache.org/xml/features/disallow-doctype-decl&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果不能完全禁用DTDs，最少采取以下措施，必须两项同时存在</span></span><br><span class="line">setFeature(<span class="string">&quot;http://xml.org/sax/features/external-general-entities&quot;</span>, <span class="keyword">false</span>);<span class="comment">// 防止外部实体POC</span></span><br><span class="line">setFeature(<span class="string">&quot;http://xml.org/sax/features/external-parameter-entities&quot;</span>, <span class="keyword">false</span>);<span class="comment">// 防止参数实体POC</span></span><br></pre></td></tr></table></figure>
+<h3 id="rce"><a class="markdownIt-Anchor" href="#rce">#</a> RCE</h3>
+<p>RCE 需要使用到 SolrCloud Collections API，所以 RCE 只影响 Solrcloud 分布式系统</p>
+<p>漏洞点：<br>
+ <code>org.apache.solr.core.RunExecutableListener#exec</code> <br>
+<img src=":/51de3416f045459f909444415033be1f" alt="0f16537ae621dca652c50598b2934616.png"><br>
+ 我们看见一下这行代码执行了命令，并传入了三个参数<br>
+ <code>proc = Runtime.getRuntime().exec(cmd, envp ,dir);</code> <br>
+ 查看 API<br>
+cmdarray：命令字符串<br>
+ envp：代表 “环境” 变量设置，如果 envp 是 null ，则子进程继承当前进程的环境设置<br>
+ dir：新子进程的工作目录由 dir 指定 。 如果 dir 是 null ，则子进程继承当前进程的当前工作目录。</p>
+<p><img src=":/a75c9e8d1f58409c88e9f1ca628a3c1c" alt="9ec0917d903603b1067a566e250c5627.png"></p>
+<p>那么我们怎么才能控制以上这三个参数呢？<br>
+在初始化时，通过初始化传入的参数 args<br>
+ 分别获得这三个参数 <code>cmd,dir,envp</code> <br>
+<img src=":/2417a9d2aee24484b0d8d60a7945c5bf" alt="eec102985f87ff2f05623f84d74ab34c.png"></p>
+<p>找到调用 exec () 的有两处<br>
+ <code>org.apache.solr.core.RunExecutableListener#postCommit</code> <br>
+ <code>org.apache.solr.core.RunExecutableListener#newSearcher</code> <br>
+<img src=":/3ce9c774ef2d49e5a5e2ebdf53c84848" alt="c52c3a71430c5dd42e23cbf7eba7973e.png"></p>
+<p>因此我们可以 config API 调用以上两个命令执行命令<br>
+关于 config API 更多信息可查看传送门中放置的官网链接<br>
+<img src=":/4c612e57459d403384463b4165fc4786" alt="fa07883023d57f29334905273587cf9b.png"></p>
+<h3 id="漏洞修复-2"><a class="markdownIt-Anchor" href="#漏洞修复-2">#</a> 漏洞修复</h3>
+<p>官方修复直接将该类删除</p>
+<h2 id="cve-2019-0193"><a class="markdownIt-Anchor" href="#cve-2019-0193">#</a> CVE-2019-0193</h2>
+<p>DataImportHandler 是一个可选但流行的模块，用于从数据库和其他来源提取数据。它有一个特性，即整个 DIH (the Data Import Handler, 数据导入处理程序) 配置可以来自请求的 <code>dataConfig</code>  参数</p>
+<p>DIH 管理屏幕的调试模式使用它来方便 DIH 配置的调试 / 开发。因为 DIH 配置可以包含脚本，并未对脚本进行任何过滤检测，所以这个参数存在安全风险</p>
+<p>从 Solr 的 8.2.0 版本开始，使用这个参数需要将 Java System 属性  <code>enable.dih.dataConfigParam</code>  设置为  <code>true</code> ，此时也将存在该漏洞</p>
+<p>DHI 和 script 官方文档链接放在传送门中</p>
+<p>我们可以根据官方文档的说明，插入脚本并执行，其中 entity 标签支持 jndi 以及 script<br>
+<img src=":/9366ca25d9524160843ca21a3d69b18d" alt="a6303a016339679c882babc40deace8b.png"><br>
+ 漏洞点：<br>
+ <code>org.apache.solr.handler.dataimport.DataImportHandler</code> <br>
+ 其中 <code>handleRequestBody()</code>  函数接收了前端传入的 <code>dataConfig</code> <br>
+<img src=":/5136fb3fb5994945a840fa8c82b62825" alt="08710fb1d7d531e129962d80bb22941e.png"><br>
+ 后面就不再分析了，因为这个漏洞是 solr 该模块允许执行脚本，官方文档中也描述了该模块以及脚本的使用</p>
+<h3 id="漏洞修复-3"><a class="markdownIt-Anchor" href="#漏洞修复-3">#</a> 漏洞修复</h3>
+<p>官方修复增加 <code>enable.dih.dataConfigParam</code>  参数，默认 = false，仅在启动 solr 时带上参数 <code>enable.dih.dataConfigParam=true</code>  才可启动 debug 模式</p>
+<h2 id="remote-streaming-fileread任意文件读取"><a class="markdownIt-Anchor" href="#remote-streaming-fileread任意文件读取">#</a> Remote-Streaming-Fileread（任意文件读取）</h2>
+<p>官方文档中写明，solrconfig.xml 中 <code>enableRemoteStreaming=&quot;true&quot;</code>  时允许远程流<br>
+<img src=":/b53eef83d3f047f78ea7b9607b951e0f" alt="d4e2c6715cd93bccb5ba0645bf44d89c.png"><br>
+ 因此我们可以通过 config API，启用远程读取流<br>
+ <code>enableRemoteStreaming = “true”</code> ，将允许任何人向任何 URL 或本地文件发送请求<br>
+ <code>DumpRequestHandler = “true”</code> ，它将允许任何人查看系统上的任何文件。<br>
+漏洞点：<br>
+ <code>solr/core/src/java/org/apache/solr/servlet/SolrRequestParsers.java</code> <br>
+<img src=":/60256974dd3742f98a58144d8dd67750" alt="d9c8060b808d32f29db7535380472c6e.png"><br>
+ 其中通过以下代码获取前端传入数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strs = params.getParams( CommonParams.STREAM_FILE );</span><br></pre></td></tr></table></figure>
+<p>在进行文件获取时，未对传入的 strs 进行任何检测和过滤，并生成 stream</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>( <span class="keyword">final</span> String file : strs ) &#123;</span><br><span class="line">        ContentStreamBase stream = <span class="keyword">new</span> ContentStreamBase.FileStream( <span class="keyword">new</span> File(file) );</span><br><span class="line">        <span class="keyword">if</span>( contentType != <span class="keyword">null</span> ) &#123;</span><br><span class="line">          stream.setContentType( contentType );</span><br><span class="line">        &#125;</span><br><span class="line">        streams.add( stream );</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>solr/solrj/src/java/org/apache/solr/common/params/CommonParams.java</code>  中，写明了 <code>stream.file</code>  即为传入的 <code>CommonParams.STREAM_FILE</code> <br>
+<img src=":/24ec295b558e4aac8846e0ab3e142848" alt="e0c12b5404c9aa9db8cd8eb2b87f7d3e.png"><br>
+ 其中若传入 url 可导致 ssrf，原理同上</p>
+<h3 id="修复建议"><a class="markdownIt-Anchor" href="#修复建议">#</a> 修复建议</h3>
+<ol>
+<li>控制 solr 访问权限，增加访问口令</li>
+<li>不对外网开放 solr</li>
+<li>关闭 ConfigAPI：在 bin 目录下的 solr.in.cmd 中加入一行 set SOLR_OPTS=% SOLR_OPTS% -Ddisable.configEdit=true；然后关闭远程读取文件流，默认不开启</li>
+</ol>
+<h2 id="cve-2019-17558"><a class="markdownIt-Anchor" href="#cve-2019-17558">#</a> CVE-2019-17558</h2>
+<p>传送门：<br>
+<a target="_blank" rel="noopener" href="https://www.pianshen.com/article/23101236137/">本地部署 idea 调试环境</a><br>
+<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/3WuWUGO61gM0dBpwqTfenQ"> Apache Solr 组件安全</a><br>
+<a target="_blank" rel="noopener" href="http://rui0.cn/archives/993"> XXE 漏洞原理以及防御方式</a><br>
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/whatday/article/details/106959989/"> apache solr 远程代码执行漏洞 (cve-2019-0193)</a><br>
+<a target="_blank" rel="noopener" href="https://solr.apache.org/guide/6_6/config-api.html">config API</a><br>
+<a target="_blank" rel="noopener" href="https://solr.apache.org/guide/8_1/uploading-structured-data-store-data-with-the-data-import-handler.html#dih-concepts-and-terminology">DHI</a><br>
+<a target="_blank" rel="noopener" href="https://solr.apache.org/guide/6_6/uploading-structured-data-store-data-with-the-data-import-handler.html#the-scripttransformer">script</a><br>
+<a target="_blank" rel="noopener" href="https://solr.apache.org/security.html">solr 历史漏洞</a><br>
+<a target="_blank" rel="noopener" href="https://solr.apache.org/guide/6_6/content-streams.html"> content-streams</a></p>
+<p>Copyright ©milkii0</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text"> 环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text"> 漏洞原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#cve-2017-12629"><span class="toc-number">2.1.</span> <span class="toc-text"> CVE-2017-12629</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xxe"><span class="toc-number">2.1.1.</span> <span class="toc-text"> XXE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-number">2.1.2.</span> <span class="toc-text"> 漏洞修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rce"><span class="toc-number">2.1.3.</span> <span class="toc-text"> RCE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-2"><span class="toc-number">2.1.4.</span> <span class="toc-text"> 漏洞修复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cve-2019-0193"><span class="toc-number">2.2.</span> <span class="toc-text"> CVE-2019-0193</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-3"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 漏洞修复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remote-streaming-fileread%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">2.3.</span> <span class="toc-text"> Remote-Streaming-Fileread（任意文件读取）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">2.3.1.</span> <span class="toc-text"> 修复建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cve-2019-17558"><span class="toc-number">2.4.</span> <span class="toc-text"> CVE-2019-17558</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&text=solr漏洞审计"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&is_video=false&description=solr漏洞审计"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=solr漏洞审计&body=Check out this article: http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&title=solr漏洞审计"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&name=solr漏洞审计&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/&t=solr漏洞审计"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2022
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

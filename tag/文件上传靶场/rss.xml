@@ -19,6 +19,9 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
+        <category>solr, 代码审计</category>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</guid>
             <title>upload-labs基础关卡</title>

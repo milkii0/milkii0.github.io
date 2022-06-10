@@ -16,6 +16,9 @@
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
     <category term="webgoat" />
+    <category term="solr, 代码审计" />
+    <category term="CodeQL" />
+    <category term="codeql, 搭建教程" />
     <entry>
         <id>http://example.com/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</id>
         <title>pikachu大冒险鸭</title>

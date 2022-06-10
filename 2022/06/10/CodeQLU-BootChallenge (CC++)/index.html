@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="[toc] # 背景 需要在 U-Boot 中寻找一组 9 个远程代码执行漏洞 漏洞点位于 memcpy 函数 但并非所有调用 memcpy 函数的都存在漏洞 所以我们需要减少误报率，找到真正存在漏洞的 memcpy 调用 放上题目链接 关于环境搭建根据题目提示就可以顺利完成哦 也可以参考我的文章 &quot;CodeQL for VSCode 搭建流程&quot;  不出意外会放在我的博客中 #">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CodeQLU-BootChallenge(CC++)">
+<meta property="og:url" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/index.html">
+<meta property="og:site_name" content="Milkii0的秘密花园">
+<meta property="og:description" content="[toc] # 背景 需要在 U-Boot 中寻找一组 9 个远程代码执行漏洞 漏洞点位于 memcpy 函数 但并非所有调用 memcpy 函数的都存在漏洞 所以我们需要减少误报率，找到真正存在漏洞的 memcpy 调用 放上题目链接 关于环境搭建根据题目提示就可以顺利完成哦 也可以参考我的文章 &quot;CodeQL for VSCode 搭建流程&quot;  不出意外会放在我的博客中 #">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/ffb04cb23fbe44299da44913566bd6fc">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/03d383ef4092475cb06f7e451c2ee773">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/c4b375ab14c94f5fbdbbb698b1c8d60a">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/1697f3993e7543c9ad834738c48da7b2">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/3a390210587349809d842a297621d813">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/c09330aef79f45aeaad79c40da6356e6">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/41c8b2e4cca14540bc401075a4cad08f">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/432f3ae4cae04cbcb5ab7186e6e221ba">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/d452b131a0f54fd1ae883812865eb77a">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/57c7ff8deabb48a6b8ab9d2820bdcc81">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/18dc9a5714244fa5bb9c099a5d6a7a89">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/26038db25b254623bab7f404ae1457a2">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/678d834def2441e69e01ad9a576c14ec">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/02edf6f0dfec4f5b8139ff090d007385">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/6caa12562e92485698cad9abe38fd1df">
+<meta property="article:published_time" content="2022-06-10T02:39:31.000Z">
+<meta property="article:modified_time" content="2022-06-10T02:49:30.113Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CodeQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/:/ffb04cb23fbe44299da44913566bd6fc">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CodeQLU-BootChallenge(CC++)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Milkii0的秘密花园" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&text=CodeQLU-BootChallenge(CC++)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&is_video=false&description=CodeQLU-BootChallenge(CC++)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQLU-BootChallenge(CC++)&body=Check out this article: http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&name=CodeQLU-BootChallenge(CC++)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&t=CodeQLU-BootChallenge(CC++)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text"> 背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-3-our-first-query"><span class="toc-number">2.</span> <span class="toc-text"> Step 3 - our first query</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-4-anatomy-of-a-query"><span class="toc-number">3.</span> <span class="toc-text"> Step 4 - Anatomy of a query</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-5-using-different-classes-and-their-predicates"><span class="toc-number">4.</span> <span class="toc-text"> Step 5 - Using different classes and their predicates</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-6-relating-two-variables"><span class="toc-number">5.</span> <span class="toc-text"> Step 6 - Relating two variables</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-7-relating-two-variables-continued"><span class="toc-number">6.</span> <span class="toc-text"> Step 7 - Relating two variables, continued</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-8-changing-the-selected-output"><span class="toc-number">7.</span> <span class="toc-text"> Step 8 - Changing the selected output</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-9-write-your-own-class"><span class="toc-number">8.</span> <span class="toc-text"> Step 9 - Write your own class</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-10-data-flow-and-taint-tracking-analysis"><span class="toc-number">9.</span> <span class="toc-text"> Step 10 - Data flow and taint tracking analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E9%80%81%E9%97%A8"><span class="toc-number">10.</span> <span class="toc-text"> 传送门</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CodeQLU-BootChallenge(CC++)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-10T02:39:31.000Z" itemprop="datePublished">2022-06-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/CodeQL/" rel="tag">CodeQL</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>[toc]</p>
+<h1 id="背景"><a class="markdownIt-Anchor" href="#背景">#</a> 背景</h1>
+<p>需要在 U-Boot 中寻找一组 9 个远程代码执行漏洞<br>
+漏洞点位于 memcpy 函数<br>
+但并非所有调用 memcpy 函数的都存在漏洞<br>
+所以我们需要减少误报率，找到真正存在漏洞的 memcpy 调用</p>
+<p><a target="_blank" rel="noopener" href="https://lab.github.com/githubtraining/codeql-u-boot-challenge-(cc++)">放上题目链接</a><br>
+关于环境搭建根据题目提示就可以顺利完成哦<br>
+也可以参考我的文章 &quot;CodeQL for VSCode 搭建流程&quot;<br>
+ 不出意外会放在我的<a target="_blank" rel="noopener" href="https://milkii0.github.io">博客中</a></p>
+<h1 id="step-3-our-first-query"><a class="markdownIt-Anchor" href="#step-3-our-first-query">#</a> Step 3 - our first query</h1>
+<p>在项目中寻找所有名为’strlen’的函数<br>
+语法类似于 sql 语句<br>
+ <code>import cpp</code> : 导入 c++ 规则库<br>
+ <code>From Function f1</code> : 声明一个 Function 类的变量为 f1<br>
+ <code>where f1.getName() = &quot;strlen&quot;</code> : Function.getName () 顾名思义用于获取此声明的名称，也就是名称和&quot;strlen&quot; 相等的声明会被挑选出来<br>
+ <code>select f1,&quot;a function named strlen&quot;</code> : select 后接要在 result 中展示的项目，用逗号分隔<br>
+ 3_function_definitions.ql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from Function f1</span><br><span class="line">where f1.getName() = &quot;strlen&quot;</span><br><span class="line">select f1,&quot;a function named strlen&quot;</span><br></pre></td></tr></table></figure>
+<p><img src=":/ffb04cb23fbe44299da44913566bd6fc" alt="f67230350390011a65f16d340406022d.png"><br>
+ 直接在 main 提交<br>
+<img src=":/03d383ef4092475cb06f7e451c2ee773" alt="b20d0a09af05b0e0b6f0889c8bd499fe.png"><br>
+commit 中查看结果，通过<br>
+<img src=":/c4b375ab14c94f5fbdbbb698b1c8d60a" alt="9c74098f2c390ad1f066fa3cd8fc6349.png"></p>
+<h1 id="step-4-anatomy-of-a-query"><a class="markdownIt-Anchor" href="#step-4-anatomy-of-a-query">#</a> Step 4 - Anatomy of a query</h1>
+<p>仿照上一步，在项目中寻找所有名为’memcpy’的函数<br>
+ 4_function_definitions.ql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from Function f</span><br><span class="line">where f.getName() = &quot;memcpy&quot;</span><br><span class="line">select f,&quot;a function named memcpy&quot;</span><br></pre></td></tr></table></figure>
+<p>提交查看结果，通过<br>
+<img src=":/1697f3993e7543c9ad834738c48da7b2" alt="e7a2871ee72e24c0663d8b9042c8e434.png"></p>
+<h1 id="step-5-using-different-classes-and-their-predicates"><a class="markdownIt-Anchor" href="#step-5-using-different-classes-and-their-predicates">#</a> Step 5 - Using different classes and their predicates</h1>
+<p>自定义规则，查找三个名为 <code>ntohs</code> ,  <code>ntohl</code>  or  <code>ntohll</code>  的宏定义<br>
+需要一个紧凑的查询，而不是三个查找案例组合在一起<br>
+给出以下两种方法</p>
+<ol>
+<li>利用正则表达式<br>
+ <code>string</code>  类有一个方法 <code>regexpMatch</code> ，接收器将参数与正则表达式匹配<br>
+那我们需要先找到宏定义，再对该字符串进行正则匹配（使用的 java 的匹配模式）<br>
+5_function_definitions.ql</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from Macro m</span><br><span class="line">where m.getName().regexpMatch(&quot;ntoh(s|l|ll)&quot;)</span><br><span class="line">select m,&quot;macros named ntohs, ntohl or ntohll&quot;</span><br></pre></td></tr></table></figure>
+<p>运行<br>
+<img src=":/3a390210587349809d842a297621d813" alt="dc5f776d88ef17d90e7be870a333f285.png"></p>
+<ol start="2">
+<li>使用集合表达式<br>
+给出的格式：&lt;your_variable_name&gt; in [“bar”, “baz”, “quux”]</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from Macro m</span><br><span class="line">where m.getName() in [&quot;ntohs&quot;,&quot;ntohl&quot;,&quot;ntohll&quot;]</span><br><span class="line">select m,&quot;macros named ntohs, ntohl or ntohll&quot;</span><br></pre></td></tr></table></figure>
+<p>运行后和之前的结果相同，提交通过</p>
+<p>PS：<br>
+上学的时候为了过考试自学的 c++，就是一些简单的语法<br>
+看题目说明也没看明白 ntoh 族函数到底是个啥<br>
+后来看见了<a target="_blank" rel="noopener" href="https://bestwing.me/codeql.html"> swing 的文章</a><br>
+才知道 ntoh 族函数通常用来进行网络字节序到主机字节序的转换<br>
+其实自己看到的时候就应该去查的，但是因为对题目影响不大就犯懒没去:-(<br>
+以后不能这样了！看见没见过的看不懂的一定要去弄清楚</p>
+<h1 id="step-6-relating-two-variables"><a class="markdownIt-Anchor" href="#step-6-relating-two-variables">#</a> Step 6 - Relating two variables</h1>
+<p>找到所有对 <code>memcpy</code>  函数的调用<br>
+先看看给的例子<br>
+ <code>FunctionCall.getTarget()</code>  查询该函数被调用的位置<br>
+直接和 <code>Function</code>  类型的 <code>fcn</code>  对比值，说明他返回的值应该就是 <code>Function</code>  类型（这点在下面优化中会用到）</p>
+<p>通过 <code>Function.hasName()</code>  获取方法名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">from FunctionCall call, Function fcn</span><br><span class="line">where</span><br><span class="line">  call.getTarget() = fcn and</span><br><span class="line">  fcn.getDeclaringType().getSimpleName() = &quot;map&quot; and</span><br><span class="line">  fcn.getDeclaringType().getNamespace().getName() = &quot;std&quot; and</span><br><span class="line">  fcn.hasName(&quot;find&quot;)</span><br><span class="line">select call</span><br></pre></td></tr></table></figure>
+<p>如果你想要省略中间变量 <code>Function</code> ，使查询的更加紧凑，可以参考以下两个对比<br>
+ <code>c1.getClass2()</code>  返回的是 Class2 类型的值，因此可以直接调用 Class2 的方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from Class1 c1, Class2 c2</span><br><span class="line">where</span><br><span class="line">  c1.getClass2() = c2 and</span><br><span class="line">  c2.getProp() = &quot;something&quot;</span><br><span class="line">select c1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">from Class1 c1</span><br><span class="line">where c1.getClass2().getProp() = &quot;something&quot;</span><br><span class="line">select c1</span><br></pre></td></tr></table></figure>
+<p>根据以上案例思考<br>
+我们需要找到 <code>memcpy</code>  函数被调用的位置，可以使用<br>
+ <code>FunctionCall.getTarget()</code> <br>
+ 并希望查询更加紧凑，可以直接获取找到的函数的名称并进行判断<br>
+ <code>FunctionCall.getTarget().getName=&quot;memcpy&quot;</code></p>
+<p>6_memcpy_calls.ql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line">from FunctionCall functioncall</span><br><span class="line">where functioncall.getTarget().hasName(&quot;memcpy&quot;)</span><br><span class="line">select functioncall</span><br></pre></td></tr></table></figure>
+<p>提交通过<br>
+<img src=":/c09330aef79f45aeaad79c40da6356e6" alt="40bdea82763f6ab88adaccc6e47931b4.png"></p>
+<h1 id="step-7-relating-two-variables-continued"><a class="markdownIt-Anchor" href="#step-7-relating-two-variables-continued">#</a> Step 7 - Relating two variables, continued</h1>
+<p>寻找所有对 <code>ntoh*</code>  宏定义的调用</p>
+<p>这里用到的是 <code>MacroInvocation</code>  这个类，顾名思义就是宏定义调用的类<br>
+鼠标悬浮看其注释也能看出来<br>
+<img src=":/41c8b2e4cca14540bc401075a4cad08f" alt="69d9e0e24f06860213619664c0c91321.png"><br>
+ 那么我们就可以通过 <code>getMacro()</code>  寻找被调用的宏定义，并得到返回的 <code>Macro</code>  类型值<br>
+再获得找到的 <code>Macro</code>  名称进行正则匹配，即可获得我们想要的结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"> from MacroInvocation macInvo</span><br><span class="line"> where macInvo.getMacro().getName().regexpMatch(&quot;ntoh.*&quot;)</span><br><span class="line"> select macInvo</span><br></pre></td></tr></table></figure>
+<p>（备注：关于正则表达式，不太会写，找的 java 正则 api 看的。<br>
+ <code>.</code>  表示匹配除换行符 \n 之外的任何单字符， <code>*</code>  表示零次或多次，<br>
+我这里希望得到的结果是以 <code>ntoh</code>  开头的宏定义都会被选中。<br>
+如果有不对的地方，还希望可以被提出指正◔ ‸◔）</p>
+<p>提交通过<br>
+<img src=":/432f3ae4cae04cbcb5ab7186e6e221ba" alt="5807d43f1ce8796d351638d6f55cde4a.png"></p>
+<h1 id="step-8-changing-the-selected-output"><a class="markdownIt-Anchor" href="#step-8-changing-the-selected-output">#</a> Step 8 - Changing the selected output</h1>
+<p>根据提示，使用 <code>getExpr()</code>  这个 predicate<br>
+ 先看看这个 <code>getExpr()</code>  的注释说明<br>
+是用来获取宏定义表达式的<br>
+如果顶级拓展元素不是表达式，它只是一条语句，将不会被选中列为结果<br>
+<img src=":/d452b131a0f54fd1ae883812865eb77a" alt="09d6ad29dcccc9157677864a39460e27.png"><br>
+ 使用 <code>select macInvo.getExpr()</code> ，就能获得宏定义调用相关的表达式<br>
+ 8_macro_expressions.ql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"> from MacroInvocation macInvo</span><br><span class="line"> where macInvo.getMacro().getName().regexpMatch(&quot;ntoh.*&quot;)</span><br><span class="line"> select macInvo.getExpr()</span><br></pre></td></tr></table></figure>
+<p>例如点击其中一个结果，就会跳转至下图位置<br>
+<img src=":/57c7ff8deabb48a6b8ab9d2820bdcc81" alt="82697e23ad6a1cd05073bea662213bf8.png"><br>
+ 提交通过<br>
+<img src=":/18dc9a5714244fa5bb9c099a5d6a7a89" alt="839b8030c2474b52816e9afc1212d9a1.png"></p>
+<p>那么查询表达式和查询调用的区别是啥？<br>
+看注释说明，<br>
+ <code>getExpr()</code> ：<br>
+<em>Gets a top-level expression associated with this macro invocation,if any.<br>
+Note that this predicate will fail if the top-level expanded element is not an expression (for example if it is a statement).<br>
+This macro is intended to be used with macros that expand to a complete expression.<br>
+In other cases, it may have multiple results or no results.</em><br>
+ 获取关于宏调用的顶级表达式<br>
+注意，如果顶级扩展元素不是一个表达式的话查询将失败（例如，它是一个语句）<br>
+此宏用于扩展为完整表达式的宏，在其他情况下可能会有多个结果或没有结果</p>
+<p><code>getMacro()</code> ：<br>
+<em>Gets the macro that is being accessed.</em><br>
+ 获取正在访问的宏</p>
+<p>即 <code>getMacro()</code>  会获取所有调用的宏，即使他只是一个语句<br>
+而 <code>getExpr()</code>  只会获取宏调用的顶级表达式<br>
+所以 <code>getExpr()</code>  得到的结果集应该包含于 <code>getMacro()</code>  的结果集<br>
+这里放上<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20750344">语句和表达式的区别讨论链接</a></p>
+<h1 id="step-9-write-your-own-class"><a class="markdownIt-Anchor" href="#step-9-write-your-own-class">#</a> Step 9 - Write your own class</h1>
+<p>首先看看学习 <code>exists</code>  关键词给出的例子：<br>
+这个规则只是为了获取不秃头的所有人</p>
+<p>不秃头的人都会有头发，那么他们的头发都会对应一个或多个颜色<br>
+其中 <code>t.getHairColor()</code>  会返回一个 <code>string</code>  类型的值，例如 &quot;red&quot;<br>
+ 如果我们需要获得不秃头的人，我们并不需要知道他们头发的具体颜色，只需要知道 <code>t.getHairColor()</code>  会返回 <code>string</code>  类型的值即可，因为秃头 <code>getHairColor()</code>  时，不会返回任何值</p>
+<p>所以我们利用 <code>string</code>  类型的变量完成该操作<br>
+更好的方式是使用 <code>exists</code>  关键词，因为我们只是在 <code>where</code>  中使用该变量<br>
+例如， <code>exists(string c | t.getHairColor() = c)</code>  使用了 string 类型的临时变量，用于获取 <code>t.getHairColor()</code>  返回了 <code>string</code>  值的 <code>t</code> ，也就是查询了所有头发颜色的值为 <code>string</code>  类型的人</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from Person t</span><br><span class="line">where exists(string c | t.getHairColor() = c)</span><br><span class="line">select t</span><br><span class="line"></span><br><span class="line">/*在CodeQL中，以下代码功能同于以上代码，给出只是为了更好地理解*/</span><br><span class="line">from Person t, string c</span><br><span class="line">where t.getHairColor() = c</span><br><span class="line">select t</span><br></pre></td></tr></table></figure>
+<p>再来看看类定义中给出的案例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class OneTwoThree extends int &#123;</span><br><span class="line">  OneTwoThree() &#123; // characteristic predicate</span><br><span class="line">    this = 1 or this = 2 or this = 3</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  string getAString() &#123; // member predicate</span><br><span class="line">    result = &quot;One, two or three: &quot; + this.toString()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  predicate isEven() &#123; // member predicate</span><br><span class="line">    this = 2</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码定义了一个名为 <code>OneTwoThree</code>  的类，继承于 int<br>
+ 类似于构造函数的部分是 <code>this = 1 or this = 2 or this = 3</code> <br>
+ 文档中解释说明这个类中包括了 1,2,3 这三个值<br>
+运行以下规则，可以发现 ott 中确实有 1，2，3 这三个值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"> /*from MacroInvocation macInvo</span><br><span class="line"> where macInvo.getMacro().getName().regexpMatch(&quot;ntoh.*&quot;)</span><br><span class="line"> select macInvo.getExpr()*/</span><br><span class="line"> class OneTwoThree extends int &#123;</span><br><span class="line">    OneTwoThree() &#123; // characteristic predicate</span><br><span class="line">      this = 1 or this = 2 or 3=this</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    string getAString() &#123; // member predicate</span><br><span class="line">      result = &quot;One, two or three: &quot; + this.toString()</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    predicate isEven() &#123; // member predicate</span><br><span class="line">      this = 2</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  from OneTwoThree ott</span><br><span class="line">  select ott</span><br></pre></td></tr></table></figure>
+<p><img src=":/26038db25b254623bab7f404ae1457a2" alt="e4a0cc58f70e7e930a95949605394de8.png"></p>
+<p>其中还有一个熟悉的单词 <code>predicate</code> <br>
+ 这个是在类的主体内定义的谓词，是使用变量来限制类中可能的值的逻辑属性<br>
+举个例子，运行以下规则，就会得到值 2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class OneTwoThree extends int &#123;</span><br><span class="line">   OneTwoThree() &#123; // characteristic predicate</span><br><span class="line">     this = 1 or this = 2 or 3=this</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   string getAString() &#123; // member predicate</span><br><span class="line">     result = &quot;One, two or three: &quot; + this.toString()</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   predicate isEven() &#123; // member predicate</span><br><span class="line">     this = 2</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> from OneTwoThree ott</span><br><span class="line"> where ott.isEven()</span><br><span class="line"> select ott</span><br></pre></td></tr></table></figure>
+<p>运行截图：<br>
+<img src=":/678d834def2441e69e01ad9a576c14ec" alt="b7da8682bac3c07ef7a2d8d41cffc090.png"><br>
+ 再更改规则如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class OneTwoThree extends int &#123;</span><br><span class="line">   OneTwoThree() &#123; // characteristic predicate</span><br><span class="line">     this = 1 or this = 2 or 3=this</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   string getAString() &#123; // member predicate</span><br><span class="line">     result = &quot;One, two or three: &quot; + this.toString()</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   predicate isEven() &#123; // member predicate</span><br><span class="line">     this = 2</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> from OneTwoThree ott</span><br><span class="line"> where ott = 2</span><br><span class="line"> select ott</span><br></pre></td></tr></table></figure>
+<p>他们会得到相同的结果<br>
+<img src=":/02edf6f0dfec4f5b8139ff090d007385" alt="c4bff2b9bd1c95c4becc00965b3a52f4.png"><br>
+ 也就是说 <code>where ott.isEven()</code>  和 <code>where ott = 2</code>  做出的是相同的限制<br>
+那么我们也就能更好地理解， <code>predicate</code>  特征是用于限制类中可能值的逻辑属性了</p>
+<p>其中 <code>string getAString()</code>  就不必多说，返回一个字符串，其中包含对应值<br>
+<img src=":/6caa12562e92485698cad9abe38fd1df" alt="1da4e1a23a80b04ee390a564d069fc2e.png"><br>
+ 其中我发现一个很神奇事，不知该如何解释<br>
+我将代码中 <code>this=1</code>  改成 <code>1=this</code>  也会得到一样的结果，没有任何不同或报错<br>
+它和赋值语句不同，但好像又具有相似的功能<br>
+在对变量做限制时，例如 <code>where ott = 2</code> ，它就变成了一个符号，用于对两个值进行比较，这里还好理解，因为 sql 语法类似<br>
+但是同样在以下代码中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">predicate isEven() &#123; // member predicate</span><br><span class="line">     this = 2</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><code>this=2</code>  也是用于对两个值进行比较<br>
+我认为这是由于 <code>predicate</code>  带来的改变，使得其中的代码和 <code>where</code>  后的代码具有相同得到功能<br>
+如果有更好的见解，还不忘赐教</p>
+<p>最后来写题<br>
+题目给了模板和提示<br>
+按照 step8 中的规则进行编写， <code>exists</code>  第二个参数放上 step8 中的 where 条件<br>
+由于 select 由题目给出并为 Expr 的子类，所以我们需要增加一个条件获取宏调用相关表达式<br>
+根据以上 <code>exists</code>  案例可知，我们需要在 <code>mi.getExpr() =</code>  后面写出他返回值的类型，这样当 <code>mi</code>  为表达式时，就会被选中<br>
+ <code>NetworkByteSwap</code>  是 <code>Expr</code>  的子类，因此</p>
+<p>9_class_network_byteswap.ql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line">class NetworkByteSwap extends Expr &#123;</span><br><span class="line">    NetworkByteSwap() &#123; </span><br><span class="line">        exists(MacroInvocation mi | mi.getMacro().getName().regexpMatch(&quot;ntoh.*&quot;) | mi.getExpr() = this)</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">from NetworkByteSwap n</span><br><span class="line">select n, &quot;Network byte swap&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="step-10-data-flow-and-taint-tracking-analysis"><a class="markdownIt-Anchor" href="#step-10-data-flow-and-taint-tracking-analysis">#</a> Step 10 - Data flow and taint tracking analysis</h1>
+<p>最后一步，进行数据流分析</p>
+<p>先了解以下我们需要查询的函数背景， <code>ntoh*</code>  函数会返回一个数，并用于 <code>memcpy</code>  的第三个参数 <code>size</code> ，所以我们需要追踪的数据流就是从 <code>ntoh*</code>  到 <code>memcpy</code></p>
+<blockquote>
+<p>在 C/C++ 写网络程序的时候，往往会遇到字节的网络顺序和主机顺序的问题。 这时就可能用到 htons (), ntohl (), ntohs ()，htons () 这 4 个网络字节顺序与本地字节顺序之间的转换函数</p>
+</blockquote>
+<blockquote>
+<p>memcpy 指的是 c 和 c++ 使用的内存拷贝函数，memcpy 函数的功能是从源 src 所指的内存地址的起始位置开始拷贝 n 个字节到目标 dest 所指的内存地址的起始位置中</p>
+</blockquote>
+<p>创建 <code>Config</code>  类，查找此类的数据流并进行污染点追踪分析<br>
+进行数据流分析，我们需要用到，部分代码已经在给出的模板中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import semmle.code.cpp.dataflow.TaintTracking</span><br><span class="line">import DataFlow::PathGraph</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们需要写两个 <code>predicate</code> ，一个是来源 <code>isSource</code> ，一个是接收器 <code>isSink</code></p>
+<p><code>isSource</code>  中我们需要查询 <code>ntoh*</code>  宏定义调用的相关表达式，这一步我们已经在 <code>NetworkByteSwap</code>  中写过了<br>
+ <code>isSink</code>  中我们需要查询调用 <code>memcpy</code>  函数时，传入的第三个参数 <code>size</code> ，这一步我们需要新增加的步骤是获取参数</p>
+<p>弄清楚这些后，在编写规则时，根据提示完善代码<br>
+我们就能获得 10_taint_tracking.ql 的答案</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @kind path-problem</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">import cpp</span><br><span class="line">import semmle.code.cpp.dataflow.TaintTracking</span><br><span class="line">import DataFlow::PathGraph</span><br><span class="line"></span><br><span class="line">class NetworkByteSwap extends Expr &#123;</span><br><span class="line">    NetworkByteSwap() &#123; </span><br><span class="line">        exists(MacroInvocation mi| mi.getMacro().getName().regexpMatch(&quot;ntoh(s|l|ll)&quot;) | this = mi.getExpr())</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Config extends TaintTracking::Configuration &#123;</span><br><span class="line">  Config() &#123; this = &quot;NetworkToMemFuncLength&quot; &#125;</span><br><span class="line"></span><br><span class="line">  override predicate isSource(DataFlow::Node source) &#123;</span><br><span class="line">    // TODO</span><br><span class="line">    /*获取与此节点对应的表达式（如果有）。</span><br><span class="line">    此谓词仅在表示表达式求值值的节点上具有结果。</span><br><span class="line">    对于从表达式中流出的数据，例如通过引用传递参数时，请使用asDefiningArgument而不是asExpr。*/</span><br><span class="line">    source.asExpr() instanceof NetworkByteSwap</span><br><span class="line">  &#125;</span><br><span class="line">  override predicate isSink(DataFlow::Node sink) &#123;</span><br><span class="line">    // TODO</span><br><span class="line">    exists(FunctionCall fc | fc.getTarget().hasName(&quot;memcpy&quot;) | sink.asExpr() = fc.getArgument(2))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">from Config cfg, DataFlow::PathNode source, DataFlow::PathNode sink</span><br><span class="line">where cfg.hasFlowPath(source, sink)</span><br><span class="line">select sink, source, sink, &quot;Network byte swap flows to memcpy&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="传送门"><a class="markdownIt-Anchor" href="#传送门">#</a> 传送门</h1>
+<p><a target="_blank" rel="noopener" href="https://lgtm.com/help/lgtm/console/ql-cpp-basic-example">cpp 规则语法说明</a><br>
+<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html"> Java 正则模式</a><br>
+<a target="_blank" rel="noopener" href="https://securitylab.github.com/research/cve-2018-4259-macos-nfs-vulnerability/">给出的参考案例：CVE-2018-4259: MacOS NFS vulnerabilties lead to kernel RCE</a>（知识点挺多的）<br>
+<a target="_blank" rel="noopener" href="https://bestwing.me/codeql.html">codeql-swing</a>（swing 的语言云淡风轻，条理清晰，如沐春风，我的的语言阿巴阿巴阿巴）<br>
+<a target="_blank" rel="noopener" href="https://github.com/github/securitylab/discussions">讨论区</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text"> 背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-3-our-first-query"><span class="toc-number">2.</span> <span class="toc-text"> Step 3 - our first query</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-4-anatomy-of-a-query"><span class="toc-number">3.</span> <span class="toc-text"> Step 4 - Anatomy of a query</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-5-using-different-classes-and-their-predicates"><span class="toc-number">4.</span> <span class="toc-text"> Step 5 - Using different classes and their predicates</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-6-relating-two-variables"><span class="toc-number">5.</span> <span class="toc-text"> Step 6 - Relating two variables</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-7-relating-two-variables-continued"><span class="toc-number">6.</span> <span class="toc-text"> Step 7 - Relating two variables, continued</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-8-changing-the-selected-output"><span class="toc-number">7.</span> <span class="toc-text"> Step 8 - Changing the selected output</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-9-write-your-own-class"><span class="toc-number">8.</span> <span class="toc-text"> Step 9 - Write your own class</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#step-10-data-flow-and-taint-tracking-analysis"><span class="toc-number">9.</span> <span class="toc-text"> Step 10 - Data flow and taint tracking analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E9%80%81%E9%97%A8"><span class="toc-number">10.</span> <span class="toc-text"> 传送门</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&text=CodeQLU-BootChallenge(CC++)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&is_video=false&description=CodeQLU-BootChallenge(CC++)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQLU-BootChallenge(CC++)&body=Check out this article: http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&title=CodeQLU-BootChallenge(CC++)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&name=CodeQLU-BootChallenge(CC++)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/&t=CodeQLU-BootChallenge(CC++)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2022
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

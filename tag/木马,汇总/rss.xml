@@ -19,6 +19,9 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
+        <category>solr, 代码审计</category>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</guid>
             <title>一句话木马整理</title>

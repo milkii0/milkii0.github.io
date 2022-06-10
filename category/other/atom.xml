@@ -16,6 +16,9 @@
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
     <category term="webgoat" />
+    <category term="solr, 代码审计" />
+    <category term="CodeQL" />
+    <category term="codeql, 搭建教程" />
     <entry>
         <id>http://example.com/2021/09/08/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</id>
         <title>问题及解决记录</title>

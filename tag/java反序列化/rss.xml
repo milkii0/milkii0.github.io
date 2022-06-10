@@ -19,6 +19,9 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
+        <category>solr, 代码审计</category>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2021/09/07/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</guid>
             <title>ysoserial之CommonsCollections1调试</title>

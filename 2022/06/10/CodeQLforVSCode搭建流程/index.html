@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="[toc] # Visual Studio Code 安装 都是免费的哈哈哈 官网下载  # CodeQL 安装 # 使用 Chocolatey 安装 CodeQL cli 使用 choco 安装可透过指令执行且环境变数也会自动设定好 管理员权限打开 cmd  运行 choco install codeql   安装成功  如果想要自定义安装目录的话，需要更改一下环境变量  ChocolateyI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CodeQLforVSCode搭建流程">
+<meta property="og:url" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Milkii0的秘密花园">
+<meta property="og:description" content="[toc] # Visual Studio Code 安装 都是免费的哈哈哈 官网下载  # CodeQL 安装 # 使用 Chocolatey 安装 CodeQL cli 使用 choco 安装可透过指令执行且环境变数也会自动设定好 管理员权限打开 cmd  运行 choco install codeql   安装成功  如果想要自定义安装目录的话，需要更改一下环境变量  ChocolateyI">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/cf327f50a1f0480aafc5291c6a0fb495">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/a524f8fcd5af4a30b6da99ad618f9e12">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/8c9abfa55c8b462a8cf9ea6785d18816">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/502fe5759d1045e79d2572e43ebeaec3">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/5398b2ce18a64a6ba9cda73e3f26342a">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/69ef64cfcca24f8d88b8dab3e0f9469d">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/f7334d838fa34fbcb76b9754583e8796">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/99bdc5dd522142d9adab13f617221bff">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/d0abc16715414fa39b5312cf0bf9201f">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/b5e7cc0557924e77b531cb0de97748c7">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/6f43b2b6249845f7b35c7cd4a2a1a70e">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/9a60b6b8629447f49327acf43ddec5b2">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/c7bf21f2a552483780c58a4ee06b70a0">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/3c8180aaa0b040ecaafd4217cbc18503">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/29486ddc144542318d779b859916c3fb">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/b02d0248007c458a8554fcc54a7d04ea">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/97e2d507bde8497d9d9d5c54a79c7da3">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/a0c3b1e875c444b6b2050bf2e5f5bc0e">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/851c4ae6d9724a63b44b5b54681cf37c">
+<meta property="og:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/31a83b722afa4f8687b1124077748691">
+<meta property="article:published_time" content="2022-06-10T02:36:34.000Z">
+<meta property="article:modified_time" content="2022-06-10T02:49:24.212Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="codeql, 搭建教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/:/cf327f50a1f0480aafc5291c6a0fb495">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CodeQLforVSCode搭建流程</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Milkii0的秘密花园" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/06/10/CodeQLU-BootChallenge%20(CC++)/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%AE%A1%E8%AE%A1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&text=CodeQLforVSCode搭建流程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&is_video=false&description=CodeQLforVSCode搭建流程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQLforVSCode搭建流程&body=Check out this article: http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&name=CodeQLforVSCode搭建流程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&t=CodeQLforVSCode搭建流程"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#visual-studio-code%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text"> Visual Studio Code 安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#codeql%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text"> CodeQL 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8chocolatey%E5%AE%89%E8%A3%85codeql-cli"><span class="toc-number">2.1.</span> <span class="toc-text"> 使用 Chocolatey 安装 CodeQL cli</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gihub%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.2.</span> <span class="toc-text"> gihub 下载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E4%B9%8B%E5%90%8E%E5%AE%89%E8%A3%85codeql%E6%8F%92%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text"> 下载之后安装 codeql 插件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEcodeql-cli"><span class="toc-number">4.</span> <span class="toc-text"> 配置 codeql-cli</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%99"><span class="toc-number">5.</span> <span class="toc-text"> 配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8starter-workspace%E4%B9%9F%E5%B0%B1%E6%98%AFgit%E4%BB%93%E5%BA%93"><span class="toc-number">5.1.</span> <span class="toc-text"> 使用‘starter workspace’，也就是 git 仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86codeql%E8%A7%84%E5%88%99%E5%BA%93%E5%8A%A0%E5%85%A5%E7%8E%B0%E6%9C%89%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%AB%99"><span class="toc-number">5.2.</span> <span class="toc-text"> 将 CodeQL 规则库加入现有的工作站</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8Ccodeql"><span class="toc-number">6.</span> <span class="toc-text"> 运行 CodeQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.1.</span> <span class="toc-text"> 选择数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.2.</span> <span class="toc-text"> 创建本地数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87coedql-cli%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.2.1.</span> <span class="toc-text"> 通过 coedql-cli 创建一个数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E7%BB%99%E5%87%BA%E7%9A%84command%E6%A1%88%E4%BE%8B"><span class="toc-number">6.2.1.1.</span> <span class="toc-text"> 官方给出的 command 案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%A9%E4%B8%8B%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E6%9C%AA%E6%B5%8B%E8%AF%95%E4%BB%85%E7%BB%99%E5%87%BA%E8%AF%B4%E6%98%8E%E9%93%BE%E6%8E%A5"><span class="toc-number">6.2.2.</span> <span class="toc-text"> 剩下两种方法未测试，仅给出说明链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E8%BF%90%E8%A1%8C%E8%A7%84%E5%88%99%E5%BB%BA%E8%AE%AE%E9%80%9A%E8%BF%87%E5%AE%98%E6%96%B9%E7%BB%99%E5%87%BA%E7%9A%84%E7%BB%83%E4%B9%A0%E9%A2%98%E8%BF%9B%E8%A1%8C%E7%BB%83%E4%B9%A0"><span class="toc-number">6.3.</span> <span class="toc-text"> 编写运行规则，建议通过官方给出的练习题进行练习</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E9%80%81%E9%97%A8"><span class="toc-number">7.</span> <span class="toc-text"> 传送门</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CodeQLforVSCode搭建流程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-10T02:36:34.000Z" itemprop="datePublished">2022-06-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/codeql-%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="tag">codeql, 搭建教程</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>[toc]</p>
+<h1 id="visual-studio-code安装"><a class="markdownIt-Anchor" href="#visual-studio-code安装">#</a> Visual Studio Code 安装</h1>
+<p>都是免费的哈哈哈<br>
+<a target="_blank" rel="noopener" href="https://code.visualstudio.com/Download">官网下载</a><br>
+<img src=":/cf327f50a1f0480aafc5291c6a0fb495" alt="89f3979d3be08c5479bf1a9fac4ae8f4.png"></p>
+<h1 id="codeql安装"><a class="markdownIt-Anchor" href="#codeql安装">#</a> CodeQL 安装</h1>
+<h2 id="使用chocolatey安装codeql-cli"><a class="markdownIt-Anchor" href="#使用chocolatey安装codeql-cli">#</a> 使用 Chocolatey 安装 CodeQL cli</h2>
+<p>使用 choco 安装可透过指令执行且环境变数也会自动设定好<br>
+管理员权限打开 cmd<br>
+ 运行 <code>choco install codeql</code> <br>
+<img src=":/a524f8fcd5af4a30b6da99ad618f9e12" alt="8e97ed84bc39ad6f0c5ccda34d479d90.png"></p>
+<p>安装成功<br>
+<img src=":/8c9abfa55c8b462a8cf9ea6785d18816" alt="c79f98196394ebe90a752eb4bf512411.png"></p>
+<p>如果想要自定义安装目录的话，需要更改一下环境变量<br>
+ ChocolateyInstall 就是默认的安装路径<br>
+<img src=":/502fe5759d1045e79d2572e43ebeaec3" alt="03c3720b2dfed7a1702603e97ea56e19.png"></p>
+<h2 id="gihub下载"><a class="markdownIt-Anchor" href="#gihub下载">#</a> gihub 下载</h2>
+<p>先下载 codeql-cli<br>
+ 选择对应操作系统下载即可<br>
+<img src=":/5398b2ce18a64a6ba9cda73e3f26342a" alt="be05dbbd44da6e49e5a161a120478255.png"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/github/codeql-cli-binaries">https://github.com/github/codeql-cli-binaries</a><br>
+ 下载好解压至自己选定的文件夹，再添加系统变量<br>
+这里我将 codeql 文件夹名称改为 codeql-cli<br>
+<img src=":/69ef64cfcca24f8d88b8dab3e0f9469d" alt="cc76037dd0f7125ff2fa7ec3b2686824.png"></p>
+<p>在命令行输入 codeql，如下图即配置成功<br>
+若提示找不到该命令，重启后再执行命令<br>
+<img src=":/f7334d838fa34fbcb76b9754583e8796" alt="f81317bf86bb5b8ece642a207391842b.png"></p>
+<p>下载 codeql 规则库（使用 starter workspace 可跳过此步骤）<br>
+<a target="_blank" rel="noopener" href="https://github.com/github/codeql">https://github.com/github/codeql</a><br>
+ 在 codeql 文件夹下打开 cmd<br>
+ 执行 <code>git clone https://github.com/github/codeql codeql-repo</code> <br>
+ 下载完后如图<br>
+<img src=":/99bdc5dd522142d9adab13f617221bff" alt="3aeebb3aca934f76ef649ccf7d200fb6.png"></p>
+<h1 id="下载之后安装codeql插件"><a class="markdownIt-Anchor" href="#下载之后安装codeql插件">#</a> 下载之后安装 codeql 插件</h1>
+<p>有三种方法</p>
+<ol>
+<li>
+<p>在 VS 插件中搜索 codeql 点击安装<br>
+<img src=":/d0abc16715414fa39b5312cf0bf9201f" alt="9536c545af16d13d030ff3c42f767471.png"></p>
+</li>
+<li>
+<p>浏览器打开<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql">商城</a>下载</p>
+</li>
+<li>
+<p>github 中下载<a target="_blank" rel="noopener" href="https://github.com/github/vscode-codeql/releases"> VSIX 文件</a><br>
+在 more actions 中选择从 VSIX 文件安装<br>
+<img src=":/b5e7cc0557924e77b531cb0de97748c7" alt="c748a4d35418471f99408284979433eb.png"></p>
+</li>
+</ol>
+<h1 id="配置codeql-cli"><a class="markdownIt-Anchor" href="#配置codeql-cli">#</a> 配置 codeql-cli</h1>
+<p>终端无法访问扩展管理的 cli<br>
+ 可以自己下载 codeql, 并在插件中配置路径<br>
+这样终端可以访问<br>
+这个插件是使用 codeql-cli 编译并运行规则的，要确保下载的版本支持该插件即可<br>
+<img src=":/6f43b2b6249845f7b35c7cd4a2a1a70e" alt="64d75944e23735a29f128c932e7824b7.png"></p>
+<p>Executable Path 输入 codeql.exe 所在路径<br>
+<img src=":/9a60b6b8629447f49327acf43ddec5b2" alt="9ab953a7697bf20458868981a2523a3c.png"></p>
+<h1 id="配置规则"><a class="markdownIt-Anchor" href="#配置规则">#</a> 配置规则</h1>
+<p>两种方法建立 codeql workspace<br>
+ 第一种就是把要审计的代码放入 codeql 中<br>
+第二种是把 codeql 加入要审计的代码的 workspace 中</p>
+<h2 id="使用starter-workspace也就是git仓库"><a class="markdownIt-Anchor" href="#使用starter-workspace也就是git仓库">#</a> 使用‘starter workspace’，也就是 git 仓库</h2>
+<ol>
+<li>
+<p>下载 starter<br>
+ <code>git clone --recursive https://github.com/github/vscode-codeql-starter/</code> <br>
+ 或者<br>
+ <code>git clone https://github.com/github/vscode-codeql-starter/</code> <br>
+ 项目下载完成后，进入项目目录<br>
+ <code>git submodule update --init </code> <br>
+ <code>git submodule update --remote</code> <br>
+ 确保包含需要的子模块<br>
+截图使用的是第一种方法<br>
+<img src=":/c7bf21f2a552483780c58a4ee06b70a0" alt="479934456f6c44228c2f3e8057ac0e86.png"><br>
+ 子模块需要定期更新<br>
+<img src=":/3c8180aaa0b040ecaafd4217cbc18503" alt="ef88b51020a9d4ed8fdb5bda8029fc94.png"></p>
+</li>
+<li>
+<p>在 VS Code 中打开 starter workspace<br>
+<img src=":/29486ddc144542318d779b859916c3fb" alt="84a6738a5e83ddeb45752d064e986647.png"><br>
+<img src=":/b02d0248007c458a8554fcc54a7d04ea" alt="4e682ce5e87fbc0dd1897081928067fd.png"></p>
+</li>
+</ol>
+<p>注意：<br>
+starter 子模块中包括 C/C++, C#, Java, JavaScript, Python, Ruby 以及 GO 的规则，在 vscode-codeql-starter\ql 下<br>
+ CodeQL 暂时无法扫描 php 代码</p>
+<h2 id="将codeql规则库加入现有的工作站"><a class="markdownIt-Anchor" href="#将codeql规则库加入现有的工作站">#</a> 将 CodeQL 规则库加入现有的工作站</h2>
+<p><strong>此种方法未实现，仅按文档进行流程说明</strong></p>
+<p>将下载好的本地 CodeQL 库加入你的 workspace<br>
+<a target="_blank" rel="noopener" href="https://github.com/github/codeql">CodeQL 库下载链接</a></p>
+<ol>
+<li>
+<p>选择 File &gt; Add Folder to Workspace，加入下载好的 codeql 库<br>
+<img src=":/97e2d507bde8497d9d9d5c54a79c7da3" alt="3ccc9692c80a5e50bf93123ffbf04e4c.png"></p>
+</li>
+<li>
+<p>每种语言都要创建一个新的文件夹<br>
+通过 New Folder 或者 Add Folder to Workspace 选项<br>
+放置你的自定义规则和规则库</p>
+</li>
+<li>
+<p>在每个语言目录下新建一个 qlpack.yml 文件<br>
+用来告诉 CodeQL，这个目录下的语言类型和依赖包<br>
+例如：<br>
+在 C<ins> 代码目录下自定义一个 CodeQL 文件夹名为’my-custom-cpp-pack’<br>
+在 C</ins> 代码目录下创建一个 qlpack.yml 文件，内容如下</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name: my-custom-cpp-pack</span><br><span class="line">version: 0.0.0</span><br><span class="line">libraryPathDependencies: codeql/cpp-all</span><br></pre></td></tr></table></figure>
+<p><strong>注意：<br>
+GO 语言的规则库并不在 github/codeql 中<br>
+扫描 GO 代码，需要下载 https://github.com/github/codeql-go<br>
+ 然后将规则像上面说的这样加入规则库<br>
+（starter 中都是包含的）</strong></p>
+<h1 id="运行codeql"><a class="markdownIt-Anchor" href="#运行codeql">#</a> 运行 CodeQL</h1>
+<h2 id="选择数据库"><a class="markdownIt-Anchor" href="#选择数据库">#</a> 选择数据库</h2>
+<p>扫描分析一个 project，我们需要建立一个 CodeQL 数据库<br>
+在侧边栏打开 CodeQL 数据库<br>
+如图有四种添加数据库的方法<br>
+<img src=":/a0c3b1e875c444b6b2050bf2e5f5bc0e" alt="b9557aadc5d02dcc220fc4f20977e102.png"><br>
+ 当添加数据库之后，会有数据库视图<br>
+可以右击列表中的项进行数据库交互<br>
+可以利用 Ctrl/Cmd+click 选择多个数据库</p>
+<h2 id="创建本地数据库"><a class="markdownIt-Anchor" href="#创建本地数据库">#</a> 创建本地数据库</h2>
+<p>如果没有存在的数据库导入，也可以先创建一个本地数据库<br>
+有三种方法</p>
+<h3 id="通过coedql-cli创建一个数据库"><a class="markdownIt-Anchor" href="#通过coedql-cli创建一个数据库">#</a> 通过 coedql-cli 创建一个数据库</h3>
+<pre><code>执行命令：
+`codeql database create &lt;database&gt; --language=&lt;language-identifier&gt;`
+</code></pre>
+<p>参数说明：<br>
+ <code>&lt;database&gt;</code> ：创建数据库的路径，目录会在执行命令的时候被创建<br>
+ <code>--language</code> : 指定数据库语言，输入标识符。当和–db-cluster 一起使用时，可以指定多个，用’,' 分隔，也可以进行多次指定。<br>
+ <code>--db-cluster</code> ：为多种语言创建数据库<br>
+ <code>--command</code> ：创建一个或多个编译语言数据库的时候使用。python 和 JavaScript/TypeScript 不需要该参数，如果编译语言不带该参数，codeql 会自动检测并编译<br>
+ <code>--no-run-unnecessary-builds</code> ：为多语言创建数据库，且包括编译和非编译语言时，可以利用  <code>--no-run-unnecessary-builds</code>  来帮助非编译语言跳过 command 选项<br>
+<a target="_blank" rel="noopener" href="https://codeql.github.com/docs/codeql-cli/manual/database-create/">更多参数说明</a><br>
+ CodeQL 支持以下语言</p>
+<table>
+<thead>
+<tr>
+<th>语言</th>
+<th>标识符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C/C++</td>
+<td>cpp</td>
+</tr>
+<tr>
+<td>C#</td>
+<td>csharp</td>
+</tr>
+<tr>
+<td>GO</td>
+<td>go</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>java</td>
+</tr>
+<tr>
+<td>JavaScript/TypeScript</td>
+<td>javascript</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>python</td>
+</tr>
+<tr>
+<td>Ruby</td>
+<td>ruby</td>
+</tr>
+</tbody>
+</table>
+<p>找了 codeql-repo 中的 python 案列测试创建数据库成功<br>
+<img src=":/851c4ae6d9724a63b44b5b54681cf37c" alt="48af0641ac03eb15ee8781d860f9e724.png"><br>
+<img src=":/31a83b722afa4f8687b1124077748691" alt="18db53f51f1f4c80cbae05e19d286cb4.png"></p>
+<h4 id="官方给出的command案例"><a class="markdownIt-Anchor" href="#官方给出的command案例">#</a> 官方给出的 command 案例</h4>
+<blockquote>
+<p>Specifying build commands</p>
+<p>The following examples are designed to give you an idea of some of the build commands that you can specify for compiled languages.</p>
+<blockquote>
+<p>Important</p>
+<p>The  <code>--command</code>  option accepts a single argument—if you need to use more than one command, specify  <code>--command</code>  multiple times.</p>
+<p>If you need to pass subcommands and options, the whole argument needs to be quoted to be interpreted correctly.</p>
+</blockquote>
+<ul>
+<li>
+<p>C/C++ project built using  <code>make</code> :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create cpp-database --language=cpp --command=make</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>C# project built using  <code>dotnet build</code>  (.NET Core 3.0 or later):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create csharp-database --language=csharp --command=&#x27;dotnet build /t:rebuild&#x27;</span><br></pre></td></tr></table></figure>
+<p>On Linux and macOS (but not Windows), you need to disable shared compilation when building C# projects with .NET Core 2 or earlier, so expand the command to:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create csharp-database --language=csharp --command=&#x27;dotnet build /p:UseSharedCompilation=false /t:rebuild&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Go project built using the  <code>COEQL_EXTRACTOR_GO_BUILD_TRACING=on</code>  environment variable:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CODEQL_EXTRACTOR_GO_BUILD_TRACING=on codeql database create go-database --language=go</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Go project built using a custom build script:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create go-database --language=go --command=&#x27;./scripts/build.sh&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Java project built using Gradle:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create java-database --language=java --command=&#x27;gradle clean test&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Java project built using Maven:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create java-database --language=java --command=&#x27;mvn clean install&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Java project built using Ant:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create java-database --language=java --command=&#x27;ant -f build.xml&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Project built using Bazel:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># Navigate to the Bazel workspace.</span><br><span class="line"></span><br><span class="line"># Before building, remove cached objects</span><br><span class="line"># and stop all running Bazel server processes.</span><br><span class="line">bazel clean --expunge</span><br><span class="line"></span><br><span class="line"># Build using the following Bazel flags, to help CodeQL detect the build:</span><br><span class="line"># `--spawn_strategy=local`: build locally, instead of using a distributed build</span><br><span class="line"># `--nouse_action_cache`: turn off build caching, which might prevent recompilation of source code</span><br><span class="line"># `--noremote_accept_cached`, `--noremote_upload_local_results`: avoid using a remote cache</span><br><span class="line">codeql database create new-database --language=&lt;language&gt; \</span><br><span class="line">  --command=&#x27;bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //path/to/package:target&#x27;</span><br><span class="line"></span><br><span class="line"># After building, stop all running Bazel server processes.</span><br><span class="line"># This ensures future build commands start in a clean Bazel server process</span><br><span class="line"># without CodeQL attached.</span><br><span class="line">bazel shutdown</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Project built using a custom build script:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create new-database --language=&lt;language&gt; --command=&#x27;./scripts/build.sh&#x27;</span><br></pre></td></tr></table></figure>
+<p>This command runs a custom script that contains all of the commands required to build the project.</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="剩下两种方法未测试仅给出说明链接"><a class="markdownIt-Anchor" href="#剩下两种方法未测试仅给出说明链接">#</a> 剩下两种方法未测试，仅给出<a target="_blank" rel="noopener" href="https://codeql.github.com/docs/codeql-for-visual-studio-code/analyzing-your-projects/">说明链接</a></h3>
+<h2 id="编写运行规则建议通过官方给出的练习题进行练习"><a class="markdownIt-Anchor" href="#编写运行规则建议通过官方给出的练习题进行练习">#</a> 编写运行规则，建议通过官方给出的练习题进行练习</h2>
+<h1 id="传送门"><a class="markdownIt-Anchor" href="#传送门">#</a> 传送门</h1>
+<p><a target="_blank" rel="noopener" href="https://codeql.github.com/docs/">CodeQL 官方文档</a><br>
+<a target="_blank" rel="noopener" href="https://lab.github.com/githubtraining">练习室</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#visual-studio-code%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text"> Visual Studio Code 安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#codeql%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text"> CodeQL 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8chocolatey%E5%AE%89%E8%A3%85codeql-cli"><span class="toc-number">2.1.</span> <span class="toc-text"> 使用 Chocolatey 安装 CodeQL cli</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gihub%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.2.</span> <span class="toc-text"> gihub 下载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E4%B9%8B%E5%90%8E%E5%AE%89%E8%A3%85codeql%E6%8F%92%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text"> 下载之后安装 codeql 插件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEcodeql-cli"><span class="toc-number">4.</span> <span class="toc-text"> 配置 codeql-cli</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%99"><span class="toc-number">5.</span> <span class="toc-text"> 配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8starter-workspace%E4%B9%9F%E5%B0%B1%E6%98%AFgit%E4%BB%93%E5%BA%93"><span class="toc-number">5.1.</span> <span class="toc-text"> 使用‘starter workspace’，也就是 git 仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86codeql%E8%A7%84%E5%88%99%E5%BA%93%E5%8A%A0%E5%85%A5%E7%8E%B0%E6%9C%89%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%AB%99"><span class="toc-number">5.2.</span> <span class="toc-text"> 将 CodeQL 规则库加入现有的工作站</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8Ccodeql"><span class="toc-number">6.</span> <span class="toc-text"> 运行 CodeQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.1.</span> <span class="toc-text"> 选择数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.2.</span> <span class="toc-text"> 创建本地数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87coedql-cli%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.2.1.</span> <span class="toc-text"> 通过 coedql-cli 创建一个数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E7%BB%99%E5%87%BA%E7%9A%84command%E6%A1%88%E4%BE%8B"><span class="toc-number">6.2.1.1.</span> <span class="toc-text"> 官方给出的 command 案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%A9%E4%B8%8B%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E6%9C%AA%E6%B5%8B%E8%AF%95%E4%BB%85%E7%BB%99%E5%87%BA%E8%AF%B4%E6%98%8E%E9%93%BE%E6%8E%A5"><span class="toc-number">6.2.2.</span> <span class="toc-text"> 剩下两种方法未测试，仅给出说明链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E8%BF%90%E8%A1%8C%E8%A7%84%E5%88%99%E5%BB%BA%E8%AE%AE%E9%80%9A%E8%BF%87%E5%AE%98%E6%96%B9%E7%BB%99%E5%87%BA%E7%9A%84%E7%BB%83%E4%B9%A0%E9%A2%98%E8%BF%9B%E8%A1%8C%E7%BB%83%E4%B9%A0"><span class="toc-number">6.3.</span> <span class="toc-text"> 编写运行规则，建议通过官方给出的练习题进行练习</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E9%80%81%E9%97%A8"><span class="toc-number">7.</span> <span class="toc-text"> 传送门</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&text=CodeQLforVSCode搭建流程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&is_video=false&description=CodeQLforVSCode搭建流程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQLforVSCode搭建流程&body=Check out this article: http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&title=CodeQLforVSCode搭建流程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&name=CodeQLforVSCode搭建流程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/&t=CodeQLforVSCode搭建流程"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2022
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -19,6 +19,9 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
+        <category>solr, 代码审计</category>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</guid>
             <title>dorabox冒险手记</title>

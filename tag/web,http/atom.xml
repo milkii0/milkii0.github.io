@@ -16,6 +16,9 @@
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
     <category term="webgoat" />
+    <category term="solr, 代码审计" />
+    <category term="CodeQL" />
+    <category term="codeql, 搭建教程" />
     <entry>
         <id>http://example.com/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</id>
         <title>HTTP请求走私简述</title>

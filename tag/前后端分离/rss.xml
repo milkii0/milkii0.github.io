@@ -19,6 +19,9 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
+        <category>solr, 代码审计</category>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</guid>
             <title>sourcemap泄露获取前端源码</title>

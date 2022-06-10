@@ -19,6 +19,9 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
+        <category>solr, 代码审计</category>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</guid>
             <title>redis未授权验证流程</title>

@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://example.com</id>
+    <title>Milkii0的秘密花园 • Posts by &#34;codeql, 搭建教程&#34; tag</title>
+    <link href="http://example.com" />
+    <updated>2022-06-10T02:36:34.000Z</updated>
+    <category term="web,HTTP" />
+    <category term="redis,未授权,漏洞利用" />
+    <category term="solr, 漏洞复现" />
+    <category term="前后端分离" />
+    <category term="文件上传靶场" />
+    <category term="Java反序列化" />
+    <category term="ysoserial调试" />
+    <category term="木马,汇总" />
+    <category term="pikachu,web靶场" />
+    <category term="dorabox,靶场练习" />
+    <category term="sql注入靶场" />
+    <category term="webgoat" />
+    <category term="solr, 代码审计" />
+    <category term="CodeQL" />
+    <category term="codeql, 搭建教程" />
+    <entry>
+        <id>http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/</id>
+        <title>CodeQLforVSCode搭建流程</title>
+        <link rel="alternate" href="http://example.com/2022/06/10/CodeQLforVSCode%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/"/>
+        <content type="html">&lt;p&gt;[toc]&lt;/p&gt;
+&lt;h1 id=&#34;visual-studio-code安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#visual-studio-code安装&#34;&gt;#&lt;/a&gt; Visual Studio Code 安装&lt;/h1&gt;
+&lt;p&gt;都是免费的哈哈哈&lt;br&gt;
+&lt;a href=&#34;https://code.visualstudio.com/Download&#34;&gt;官网下载&lt;/a&gt;&lt;br&gt;
+&lt;img src=&#34;:/cf327f50a1f0480aafc5291c6a0fb495&#34; alt=&#34;89f3979d3be08c5479bf1a9fac4ae8f4.png&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;codeql安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#codeql安装&#34;&gt;#&lt;/a&gt; CodeQL 安装&lt;/h1&gt;
+&lt;h2 id=&#34;使用chocolatey安装codeql-cli&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#使用chocolatey安装codeql-cli&#34;&gt;#&lt;/a&gt; 使用 Chocolatey 安装 CodeQL cli&lt;/h2&gt;
+&lt;p&gt;使用 choco 安装可透过指令执行且环境变数也会自动设定好&lt;br&gt;
+管理员权限打开 cmd&lt;br&gt;
+ 运行 &lt;code&gt;choco install codeql&lt;/code&gt; &lt;br&gt;
+&lt;img src=&#34;:/a524f8fcd5af4a30b6da99ad618f9e12&#34; alt=&#34;8e97ed84bc39ad6f0c5ccda34d479d90.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;安装成功&lt;br&gt;
+&lt;img src=&#34;:/8c9abfa55c8b462a8cf9ea6785d18816&#34; alt=&#34;c79f98196394ebe90a752eb4bf512411.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;如果想要自定义安装目录的话，需要更改一下环境变量&lt;br&gt;
+ ChocolateyInstall 就是默认的安装路径&lt;br&gt;
+&lt;img src=&#34;:/502fe5759d1045e79d2572e43ebeaec3&#34; alt=&#34;03c3720b2dfed7a1702603e97ea56e19.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;gihub下载&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#gihub下载&#34;&gt;#&lt;/a&gt; gihub 下载&lt;/h2&gt;
+&lt;p&gt;先下载 codeql-cli&lt;br&gt;
+ 选择对应操作系统下载即可&lt;br&gt;
+&lt;img src=&#34;:/5398b2ce18a64a6ba9cda73e3f26342a&#34; alt=&#34;be05dbbd44da6e49e5a161a120478255.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/github/codeql-cli-binaries&#34;&gt;https://github.com/github/codeql-cli-binaries&lt;/a&gt;&lt;br&gt;
+ 下载好解压至自己选定的文件夹，再添加系统变量&lt;br&gt;
+这里我将 codeql 文件夹名称改为 codeql-cli&lt;br&gt;
+&lt;img src=&#34;:/69ef64cfcca24f8d88b8dab3e0f9469d&#34; alt=&#34;cc76037dd0f7125ff2fa7ec3b2686824.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在命令行输入 codeql，如下图即配置成功&lt;br&gt;
+若提示找不到该命令，重启后再执行命令&lt;br&gt;
+&lt;img src=&#34;:/f7334d838fa34fbcb76b9754583e8796&#34; alt=&#34;f81317bf86bb5b8ece642a207391842b.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;下载 codeql 规则库（使用 starter workspace 可跳过此步骤）&lt;br&gt;
+&lt;a href=&#34;https://github.com/github/codeql&#34;&gt;https://github.com/github/codeql&lt;/a&gt;&lt;br&gt;
+ 在 codeql 文件夹下打开 cmd&lt;br&gt;
+ 执行 &lt;code&gt;git clone https://github.com/github/codeql codeql-repo&lt;/code&gt; &lt;br&gt;
+ 下载完后如图&lt;br&gt;
+&lt;img src=&#34;:/99bdc5dd522142d9adab13f617221bff&#34; alt=&#34;3aeebb3aca934f76ef649ccf7d200fb6.png&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;下载之后安装codeql插件&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#下载之后安装codeql插件&#34;&gt;#&lt;/a&gt; 下载之后安装 codeql 插件&lt;/h1&gt;
+&lt;p&gt;有三种方法&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;在 VS 插件中搜索 codeql 点击安装&lt;br&gt;
+&lt;img src=&#34;:/d0abc16715414fa39b5312cf0bf9201f&#34; alt=&#34;9536c545af16d13d030ff3c42f767471.png&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器打开&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql&#34;&gt;商城&lt;/a&gt;下载&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;github 中下载&lt;a href=&#34;https://github.com/github/vscode-codeql/releases&#34;&gt; VSIX 文件&lt;/a&gt;&lt;br&gt;
+在 more actions 中选择从 VSIX 文件安装&lt;br&gt;
+&lt;img src=&#34;:/b5e7cc0557924e77b531cb0de97748c7&#34; alt=&#34;c748a4d35418471f99408284979433eb.png&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;配置codeql-cli&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#配置codeql-cli&#34;&gt;#&lt;/a&gt; 配置 codeql-cli&lt;/h1&gt;
+&lt;p&gt;终端无法访问扩展管理的 cli&lt;br&gt;
+ 可以自己下载 codeql, 并在插件中配置路径&lt;br&gt;
+这样终端可以访问&lt;br&gt;
+这个插件是使用 codeql-cli 编译并运行规则的，要确保下载的版本支持该插件即可&lt;br&gt;
+&lt;img src=&#34;:/6f43b2b6249845f7b35c7cd4a2a1a70e&#34; alt=&#34;64d75944e23735a29f128c932e7824b7.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Executable Path 输入 codeql.exe 所在路径&lt;br&gt;
+&lt;img src=&#34;:/9a60b6b8629447f49327acf43ddec5b2&#34; alt=&#34;9ab953a7697bf20458868981a2523a3c.png&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;配置规则&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#配置规则&#34;&gt;#&lt;/a&gt; 配置规则&lt;/h1&gt;
+&lt;p&gt;两种方法建立 codeql workspace&lt;br&gt;
+ 第一种就是把要审计的代码放入 codeql 中&lt;br&gt;
+第二种是把 codeql 加入要审计的代码的 workspace 中&lt;/p&gt;
+&lt;h2 id=&#34;使用starter-workspace也就是git仓库&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#使用starter-workspace也就是git仓库&#34;&gt;#&lt;/a&gt; 使用‘starter workspace’，也就是 git 仓库&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;下载 starter&lt;br&gt;
+ &lt;code&gt;git clone --recursive https://github.com/github/vscode-codeql-starter/&lt;/code&gt; &lt;br&gt;
+ 或者&lt;br&gt;
+ &lt;code&gt;git clone https://github.com/github/vscode-codeql-starter/&lt;/code&gt; &lt;br&gt;
+ 项目下载完成后，进入项目目录&lt;br&gt;
+ &lt;code&gt;git submodule update --init &lt;/code&gt; &lt;br&gt;
+ &lt;code&gt;git submodule update --remote&lt;/code&gt; &lt;br&gt;
+ 确保包含需要的子模块&lt;br&gt;
+截图使用的是第一种方法&lt;br&gt;
+&lt;img src=&#34;:/c7bf21f2a552483780c58a4ee06b70a0&#34; alt=&#34;479934456f6c44228c2f3e8057ac0e86.png&#34;&gt;&lt;br&gt;
+ 子模块需要定期更新&lt;br&gt;
+&lt;img src=&#34;:/3c8180aaa0b040ecaafd4217cbc18503&#34; alt=&#34;ef88b51020a9d4ed8fdb5bda8029fc94.png&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在 VS Code 中打开 starter workspace&lt;br&gt;
+&lt;img src=&#34;:/29486ddc144542318d779b859916c3fb&#34; alt=&#34;84a6738a5e83ddeb45752d064e986647.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;:/b02d0248007c458a8554fcc54a7d04ea&#34; alt=&#34;4e682ce5e87fbc0dd1897081928067fd.png&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;注意：&lt;br&gt;
+starter 子模块中包括 C/C++, C#, Java, JavaScript, Python, Ruby 以及 GO 的规则，在 vscode-codeql-starter\ql 下&lt;br&gt;
+ CodeQL 暂时无法扫描 php 代码&lt;/p&gt;
+&lt;h2 id=&#34;将codeql规则库加入现有的工作站&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#将codeql规则库加入现有的工作站&#34;&gt;#&lt;/a&gt; 将 CodeQL 规则库加入现有的工作站&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;此种方法未实现，仅按文档进行流程说明&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;将下载好的本地 CodeQL 库加入你的 workspace&lt;br&gt;
+&lt;a href=&#34;https://github.com/github/codeql&#34;&gt;CodeQL 库下载链接&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;选择 File &amp;gt; Add Folder to Workspace，加入下载好的 codeql 库&lt;br&gt;
+&lt;img src=&#34;:/97e2d507bde8497d9d9d5c54a79c7da3&#34; alt=&#34;3ccc9692c80a5e50bf93123ffbf04e4c.png&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;每种语言都要创建一个新的文件夹&lt;br&gt;
+通过 New Folder 或者 Add Folder to Workspace 选项&lt;br&gt;
+放置你的自定义规则和规则库&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在每个语言目录下新建一个 qlpack.yml 文件&lt;br&gt;
+用来告诉 CodeQL，这个目录下的语言类型和依赖包&lt;br&gt;
+例如：&lt;br&gt;
+在 C&lt;ins&gt; 代码目录下自定义一个 CodeQL 文件夹名为’my-custom-cpp-pack’&lt;br&gt;
+在 C&lt;/ins&gt; 代码目录下创建一个 qlpack.yml 文件，内容如下&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;name: my-custom-cpp-pack&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;version: 0.0.0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;libraryPathDependencies: codeql/cpp-all&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;br&gt;
+GO 语言的规则库并不在 github/codeql 中&lt;br&gt;
+扫描 GO 代码，需要下载 https://github.com/github/codeql-go&lt;br&gt;
+ 然后将规则像上面说的这样加入规则库&lt;br&gt;
+（starter 中都是包含的）&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&#34;运行codeql&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#运行codeql&#34;&gt;#&lt;/a&gt; 运行 CodeQL&lt;/h1&gt;
+&lt;h2 id=&#34;选择数据库&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#选择数据库&#34;&gt;#&lt;/a&gt; 选择数据库&lt;/h2&gt;
+&lt;p&gt;扫描分析一个 project，我们需要建立一个 CodeQL 数据库&lt;br&gt;
+在侧边栏打开 CodeQL 数据库&lt;br&gt;
+如图有四种添加数据库的方法&lt;br&gt;
+&lt;img src=&#34;:/a0c3b1e875c444b6b2050bf2e5f5bc0e&#34; alt=&#34;b9557aadc5d02dcc220fc4f20977e102.png&#34;&gt;&lt;br&gt;
+ 当添加数据库之后，会有数据库视图&lt;br&gt;
+可以右击列表中的项进行数据库交互&lt;br&gt;
+可以利用 Ctrl/Cmd+click 选择多个数据库&lt;/p&gt;
+&lt;h2 id=&#34;创建本地数据库&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#创建本地数据库&#34;&gt;#&lt;/a&gt; 创建本地数据库&lt;/h2&gt;
+&lt;p&gt;如果没有存在的数据库导入，也可以先创建一个本地数据库&lt;br&gt;
+有三种方法&lt;/p&gt;
+&lt;h3 id=&#34;通过coedql-cli创建一个数据库&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#通过coedql-cli创建一个数据库&#34;&gt;#&lt;/a&gt; 通过 coedql-cli 创建一个数据库&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;执行命令：
+`codeql database create &amp;lt;database&amp;gt; --language=&amp;lt;language-identifier&amp;gt;`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;参数说明：&lt;br&gt;
+ &lt;code&gt;&amp;lt;database&amp;gt;&lt;/code&gt; ：创建数据库的路径，目录会在执行命令的时候被创建&lt;br&gt;
+ &lt;code&gt;--language&lt;/code&gt; : 指定数据库语言，输入标识符。当和–db-cluster 一起使用时，可以指定多个，用’,&#39; 分隔，也可以进行多次指定。&lt;br&gt;
+ &lt;code&gt;--db-cluster&lt;/code&gt; ：为多种语言创建数据库&lt;br&gt;
+ &lt;code&gt;--command&lt;/code&gt; ：创建一个或多个编译语言数据库的时候使用。python 和 JavaScript/TypeScript 不需要该参数，如果编译语言不带该参数，codeql 会自动检测并编译&lt;br&gt;
+ &lt;code&gt;--no-run-unnecessary-builds&lt;/code&gt; ：为多语言创建数据库，且包括编译和非编译语言时，可以利用  &lt;code&gt;--no-run-unnecessary-builds&lt;/code&gt;  来帮助非编译语言跳过 command 选项&lt;br&gt;
+&lt;a href=&#34;https://codeql.github.com/docs/codeql-cli/manual/database-create/&#34;&gt;更多参数说明&lt;/a&gt;&lt;br&gt;
+ CodeQL 支持以下语言&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;语言&lt;/th&gt;
+&lt;th&gt;标识符&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C/C++&lt;/td&gt;
+&lt;td&gt;cpp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;C#&lt;/td&gt;
+&lt;td&gt;csharp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GO&lt;/td&gt;
+&lt;td&gt;go&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Java&lt;/td&gt;
+&lt;td&gt;java&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;JavaScript/TypeScript&lt;/td&gt;
+&lt;td&gt;javascript&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Python&lt;/td&gt;
+&lt;td&gt;python&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ruby&lt;/td&gt;
+&lt;td&gt;ruby&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;找了 codeql-repo 中的 python 案列测试创建数据库成功&lt;br&gt;
+&lt;img src=&#34;:/851c4ae6d9724a63b44b5b54681cf37c&#34; alt=&#34;48af0641ac03eb15ee8781d860f9e724.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;:/31a83b722afa4f8687b1124077748691&#34; alt=&#34;18db53f51f1f4c80cbae05e19d286cb4.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;官方给出的command案例&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#官方给出的command案例&#34;&gt;#&lt;/a&gt; 官方给出的 command 案例&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Specifying build commands&lt;/p&gt;
+&lt;p&gt;The following examples are designed to give you an idea of some of the build commands that you can specify for compiled languages.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Important&lt;/p&gt;
+&lt;p&gt;The  &lt;code&gt;--command&lt;/code&gt;  option accepts a single argument—if you need to use more than one command, specify  &lt;code&gt;--command&lt;/code&gt;  multiple times.&lt;/p&gt;
+&lt;p&gt;If you need to pass subcommands and options, the whole argument needs to be quoted to be interpreted correctly.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;C/C++ project built using  &lt;code&gt;make&lt;/code&gt; :&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create cpp-database --language=cpp --command=make&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C# project built using  &lt;code&gt;dotnet build&lt;/code&gt;  (.NET Core 3.0 or later):&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create csharp-database --language=csharp --command=&amp;#x27;dotnet build /t:rebuild&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;On Linux and macOS (but not Windows), you need to disable shared compilation when building C# projects with .NET Core 2 or earlier, so expand the command to:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create csharp-database --language=csharp --command=&amp;#x27;dotnet build /p:UseSharedCompilation=false /t:rebuild&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Go project built using the  &lt;code&gt;COEQL_EXTRACTOR_GO_BUILD_TRACING=on&lt;/code&gt;  environment variable:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;CODEQL_EXTRACTOR_GO_BUILD_TRACING=on codeql database create go-database --language=go&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Go project built using a custom build script:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create go-database --language=go --command=&amp;#x27;./scripts/build.sh&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java project built using Gradle:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create java-database --language=java --command=&amp;#x27;gradle clean test&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java project built using Maven:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create java-database --language=java --command=&amp;#x27;mvn clean install&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java project built using Ant:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create java-database --language=java --command=&amp;#x27;ant -f build.xml&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Project built using Bazel:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;# Navigate to the Bazel workspace.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# Before building, remove cached objects&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# and stop all running Bazel server processes.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;bazel clean --expunge&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# Build using the following Bazel flags, to help CodeQL detect the build:&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# `--spawn_strategy=local`: build locally, instead of using a distributed build&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# `--nouse_action_cache`: turn off build caching, which might prevent recompilation of source code&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# `--noremote_accept_cached`, `--noremote_upload_local_results`: avoid using a remote cache&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;codeql database create new-database --language=&amp;lt;language&amp;gt; \&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  --command=&amp;#x27;bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //path/to/package:target&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# After building, stop all running Bazel server processes.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# This ensures future build commands start in a clean Bazel server process&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;# without CodeQL attached.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;bazel shutdown&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Project built using a custom build script:&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create new-database --language=&amp;lt;language&amp;gt; --command=&amp;#x27;./scripts/build.sh&amp;#x27;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;This command runs a custom script that contains all of the commands required to build the project.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;剩下两种方法未测试仅给出说明链接&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#剩下两种方法未测试仅给出说明链接&#34;&gt;#&lt;/a&gt; 剩下两种方法未测试，仅给出&lt;a href=&#34;https://codeql.github.com/docs/codeql-for-visual-studio-code/analyzing-your-projects/&#34;&gt;说明链接&lt;/a&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;编写运行规则建议通过官方给出的练习题进行练习&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#编写运行规则建议通过官方给出的练习题进行练习&#34;&gt;#&lt;/a&gt; 编写运行规则，建议通过官方给出的练习题进行练习&lt;/h2&gt;
+&lt;h1 id=&#34;传送门&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#传送门&#34;&gt;#&lt;/a&gt; 传送门&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://codeql.github.com/docs/&#34;&gt;CodeQL 官方文档&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://lab.github.com/githubtraining&#34;&gt;练习室&lt;/a&gt;&lt;/p&gt;
+</content>
+        <category term="codeql, 搭建教程" />
+        <updated>2022-06-10T02:36:34.000Z</updated>
+    </entry>
+</feed>

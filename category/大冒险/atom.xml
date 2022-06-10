@@ -16,6 +16,9 @@
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
     <category term="webgoat" />
+    <category term="solr, 代码审计" />
+    <category term="CodeQL" />
+    <category term="codeql, 搭建教程" />
     <entry>
         <id>http://example.com/2021/06/29/buuctf-web/</id>
         <title>Buuctf-web 武林秘籍</title>
