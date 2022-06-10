@@ -7,9 +7,12 @@
         <language>en</language>
         <pubDate>Sun, 16 Jan 2022 11:14:59 +0800</pubDate>
         <lastBuildDate>Sun, 16 Jan 2022 11:14:59 +0800</lastBuildDate>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
         <category>solr, 漏洞复现</category>
+        <category>solr, 代码审计</category>
         <category>前后端分离</category>
         <category>文件上传靶场</category>
         <category>Java反序列化</category>
@@ -19,9 +22,6 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
-        <category>solr, 代码审计</category>
-        <category>CodeQL</category>
-        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</guid>
             <title>redis未授权验证流程</title>

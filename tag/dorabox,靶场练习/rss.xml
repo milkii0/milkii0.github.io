@@ -7,9 +7,12 @@
         <language>en</language>
         <pubDate>Thu, 15 Oct 2020 16:40:33 +0800</pubDate>
         <lastBuildDate>Thu, 15 Oct 2020 16:40:33 +0800</lastBuildDate>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
         <category>solr, 漏洞复现</category>
+        <category>solr, 代码审计</category>
         <category>前后端分离</category>
         <category>文件上传靶场</category>
         <category>Java反序列化</category>
@@ -19,9 +22,6 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
-        <category>solr, 代码审计</category>
-        <category>CodeQL</category>
-        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</guid>
             <title>dorabox冒险手记</title>

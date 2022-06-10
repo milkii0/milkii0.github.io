@@ -7,9 +7,12 @@
         <language>en</language>
         <pubDate>Thu, 28 Jan 2021 09:28:50 +0800</pubDate>
         <lastBuildDate>Thu, 28 Jan 2021 09:28:50 +0800</lastBuildDate>
+        <category>CodeQL</category>
+        <category>codeql, 搭建教程</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
         <category>solr, 漏洞复现</category>
+        <category>solr, 代码审计</category>
         <category>前后端分离</category>
         <category>文件上传靶场</category>
         <category>Java反序列化</category>
@@ -19,9 +22,6 @@
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
         <category>webgoat</category>
-        <category>solr, 代码审计</category>
-        <category>CodeQL</category>
-        <category>codeql, 搭建教程</category>
         <item>
             <guid isPermalink="true">http://example.com/2021/01/28/webgoat%E5%AE%A1%E8%AE%A1/</guid>
             <title>webgoat审计</title>

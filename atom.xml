@@ -4,9 +4,12 @@
     <title>Milkii0的秘密花园</title>
     <link href="http://example.com" />
     <updated>2022-06-10T02:39:31.000Z</updated>
+    <category term="CodeQL" />
+    <category term="codeql, 搭建教程" />
     <category term="web,HTTP" />
     <category term="redis,未授权,漏洞利用" />
     <category term="solr, 漏洞复现" />
+    <category term="solr, 代码审计" />
     <category term="前后端分离" />
     <category term="文件上传靶场" />
     <category term="Java反序列化" />
@@ -16,9 +19,6 @@
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
     <category term="webgoat" />
-    <category term="solr, 代码审计" />
-    <category term="CodeQL" />
-    <category term="codeql, 搭建教程" />
     <entry>
         <id>http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/</id>
         <title>CodeQLU-BootChallenge(CC++)</title>
