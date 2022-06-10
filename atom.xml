@@ -700,7 +700,47 @@ This response format is experimental.  It is likely to change in the future&lt;b
         <id>http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</id>
         <title>redis未授权验证流程</title>
         <link rel="alternate" href="http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/"/>
-        <content type="html">&lt;h1 id=&#34;&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#&#34;&gt;#&lt;/a&gt; &lt;/h1&gt;
+        <content type="html">&lt;p&gt;[toc]&lt;/p&gt;
+&lt;h1 id=&#34;安装redis&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#安装redis&#34;&gt;#&lt;/a&gt; 安装 redis&lt;/h1&gt;
+&lt;h1 id=&#34;登录redis&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#登录redis&#34;&gt;#&lt;/a&gt; 登录 redis&lt;/h1&gt;
+&lt;p&gt;redis-cli -h ip&lt;/p&gt;
+&lt;h1 id=&#34;redis未授权拿shell&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#redis未授权拿shell&#34;&gt;#&lt;/a&gt; redis 未授权拿 shell&lt;/h1&gt;
+&lt;h2 id=&#34;ssh写公钥&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#ssh写公钥&#34;&gt;#&lt;/a&gt; ssh 写公钥&lt;/h2&gt;
+&lt;h2 id=&#34;写计划任务&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#写计划任务&#34;&gt;#&lt;/a&gt; 写计划任务&lt;/h2&gt;
+&lt;h1 id=&#34;修复建议需要更详细操作&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#修复建议需要更详细操作&#34;&gt;#&lt;/a&gt; 修复建议【需要更详细操作】&lt;/h1&gt;
+&lt;p&gt;到 redis 安装目录下，配置 redis.conf 文件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;限制访问 ip&lt;br&gt;
+ 增加可访问 ip 白名单&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;只允许本地访问&lt;br&gt;
+增加端口访问策略，bind 127.0.0.1&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;添加登陆密码&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;修改 redis.conf 文件，添加&lt;br&gt;
+ requirepass  mypasswd&lt;br&gt;
+3、在需要对外开放的时候修改默认端口（端口不重复就可以）&lt;br&gt;
+port 2344&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;以低权限运行 Redis 服务&lt;br&gt;
+配置后需重启&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;为 Redis 服务创建单独的用户和家目录，并且配置禁止登陆&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;传送门&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#传送门&#34;&gt;#&lt;/a&gt; 传送门&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/loopkep/p/11135949.html&#34;&gt;https://www.cnblogs.com/loopkep/p/11135949.html&lt;/a&gt;&lt;/p&gt;
 </content>
         <category term="redis,未授权,漏洞利用" />
         <updated>2022-01-16T03:14:59.000Z</updated>
