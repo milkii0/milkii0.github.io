@@ -4,21 +4,22 @@
     <title>Milkii0的秘密花园 • Posts by &#34;sql注入靶场&#34; tag</title>
     <link href="http://example.com" />
     <updated>2020-11-16T13:29:27.000Z</updated>
-    <category term="Java反序列化" />
-    <category term="ysoserial调试" />
-    <category term="文件上传靶场" />
     <category term="web,HTTP" />
     <category term="redis,未授权,漏洞利用" />
+    <category term="solr, 漏洞复现" />
     <category term="前后端分离" />
+    <category term="文件上传靶场" />
+    <category term="Java反序列化" />
+    <category term="ysoserial调试" />
     <category term="木马,汇总" />
     <category term="pikachu,web靶场" />
-    <category term="webgoat" />
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
+    <category term="webgoat" />
     <entry>
-        <id>http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
+        <id>http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
         <title>sqli-labs基础关卡</title>
-        <link rel="alternate" href="http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
+        <link rel="alternate" href="http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
         <content type="html">&lt;h1 id=&#34;less-1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#less-1&#34;&gt;#&lt;/a&gt; Less-1&lt;/h1&gt;
 &lt;p&gt;date:2020-11-16 21:29:27&lt;/p&gt;
 &lt;h2 id=&#34;过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#过程&#34;&gt;#&lt;/a&gt; 过程&lt;/h2&gt;

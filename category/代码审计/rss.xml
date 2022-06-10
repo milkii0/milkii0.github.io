@@ -7,21 +7,22 @@
         <language>en</language>
         <pubDate>Tue, 07 Sep 2021 10:12:48 +0800</pubDate>
         <lastBuildDate>Tue, 07 Sep 2021 10:12:48 +0800</lastBuildDate>
-        <category>Java反序列化</category>
-        <category>ysoserial调试</category>
-        <category>文件上传靶场</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
+        <category>solr, 漏洞复现</category>
         <category>前后端分离</category>
+        <category>文件上传靶场</category>
+        <category>Java反序列化</category>
+        <category>ysoserial调试</category>
         <category>木马,汇总</category>
         <category>pikachu,web靶场</category>
-        <category>webgoat</category>
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
+        <category>webgoat</category>
         <item>
-            <guid isPermalink="true">http://example.com/2021/09/07/dmsj/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</guid>
+            <guid isPermalink="true">http://example.com/2021/09/07/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</guid>
             <title>ysoserial之CommonsCollections1调试</title>
-            <link>http://example.com/2021/09/07/dmsj/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</link>
+            <link>http://example.com/2021/09/07/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</link>
             <category>Java反序列化</category>
             <pubDate>Tue, 07 Sep 2021 10:12:48 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;利用链简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用链简述&#34;&gt;#&lt;/a&gt; 利用链简述&lt;/h1&gt;
@@ -167,9 +168,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</guid>
+            <guid isPermalink="true">http://example.com/2021/08/25/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</guid>
             <title>ysoserial之URLDNS调试</title>
-            <link>http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</link>
+            <link>http://example.com/2021/08/25/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</link>
             <category>ysoserial调试</category>
             <pubDate>Wed, 25 Aug 2021 11:38:45 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;利用链简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用链简述&#34;&gt;#&lt;/a&gt; 利用链简述&lt;/h1&gt;
@@ -342,9 +343,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2021/01/28/dmsj/webgoat%E5%AE%A1%E8%AE%A1/</guid>
+            <guid isPermalink="true">http://example.com/2021/01/28/webgoat%E5%AE%A1%E8%AE%A1/</guid>
             <title>webgoat审计</title>
-            <link>http://example.com/2021/01/28/dmsj/webgoat%E5%AE%A1%E8%AE%A1/</link>
+            <link>http://example.com/2021/01/28/webgoat%E5%AE%A1%E8%AE%A1/</link>
             <category>webgoat</category>
             <pubDate>Thu, 28 Jan 2021 09:28:50 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;搭建概述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#搭建概述&#34;&gt;#&lt;/a&gt; 搭建概述&lt;/h1&gt;

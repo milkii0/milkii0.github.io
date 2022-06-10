@@ -7,30 +7,31 @@
         <language>en</language>
         <pubDate>Sun, 16 Jan 2022 11:14:59 +0800</pubDate>
         <lastBuildDate>Sun, 16 Jan 2022 11:14:59 +0800</lastBuildDate>
-        <category>Java反序列化</category>
-        <category>ysoserial调试</category>
-        <category>文件上传靶场</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
+        <category>solr, 漏洞复现</category>
         <category>前后端分离</category>
+        <category>文件上传靶场</category>
+        <category>Java反序列化</category>
+        <category>ysoserial调试</category>
         <category>木马,汇总</category>
         <category>pikachu,web靶场</category>
-        <category>webgoat</category>
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
+        <category>webgoat</category>
         <item>
-            <guid isPermalink="true">http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</guid>
+            <guid isPermalink="true">http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</guid>
             <title>redis未授权验证流程</title>
-            <link>http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</link>
+            <link>http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</link>
             <category>redis,未授权,漏洞利用</category>
             <pubDate>Sun, 16 Jan 2022 11:14:59 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#&#34;&gt;#&lt;/a&gt; &lt;/h1&gt;
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</guid>
+            <guid isPermalink="true">http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</guid>
             <title>sourcemap泄露获取前端源码</title>
-            <link>http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</link>
+            <link>http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</link>
             <category>前后端分离</category>
             <pubDate>Fri, 03 Dec 2021 11:20:41 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;reverse-sourcemap 下载地址:&lt;a href=&#34;https://github.com/davidkevork/reverse-sourcemap&#34;&gt;https://github.com/davidkevork/reverse-sourcemap&lt;/a&gt;&lt;/p&gt;
@@ -52,9 +53,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</guid>
+            <guid isPermalink="true">http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</guid>
             <title>一句话木马整理</title>
-            <link>http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</link>
+            <link>http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</link>
             <category>木马,汇总</category>
             <pubDate>Thu, 12 Aug 2021 10:53:49 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;日常系列&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#日常系列&#34;&gt;#&lt;/a&gt; 日常系列&lt;/h1&gt;
@@ -79,9 +80,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</guid>
+            <guid isPermalink="true">http://example.com/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</guid>
             <title>HTTP请求走私简述</title>
-            <link>http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</link>
+            <link>http://example.com/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</link>
             <category>web,HTTP</category>
             <pubDate>Tue, 03 Aug 2021 10:20:54 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;http请求走私是什么&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#http请求走私是什么&#34;&gt;#&lt;/a&gt; HTTP 请求走私是什么&lt;/h1&gt;

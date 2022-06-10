@@ -7,21 +7,22 @@
         <language>en</language>
         <pubDate>Wed, 25 Nov 2020 21:24:52 +0800</pubDate>
         <lastBuildDate>Wed, 25 Nov 2020 21:24:52 +0800</lastBuildDate>
-        <category>Java反序列化</category>
-        <category>ysoserial调试</category>
-        <category>文件上传靶场</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
+        <category>solr, 漏洞复现</category>
         <category>前后端分离</category>
+        <category>文件上传靶场</category>
+        <category>Java反序列化</category>
+        <category>ysoserial调试</category>
         <category>木马,汇总</category>
         <category>pikachu,web靶场</category>
-        <category>webgoat</category>
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
+        <category>webgoat</category>
         <item>
-            <guid isPermalink="true">http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</guid>
+            <guid isPermalink="true">http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</guid>
             <title>upload-labs基础关卡</title>
-            <link>http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</link>
+            <link>http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</link>
             <category>文件上传靶场</category>
             <pubDate>Wed, 25 Nov 2020 21:24:52 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pass-01&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pass-01&#34;&gt;#&lt;/a&gt; Pass-01&lt;/h1&gt;

@@ -7,21 +7,22 @@
         <language>en</language>
         <pubDate>Wed, 08 Sep 2021 11:31:34 +0800</pubDate>
         <lastBuildDate>Wed, 08 Sep 2021 11:31:34 +0800</lastBuildDate>
-        <category>Java反序列化</category>
-        <category>ysoserial调试</category>
-        <category>文件上传靶场</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
+        <category>solr, 漏洞复现</category>
         <category>前后端分离</category>
+        <category>文件上传靶场</category>
+        <category>Java反序列化</category>
+        <category>ysoserial调试</category>
         <category>木马,汇总</category>
         <category>pikachu,web靶场</category>
-        <category>webgoat</category>
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
+        <category>webgoat</category>
         <item>
-            <guid isPermalink="true">http://example.com/2021/09/08/other/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</guid>
+            <guid isPermalink="true">http://example.com/2021/09/08/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</guid>
             <title>问题及解决记录</title>
-            <link>http://example.com/2021/09/08/other/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</link>
+            <link>http://example.com/2021/09/08/%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/</link>
             <pubDate>Wed, 08 Sep 2021 11:31:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;java&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#java&#34;&gt;#&lt;/a&gt; Java&lt;/h1&gt;
 &lt;h2 id=&#34;debug调试报错&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#debug调试报错&#34;&gt;#&lt;/a&gt; debug，调试报错&lt;/h2&gt;
@@ -70,9 +71,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2021/07/05/other/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</guid>
+            <guid isPermalink="true">http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</guid>
             <title>收藏夹喔</title>
-            <link>http://example.com/2021/07/05/other/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</link>
+            <link>http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/</link>
             <pubDate>Mon, 05 Jul 2021 11:25:08 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;ins class=&#34;wavy&#34;&gt;&lt;span class=&#34;rainbow&#34;&gt;好多值得再看的文章系列 o (￣ε￣*)&lt;/span&gt;&lt;/ins&gt;&lt;/p&gt;
 &lt;details class=&#34;danger&#34;&gt;&lt;summary&gt;内网相关&lt;/summary&gt;&lt;div&gt;
@@ -119,27 +120,12 @@
 &lt;li&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/rAcctU4XArY8SZYwkOAYjA&#34;&gt;XSS 大王&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;&lt;/details&gt;
- ]]></description>
-        </item>
-        <item>
-            <guid isPermalink="true">http://example.com/2016/04/14/other/hello-world/</guid>
-            <title>认识Markdown</title>
-            <link>http://example.com/2016/04/14/other/hello-world/</link>
-            <pubDate>Thu, 14 Apr 2016 09:47:13 +0800</pubDate>
-            <description><![CDATA[ &lt;p&gt;Welcome to &lt;a href=&#34;https://hexo.io/&#34;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&#34;https://hexo.io/docs/&#34;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&#34;https://hexo.io/docs/troubleshooting.html&#34;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&#34;https://github.com/hexojs/hexo/issues&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;quick-start&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#quick-start&#34;&gt;#&lt;/a&gt; Quick Start&lt;/h2&gt;
-&lt;h3 id=&#34;create-a-new-post&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#create-a-new-post&#34;&gt;#&lt;/a&gt; Create a new post&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo new &lt;span class=&#34;string&#34;&gt;&amp;quot;My New Post&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/writing.html&#34;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;run-server&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#run-server&#34;&gt;#&lt;/a&gt; Run server&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/server.html&#34;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;generate-static-files&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#generate-static-files&#34;&gt;#&lt;/a&gt; Generate static files&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/generating.html&#34;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;deploy-to-remote-sites&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#deploy-to-remote-sites&#34;&gt;#&lt;/a&gt; Deploy to remote sites&lt;/h3&gt;
-&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/one-command-deployment.html&#34;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;testtest&lt;/p&gt;
+&lt;h1 id=&#34;一号标题&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#一号标题&#34;&gt;#&lt;/a&gt; 一号标题&lt;/h1&gt;
+&lt;h2 id=&#34;二号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#二号&#34;&gt;#&lt;/a&gt; 二号&lt;/h2&gt;
+&lt;h3 id=&#34;三号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#三号&#34;&gt;#&lt;/a&gt; 三号&lt;/h3&gt;
+&lt;h4 id=&#34;四号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#四号&#34;&gt;#&lt;/a&gt; 四号&lt;/h4&gt;
+&lt;h5 id=&#34;五号&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#五号&#34;&gt;#&lt;/a&gt; 五号&lt;/h5&gt;
  ]]></description>
         </item>
     </channel>

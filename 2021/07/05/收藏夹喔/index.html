@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="好多值得再看的文章系列 o (￣ε￣*) 内网相关  内网就。随缘学   content  盘点 RUNDLL32.EXE 的多种滥用方式及检测特征 - 41yf1sh CHM 渗透：从入门到 “入狱” - ssooking - 博客园 Linux 计划任务那些事    content  内网渗透｜基于文件传输的 RDP 反向攻击    java相关  代码审计要好好学喔 最重要的是 P 神的知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="收藏夹喔">
+<meta property="og:url" content="http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/index.html">
+<meta property="og:site_name" content="Milkii0的秘密花园">
+<meta property="og:description" content="好多值得再看的文章系列 o (￣ε￣*) 内网相关  内网就。随缘学   content  盘点 RUNDLL32.EXE 的多种滥用方式及检测特征 - 41yf1sh CHM 渗透：从入门到 “入狱” - ssooking - 博客园 Linux 计划任务那些事    content  内网渗透｜基于文件传输的 RDP 反向攻击    java相关  代码审计要好好学喔 最重要的是 P 神的知识">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-05T03:25:08.000Z">
+<meta property="article:modified_time" content="2022-06-10T01:41:21.574Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>收藏夹喔</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="Milkii0的秘密花园" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/08/03/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/06/29/buuctf-web/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&text=收藏夹喔"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&is_video=false&description=收藏夹喔"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=收藏夹喔&body=Check out this article: http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&name=收藏夹喔&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&t=收藏夹喔"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E5%8F%B7%E6%A0%87%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text"> 一号标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%B7"><span class="toc-number">1.1.</span> <span class="toc-text"> 二号</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%8F%B7"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 三号</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E5%8F%B7"><span class="toc-number">1.1.1.1.</span> <span class="toc-text"> 四号</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%94%E5%8F%B7"><span class="toc-number">1.1.1.1.1.</span> <span class="toc-text"> 五号</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        收藏夹喔
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-07-05T03:25:08.000Z" itemprop="datePublished">2021-07-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/other/">other</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><ins class="wavy"><span class="rainbow">好多值得再看的文章系列 o (￣ε￣*)</span></ins></p>
+<details class="danger"><summary>内网相关</summary><div>
+<div class="note info">
+<p>内网就。随缘学</p>
+</div>
+<div class="tab" data-id="id3" data-title="内网基础">
+<p>content</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.4hou.com/posts/Jlo9">盘点 RUNDLL32.EXE 的多种滥用方式及检测特征 - 41yf1sh</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ssooking/articles/6171247.html">CHM 渗透：从入门到 “入狱” - ssooking - 博客园</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/KfeKpoPj-X7BRNR7O6QAcw">Linux 计划任务那些事</a></li>
+</ul>
+</div>
+<div class="tab" data-id="id3" data-title="新思路">
+<p>content</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ERJMCgb61dykT5rhQtYgMw">内网渗透｜基于文件传输的 RDP 反向攻击</a></li>
+</ul>
+</div>
+</div></details>
+<details class="primary"><summary>java相关</summary><div>
+<div class="note info">
+<p>代码审计要好好学喔</p>
+<p>最重要的是 P 神的知识星球真的超赞🌟，知识星球搜代码审计就能搜到</p>
+</div>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/9a9387805a496e1485dc8430f">java 代理详解</a></li>
+</ul>
+</div></details>
+<details class="info"><summary>工具</summary><div>
+<div class="note info">
+<p>用来记录工具链接</p>
+</div>
+<p><a target="_blank" rel="noopener" href="https://github.com/No-Github/1earn/blob/master/1earn/Security/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/BurpSuite.md">burp 使用小技巧</a></p>
+</div></details>
+<details class="warning"><summary>渗透测试</summary><div>
+<div class="note info">
+<p>渗透测试相关</p>
+</div>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/WAtkMzdOdbOD_9k98JRYBg">WAF 绕过</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/10043#toc-7">文件上传绕过思路拓展</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/rAcctU4XArY8SZYwkOAYjA">XSS 大王</a></li>
+</ul>
+</div></details>
+<p>testtest</p>
+<h1 id="一号标题"><a class="markdownIt-Anchor" href="#一号标题">#</a> 一号标题</h1>
+<h2 id="二号"><a class="markdownIt-Anchor" href="#二号">#</a> 二号</h2>
+<h3 id="三号"><a class="markdownIt-Anchor" href="#三号">#</a> 三号</h3>
+<h4 id="四号"><a class="markdownIt-Anchor" href="#四号">#</a> 四号</h4>
+<h5 id="五号"><a class="markdownIt-Anchor" href="#五号">#</a> 五号</h5>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E5%8F%B7%E6%A0%87%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text"> 一号标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%B7"><span class="toc-number">1.1.</span> <span class="toc-text"> 二号</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%8F%B7"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 三号</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E5%8F%B7"><span class="toc-number">1.1.1.1.</span> <span class="toc-text"> 四号</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%94%E5%8F%B7"><span class="toc-number">1.1.1.1.1.</span> <span class="toc-text"> 五号</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&text=收藏夹喔"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&is_video=false&description=收藏夹喔"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=收藏夹喔&body=Check out this article: http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&title=收藏夹喔"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&name=收藏夹喔&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/07/05/%E6%94%B6%E8%97%8F%E5%A4%B9%E5%96%94/&t=收藏夹喔"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2022
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

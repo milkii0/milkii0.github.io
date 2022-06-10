@@ -7,21 +7,22 @@
         <language>en</language>
         <pubDate>Thu, 12 Aug 2021 10:53:49 +0800</pubDate>
         <lastBuildDate>Thu, 12 Aug 2021 10:53:49 +0800</lastBuildDate>
-        <category>Java反序列化</category>
-        <category>ysoserial调试</category>
-        <category>文件上传靶场</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
+        <category>solr, 漏洞复现</category>
         <category>前后端分离</category>
+        <category>文件上传靶场</category>
+        <category>Java反序列化</category>
+        <category>ysoserial调试</category>
         <category>木马,汇总</category>
         <category>pikachu,web靶场</category>
-        <category>webgoat</category>
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
+        <category>webgoat</category>
         <item>
-            <guid isPermalink="true">http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</guid>
+            <guid isPermalink="true">http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</guid>
             <title>一句话木马整理</title>
-            <link>http://example.com/2021/08/12/stjc/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</link>
+            <link>http://example.com/2021/08/12/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E6%95%B4%E7%90%86/</link>
             <category>木马,汇总</category>
             <pubDate>Thu, 12 Aug 2021 10:53:49 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;日常系列&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#日常系列&#34;&gt;#&lt;/a&gt; 日常系列&lt;/h1&gt;

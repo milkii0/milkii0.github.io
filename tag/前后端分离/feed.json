@@ -5,8 +5,8 @@
     "home_page_url": "http://example.com",
     "items": [
         {
-            "id": "http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/",
-            "url": "http://example.com/2021/12/03/stjc/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/",
+            "id": "http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/",
+            "url": "http://example.com/2021/12/03/sourcemap%E6%B3%84%E9%9C%B2%E8%8E%B7%E5%8F%96%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81/",
             "title": "sourcemap泄露获取前端源码",
             "date_published": "2021-12-03T03:20:41.000Z",
             "content_html": "<p>reverse-sourcemap 下载地址:<a href=\"https://github.com/davidkevork/reverse-sourcemap\">https://github.com/davidkevork/reverse-sourcemap</a></p>\n<ol>\n<li>\n<p>安装 nodejs</p>\n<p><code>apt install npm</code></p>\n</li>\n<li>\n<p>reverse-sourcemap</p>\n<p><code>npm install --global reverse-sourcemap</code></p>\n</li>\n<li>\n<p>使用.js.map 文件获取前端源码</p>\n<p><code> reverse-sourcemap -v xxx.js.map -o output</code></p>\n<p><img src=\"1.png\" alt=\"\"></p>\n</li>\n</ol>\n",

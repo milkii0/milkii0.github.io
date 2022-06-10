@@ -4,21 +4,22 @@
     <title>Milkii0的秘密花园 • Posts by &#34;大冒险&#34; category</title>
     <link href="http://example.com" />
     <updated>2021-06-29T03:30:13.000Z</updated>
-    <category term="Java反序列化" />
-    <category term="ysoserial调试" />
-    <category term="文件上传靶场" />
     <category term="web,HTTP" />
     <category term="redis,未授权,漏洞利用" />
+    <category term="solr, 漏洞复现" />
     <category term="前后端分离" />
+    <category term="文件上传靶场" />
+    <category term="Java反序列化" />
+    <category term="ysoserial调试" />
     <category term="木马,汇总" />
     <category term="pikachu,web靶场" />
-    <category term="webgoat" />
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
+    <category term="webgoat" />
     <entry>
-        <id>http://example.com/2021/06/29/dmx/buuctf-web/</id>
+        <id>http://example.com/2021/06/29/buuctf-web/</id>
         <title>Buuctf-web 武林秘籍</title>
-        <link rel="alternate" href="http://example.com/2021/06/29/dmx/buuctf-web/"/>
+        <link rel="alternate" href="http://example.com/2021/06/29/buuctf-web/"/>
         <content type="html">&lt;h2 id=&#34;极客大挑战2019-upload&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#极客大挑战2019-upload&#34;&gt;#&lt;/a&gt; 极客大挑战 2019 upload&lt;/h2&gt;
 &lt;p&gt;&lt;em&gt;关键词：php，phtml，过滤 &amp;lt;?，文件上传&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;根据 Content-Type 判断图片：Content-Type: image/png&lt;/p&gt;
@@ -246,9 +247,9 @@
         <updated>2021-06-29T03:30:13.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
+        <id>http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
         <title>upload-labs基础关卡</title>
-        <link rel="alternate" href="http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
+        <link rel="alternate" href="http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
         <content type="html">&lt;h1 id=&#34;pass-01&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pass-01&#34;&gt;#&lt;/a&gt; Pass-01&lt;/h1&gt;
 &lt;h2 id=&#34;过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#过程&#34;&gt;#&lt;/a&gt; 过程&lt;/h2&gt;
 &lt;p&gt;第一关，通常随便传把哈哈哈&lt;/p&gt;
@@ -602,9 +603,9 @@
         <updated>2020-11-25T13:24:52.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
+        <id>http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</id>
         <title>sqli-labs基础关卡</title>
-        <link rel="alternate" href="http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
+        <link rel="alternate" href="http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/"/>
         <content type="html">&lt;h1 id=&#34;less-1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#less-1&#34;&gt;#&lt;/a&gt; Less-1&lt;/h1&gt;
 &lt;p&gt;date:2020-11-16 21:29:27&lt;/p&gt;
 &lt;h2 id=&#34;过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#过程&#34;&gt;#&lt;/a&gt; 过程&lt;/h2&gt;
@@ -1739,9 +1740,9 @@
         <updated>2020-11-16T13:29:27.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/10/30/dmx/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</id>
+        <id>http://example.com/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</id>
         <title>pikachu大冒险鸭</title>
-        <link rel="alternate" href="http://example.com/2020/10/30/dmx/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/"/>
+        <link rel="alternate" href="http://example.com/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/"/>
         <content type="html">&lt;h1 id=&#34;sql注入&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#sql注入&#34;&gt;#&lt;/a&gt; SQL 注入&lt;/h1&gt;
 &lt;h2 id=&#34;搜索型注入&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#搜索型注入&#34;&gt;#&lt;/a&gt; 搜索型注入&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;过程&lt;/strong&gt;&lt;/p&gt;
@@ -2079,9 +2080,9 @@ msg(content);&lt;br&gt;
         <updated>2020-10-30T03:46:05.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2020/10/15/dmx/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</id>
+        <id>http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</id>
         <title>dorabox冒险手记</title>
-        <link rel="alternate" href="http://example.com/2020/10/15/dmx/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"/>
+        <link rel="alternate" href="http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/"/>
         <content type="html">&lt;h1 id=&#34;sqli字符型&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#sqli字符型&#34;&gt;#&lt;/a&gt; SQLi 字符型&lt;/h1&gt;
 &lt;h2 id=&#34;过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#过程&#34;&gt;#&lt;/a&gt; 过程：&lt;/h2&gt;
 &lt;p&gt;字符型和数字型相比，就是要闭合单引号吧&lt;/p&gt;

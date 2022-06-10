@@ -7,21 +7,22 @@
         <language>en</language>
         <pubDate>Tue, 29 Jun 2021 11:30:13 +0800</pubDate>
         <lastBuildDate>Tue, 29 Jun 2021 11:30:13 +0800</lastBuildDate>
-        <category>Java反序列化</category>
-        <category>ysoserial调试</category>
-        <category>文件上传靶场</category>
         <category>web,HTTP</category>
         <category>redis,未授权,漏洞利用</category>
+        <category>solr, 漏洞复现</category>
         <category>前后端分离</category>
+        <category>文件上传靶场</category>
+        <category>Java反序列化</category>
+        <category>ysoserial调试</category>
         <category>木马,汇总</category>
         <category>pikachu,web靶场</category>
-        <category>webgoat</category>
         <category>dorabox,靶场练习</category>
         <category>sql注入靶场</category>
+        <category>webgoat</category>
         <item>
-            <guid isPermalink="true">http://example.com/2021/06/29/dmx/buuctf-web/</guid>
+            <guid isPermalink="true">http://example.com/2021/06/29/buuctf-web/</guid>
             <title>Buuctf-web 武林秘籍</title>
-            <link>http://example.com/2021/06/29/dmx/buuctf-web/</link>
+            <link>http://example.com/2021/06/29/buuctf-web/</link>
             <pubDate>Tue, 29 Jun 2021 11:30:13 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;极客大挑战2019-upload&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#极客大挑战2019-upload&#34;&gt;#&lt;/a&gt; 极客大挑战 2019 upload&lt;/h2&gt;
 &lt;p&gt;&lt;em&gt;关键词：php，phtml，过滤 &amp;lt;?，文件上传&lt;/em&gt;&lt;/p&gt;
@@ -249,9 +250,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</guid>
+            <guid isPermalink="true">http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</guid>
             <title>upload-labs基础关卡</title>
-            <link>http://example.com/2020/11/25/dmx/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</link>
+            <link>http://example.com/2020/11/25/upload-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</link>
             <category>文件上传靶场</category>
             <pubDate>Wed, 25 Nov 2020 21:24:52 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pass-01&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pass-01&#34;&gt;#&lt;/a&gt; Pass-01&lt;/h1&gt;
@@ -605,9 +606,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</guid>
+            <guid isPermalink="true">http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</guid>
             <title>sqli-labs基础关卡</title>
-            <link>http://example.com/2020/11/16/dmx/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</link>
+            <link>http://example.com/2020/11/16/sqli-labs%E5%9F%BA%E7%A1%80%E5%85%B3%E5%8D%A1/</link>
             <category>sql注入靶场</category>
             <pubDate>Mon, 16 Nov 2020 21:29:27 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;less-1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#less-1&#34;&gt;#&lt;/a&gt; Less-1&lt;/h1&gt;
@@ -1742,9 +1743,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2020/10/30/dmx/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</guid>
+            <guid isPermalink="true">http://example.com/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</guid>
             <title>pikachu大冒险鸭</title>
-            <link>http://example.com/2020/10/30/dmx/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</link>
+            <link>http://example.com/2020/10/30/pikachu%E5%A4%A7%E5%86%92%E9%99%A9%E9%B8%AD/</link>
             <category>pikachu,web靶场</category>
             <pubDate>Fri, 30 Oct 2020 11:46:05 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;sql注入&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#sql注入&#34;&gt;#&lt;/a&gt; SQL 注入&lt;/h1&gt;
@@ -2082,9 +2083,9 @@ msg(content);&lt;br&gt;
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://example.com/2020/10/15/dmx/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</guid>
+            <guid isPermalink="true">http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</guid>
             <title>dorabox冒险手记</title>
-            <link>http://example.com/2020/10/15/dmx/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</link>
+            <link>http://example.com/2020/10/15/dorabox%E5%86%92%E9%99%A9%E6%89%8B%E8%AE%B0/</link>
             <category>dorabox,靶场练习</category>
             <pubDate>Thu, 15 Oct 2020 16:40:33 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;sqli字符型&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#sqli字符型&#34;&gt;#&lt;/a&gt; SQLi 字符型&lt;/h1&gt;

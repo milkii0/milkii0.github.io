@@ -4,21 +4,22 @@
     <title>Milkii0的秘密花园 • Posts by &#34;代码审计&#34; category</title>
     <link href="http://example.com" />
     <updated>2021-09-07T02:12:48.000Z</updated>
-    <category term="Java反序列化" />
-    <category term="ysoserial调试" />
-    <category term="文件上传靶场" />
     <category term="web,HTTP" />
     <category term="redis,未授权,漏洞利用" />
+    <category term="solr, 漏洞复现" />
     <category term="前后端分离" />
+    <category term="文件上传靶场" />
+    <category term="Java反序列化" />
+    <category term="ysoserial调试" />
     <category term="木马,汇总" />
     <category term="pikachu,web靶场" />
-    <category term="webgoat" />
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
+    <category term="webgoat" />
     <entry>
-        <id>http://example.com/2021/09/07/dmsj/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</id>
+        <id>http://example.com/2021/09/07/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/</id>
         <title>ysoserial之CommonsCollections1调试</title>
-        <link rel="alternate" href="http://example.com/2021/09/07/dmsj/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/"/>
+        <link rel="alternate" href="http://example.com/2021/09/07/ysoserial%E4%B9%8BCommonsCollections1%E8%B0%83%E8%AF%95/"/>
         <content type="html">&lt;h1 id=&#34;利用链简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用链简述&#34;&gt;#&lt;/a&gt; 利用链简述&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;任意方法执行&lt;/li&gt;
@@ -164,9 +165,9 @@
         <updated>2021-09-07T02:12:48.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</id>
+        <id>http://example.com/2021/08/25/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/</id>
         <title>ysoserial之URLDNS调试</title>
-        <link rel="alternate" href="http://example.com/2021/08/25/dmsj/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/"/>
+        <link rel="alternate" href="http://example.com/2021/08/25/ysoserial%E4%B9%8BURLDNS%E8%B0%83%E8%AF%95/"/>
         <content type="html">&lt;h1 id=&#34;利用链简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#利用链简述&#34;&gt;#&lt;/a&gt; 利用链简述&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;触发结果为一次 DNS 请求，适用目标无回显情况&lt;/li&gt;
@@ -339,9 +340,9 @@
         <updated>2021-08-25T03:38:45.000Z</updated>
     </entry>
     <entry>
-        <id>http://example.com/2021/01/28/dmsj/webgoat%E5%AE%A1%E8%AE%A1/</id>
+        <id>http://example.com/2021/01/28/webgoat%E5%AE%A1%E8%AE%A1/</id>
         <title>webgoat审计</title>
-        <link rel="alternate" href="http://example.com/2021/01/28/dmsj/webgoat%E5%AE%A1%E8%AE%A1/"/>
+        <link rel="alternate" href="http://example.com/2021/01/28/webgoat%E5%AE%A1%E8%AE%A1/"/>
         <content type="html">&lt;h1 id=&#34;搭建概述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#搭建概述&#34;&gt;#&lt;/a&gt; 搭建概述&lt;/h1&gt;
 &lt;p&gt;前提：&lt;/p&gt;
 &lt;ul&gt;
