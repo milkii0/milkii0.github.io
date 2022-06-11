@@ -321,7 +321,7 @@ starter 子模块中包括 C/C++, C#, Java, JavaScript, Python, Ruby 以及 GO �
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;选择 File &amp;gt; Add Folder to Workspace，加入下载好的 codeql 库&lt;br&gt;
-&lt;img src=&#34;97e2d507bde8497d9d9d5c54a79c7da3&#34; alt=&#34;3ccc9692c80a5e50bf93123ffbf04e4c.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;3ccc9692c80a5e50bf93123ffbf04e4c.png&#34; alt=&#34;3ccc9692c80a5e50bf93123ffbf04e4c.png&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;每种语言都要创建一个新的文件夹&lt;br&gt;
