@@ -101,14 +101,14 @@
  &lt;code&gt;git submodule update --remote&lt;/code&gt; &lt;br&gt;
  确保包含需要的子模块&lt;br&gt;
 截图使用的是第一种方法&lt;br&gt;
-&lt;img src=&#34;c7bf21f2a552483780c58a4ee06b70a0&#34; alt=&#34;479934456f6c44228c2f3e8057ac0e86.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;479934456f6c44228c2f3e8057ac0e86.png&#34; alt=&#34;479934456f6c44228c2f3e8057ac0e86.png&#34;&gt;&lt;br&gt;
  子模块需要定期更新&lt;br&gt;
-&lt;img src=&#34;3c8180aaa0b040ecaafd4217cbc18503&#34; alt=&#34;ef88b51020a9d4ed8fdb5bda8029fc94.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;ef88b51020a9d4ed8fdb5bda8029fc94.png&#34; alt=&#34;ef88b51020a9d4ed8fdb5bda8029fc94.png&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;在 VS Code 中打开 starter workspace&lt;br&gt;
-&lt;img src=&#34;29486ddc144542318d779b859916c3fb&#34; alt=&#34;84a6738a5e83ddeb45752d064e986647.png&#34;&gt;&lt;br&gt;
-&lt;img src=&#34;b02d0248007c458a8554fcc54a7d04ea&#34; alt=&#34;4e682ce5e87fbc0dd1897081928067fd.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;84a6738a5e83ddeb45752d064e986647.png&#34; alt=&#34;84a6738a5e83ddeb45752d064e986647.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;4e682ce5e87fbc0dd1897081928067fd.png&#34; alt=&#34;4e682ce5e87fbc0dd1897081928067fd.png&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;注意：&lt;br&gt;
