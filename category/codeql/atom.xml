@@ -3,7 +3,7 @@
     <id>http://example.com</id>
     <title>Milkii0的秘密花园 • Posts by &#34;codeql&#34; category</title>
     <link href="http://example.com" />
-    <updated>2022-06-10T02:39:31.000Z</updated>
+    <updated>2022-06-12T04:41:31.000Z</updated>
     <category term="CodeQL" />
     <category term="codeql, 搭建教程" />
     <category term="web,HTTP" />
@@ -19,6 +19,114 @@
     <category term="dorabox,靶场练习" />
     <category term="sql注入靶场" />
     <category term="webgoat" />
+    <entry>
+        <id>http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/</id>
+        <title>CodeQL使用流程</title>
+        <link rel="alternate" href="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/"/>
+        <content type="html">&lt;p&gt;[toc]&lt;/p&gt;
+&lt;h1 id=&#34;前言&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#前言&#34;&gt;#&lt;/a&gt; 前言&lt;/h1&gt;
+&lt;p&gt;好久没用 CodeQL 了，看了自己之前写的文章发现竟然没有做过相关记录&lt;br&gt;
+然后就不知道怎么用了 hhh&lt;/p&gt;
+&lt;h1 id=&#34;使用流程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#使用流程&#34;&gt;#&lt;/a&gt; 使用流程&lt;/h1&gt;
+&lt;h2 id=&#34;0x1-生成数据库&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#0x1-生成数据库&#34;&gt;#&lt;/a&gt; 0x1 生成数据库&lt;/h2&gt;
+&lt;p&gt;我们拿到一套源码，首先需要使用 CodeQL 生成数据库&lt;/p&gt;
+&lt;p&gt;执行命令：&lt;br&gt;
+ &lt;code&gt;codeql database create &amp;lt;database&amp;gt; --language=&amp;lt;language-identifier&amp;gt;&lt;/code&gt; &lt;br&gt;
+ 参数说明：&lt;br&gt;
+ &lt;code&gt;&amp;lt;database&amp;gt;&lt;/code&gt; ：创建数据库的路径，目录会在执行命令的时候被创建&lt;br&gt;
+ &lt;code&gt;--language&lt;/code&gt; : 指定数据库语言，输入标识符。当和–db-cluster 一起使用时，可以指定多个，用’,&#39; 分隔，也可以进行多次指定。&lt;br&gt;
+ &lt;code&gt;--db-cluster&lt;/code&gt; ：为多种语言创建数据库&lt;br&gt;
+ &lt;code&gt;--command&lt;/code&gt; ：创建一个或多个编译语言数据库的时候使用。python 和 JavaScript/TypeScript 不需要该参数，如果编译语言不带该参数，codeql 会自动检测并编译&lt;br&gt;
+ &lt;code&gt;--no-run-unnecessary-builds&lt;/code&gt; ：为多语言创建数据库，且包括编译和非编译语言时，可以利用  &lt;code&gt;--no-run-unnecessary-builds&lt;/code&gt;  来帮助非编译语言跳过 command 选项&lt;br&gt;
+&lt;a href=&#34;https://codeql.github.com/docs/codeql-cli/manual/database-create/&#34;&gt;更多参数说明&lt;/a&gt;&lt;br&gt;
+ CodeQL 支持以下语言&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;语言&lt;/th&gt;
+&lt;th&gt;标识符&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C/C++&lt;/td&gt;
+&lt;td&gt;cpp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;C#&lt;/td&gt;
+&lt;td&gt;csharp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GO&lt;/td&gt;
+&lt;td&gt;go&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Java&lt;/td&gt;
+&lt;td&gt;java&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;JavaScript/TypeScript&lt;/td&gt;
+&lt;td&gt;javascript&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Python&lt;/td&gt;
+&lt;td&gt;python&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ruby&lt;/td&gt;
+&lt;td&gt;ruby&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;案例：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;codeql database create xxx-database  --language=&amp;quot;java&amp;quot;  --command=&amp;quot;mvn clean install --file pom.xml&amp;quot; --source-root=文件目录&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C962dcc2d739aeddc138604f43eabb6e8.png&#34; alt=&#34;962dcc2d739aeddc138604f43eabb6e8.png&#34;&gt;&lt;br&gt;
+ 成功之后&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C0ce711b4c117dfc66b296a08b6c7b929.png&#34; alt=&#34;0ce711b4c117dfc66b296a08b6c7b929.png&#34;&gt;&lt;br&gt;
+ 然后在当前目录下会生成一个名为 “xxx-database” 的文件夹&lt;/p&gt;
+&lt;h2 id=&#34;0x2导入codeql规则&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#0x2导入codeql规则&#34;&gt;#&lt;/a&gt; 0x2 导入 codeql 规则&lt;/h2&gt;
+&lt;p&gt;这里使用‘starter workspace’，也就是 git 仓库&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;下载 starter&lt;br&gt;
+ &lt;code&gt;git clone --recursive https://github.com/github/vscode-codeql-starter/&lt;/code&gt; &lt;br&gt;
+ 或者&lt;br&gt;
+ &lt;code&gt;git clone https://github.com/github/vscode-codeql-starter/&lt;/code&gt; &lt;br&gt;
+ 项目下载完成后，进入项目目录&lt;br&gt;
+ &lt;code&gt;git submodule update --init &lt;/code&gt; &lt;br&gt;
+ &lt;code&gt;git submodule update --remote&lt;/code&gt; &lt;br&gt;
+ 确保包含需要的子模块&lt;br&gt;
+截图使用的是第一种方法&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C479934456f6c44228c2f3e8057ac0e86.png&#34; alt=&#34;479934456f6c44228c2f3e8057ac0e86.png&#34;&gt;&lt;br&gt;
+ 子模块需要定期更新&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cef88b51020a9d4ed8fdb5bda8029fc94.png&#34; alt=&#34;ef88b51020a9d4ed8fdb5bda8029fc94.png&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在 VS Code 中打开 starter workspace&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C84a6738a5e83ddeb45752d064e986647.png&#34; alt=&#34;84a6738a5e83ddeb45752d064e986647.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C4e682ce5e87fbc0dd1897081928067fd.png&#34; alt=&#34;4e682ce5e87fbc0dd1897081928067fd.png&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;注意：&lt;br&gt;
+starter 子模块中包括 C/C++, C#, Java, JavaScript, Python, Ruby 以及 GO 的规则，在 vscode-codeql-starter\ql 下&lt;br&gt;
+ CodeQL 暂时无法扫描 php 代码&lt;/p&gt;
+&lt;h2 id=&#34;0x3-导入数据库&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#0x3-导入数据库&#34;&gt;#&lt;/a&gt; 0x3 导入数据库&lt;/h2&gt;
+&lt;p&gt;我们生成的数据库为文件夹，那我们就选择 “From a folder”&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cf34afaeeb873e92b778012073f19323d.png&#34; alt=&#34;f34afaeeb873e92b778012073f19323d.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;运行规则&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#运行规则&#34;&gt;#&lt;/a&gt; 运行规则&lt;/h2&gt;
+&lt;p&gt;点开项目文件，我们可以看见 ql 下有很多规则&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cb21766327a9941eca1f56dd455c1ec10.png&#34; alt=&#34;b21766327a9941eca1f56dd455c1ec10.png&#34;&gt;&lt;br&gt;
+ 因为示例源码为 java 语言，我们选择 java 下的规则文件夹&lt;br&gt;
+右键选择 &amp;quot;CodeQL:RunQueries in Selected Files&amp;quot;&lt;br&gt;
+ 里面有 81 个 CWE 规则&lt;br&gt;
+&lt;img src=&#34;C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cbce12ed22e130d749eeae5b4d9caffcf.png&#34; alt=&#34;bce12ed22e130d749eeae5b4d9caffcf.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;查看结果&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#查看结果&#34;&gt;#&lt;/a&gt; 查看结果&lt;/h2&gt;
+&lt;p&gt;点击左侧的一条规则，可以看到对应规则运行的结果在右侧&lt;br&gt;
+&lt;img src=&#34;ccbdb52e0810eda9b4d99e3ac19c4e0d.png&#34; alt=&#34;ccbdb52e0810eda9b4d99e3ac19c4e0d.png&#34;&gt;&lt;/p&gt;
+</content>
+        <category term="CodeQL" />
+        <updated>2022-06-12T04:41:31.000Z</updated>
+    </entry>
     <entry>
         <id>http://example.com/2022/06/10/CodeQLU-BootChallenge%20(CC++)/</id>
         <title>CodeQLU-BootChallenge(CC++)</title>
