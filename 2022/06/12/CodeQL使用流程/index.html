@@ -13,22 +13,22 @@
 <meta property="og:site_name" content="Milkii0的秘密花园">
 <meta property="og:description" content="[toc] # 前言 好久没用 CodeQL 了，看了自己之前写的文章发现竟然没有做过相关记录 然后就不知道怎么用了 hhh # 使用流程 # 0x1 生成数据库 我们拿到一套源码，首先需要使用 CodeQL 生成数据库 执行命令：  codeql database create &lt;database&gt; --language&#x3D;&lt;language-identifier&gt;   参">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C962dcc2d739aeddc138604f43eabb6e8.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C0ce711b4c117dfc66b296a08b6c7b929.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C479934456f6c44228c2f3e8057ac0e86.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cef88b51020a9d4ed8fdb5bda8029fc94.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C84a6738a5e83ddeb45752d064e986647.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C4e682ce5e87fbc0dd1897081928067fd.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cf34afaeeb873e92b778012073f19323d.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cb21766327a9941eca1f56dd455c1ec10.png">
-<meta property="og:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cbce12ed22e130d749eeae5b4d9caffcf.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/962dcc2d739aeddc138604f43eabb6e8.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/0ce711b4c117dfc66b296a08b6c7b929.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/479934456f6c44228c2f3e8057ac0e86.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/ef88b51020a9d4ed8fdb5bda8029fc94.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/84a6738a5e83ddeb45752d064e986647.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/4e682ce5e87fbc0dd1897081928067fd.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/f34afaeeb873e92b778012073f19323d.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/b21766327a9941eca1f56dd455c1ec10.png">
+<meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/bce12ed22e130d749eeae5b4d9caffcf.png">
 <meta property="og:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/ccbdb52e0810eda9b4d99e3ac19c4e0d.png">
 <meta property="article:published_time" content="2022-06-12T04:41:31.000Z">
-<meta property="article:modified_time" content="2022-06-12T04:44:24.578Z">
+<meta property="article:modified_time" content="2022-06-12T04:47:26.409Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="CodeQL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C962dcc2d739aeddc138604f43eabb6e8.png">
+<meta name="twitter:image" content="http://example.com/2022/06/12/CodeQL%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/962dcc2d739aeddc138604f43eabb6e8.png">
     
     
       
@@ -228,9 +228,9 @@
 </table>
 <p>案例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create xxx-database  --language=&quot;java&quot;  --command=&quot;mvn clean install --file pom.xml&quot; --source-root=文件目录</span><br></pre></td></tr></table></figure>
-<p><img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C962dcc2d739aeddc138604f43eabb6e8.png" alt="962dcc2d739aeddc138604f43eabb6e8.png"><br>
+<p><img src="962dcc2d739aeddc138604f43eabb6e8.png" alt="962dcc2d739aeddc138604f43eabb6e8.png"><br>
  成功之后<br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C0ce711b4c117dfc66b296a08b6c7b929.png" alt="0ce711b4c117dfc66b296a08b6c7b929.png"><br>
+<img src="0ce711b4c117dfc66b296a08b6c7b929.png" alt="0ce711b4c117dfc66b296a08b6c7b929.png"><br>
  然后在当前目录下会生成一个名为 “xxx-database” 的文件夹</p>
 <h2 id="0x2导入codeql规则"><a class="markdownIt-Anchor" href="#0x2导入codeql规则">#</a> 0x2 导入 codeql 规则</h2>
 <p>这里使用‘starter workspace’，也就是 git 仓库</p>
@@ -245,14 +245,14 @@
  <code>git submodule update --remote</code> <br>
  确保包含需要的子模块<br>
 截图使用的是第一种方法<br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C479934456f6c44228c2f3e8057ac0e86.png" alt="479934456f6c44228c2f3e8057ac0e86.png"><br>
+<img src="479934456f6c44228c2f3e8057ac0e86.png" alt="479934456f6c44228c2f3e8057ac0e86.png"><br>
  子模块需要定期更新<br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cef88b51020a9d4ed8fdb5bda8029fc94.png" alt="ef88b51020a9d4ed8fdb5bda8029fc94.png"></p>
+<img src="ef88b51020a9d4ed8fdb5bda8029fc94.png" alt="ef88b51020a9d4ed8fdb5bda8029fc94.png"></p>
 </li>
 <li>
 <p>在 VS Code 中打开 starter workspace<br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C84a6738a5e83ddeb45752d064e986647.png" alt="84a6738a5e83ddeb45752d064e986647.png"><br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C4e682ce5e87fbc0dd1897081928067fd.png" alt="4e682ce5e87fbc0dd1897081928067fd.png"></p>
+<img src="84a6738a5e83ddeb45752d064e986647.png" alt="84a6738a5e83ddeb45752d064e986647.png"><br>
+<img src="4e682ce5e87fbc0dd1897081928067fd.png" alt="4e682ce5e87fbc0dd1897081928067fd.png"></p>
 </li>
 </ol>
 <p>注意：<br>
@@ -260,14 +260,14 @@ starter 子模块中包括 C/C++, C#, Java, JavaScript, Python, Ruby 以及 GO �
  CodeQL 暂时无法扫描 php 代码</p>
 <h2 id="0x3-导入数据库"><a class="markdownIt-Anchor" href="#0x3-导入数据库">#</a> 0x3 导入数据库</h2>
 <p>我们生成的数据库为文件夹，那我们就选择 “From a folder”<br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cf34afaeeb873e92b778012073f19323d.png" alt="f34afaeeb873e92b778012073f19323d.png"></p>
+<img src="f34afaeeb873e92b778012073f19323d.png" alt="f34afaeeb873e92b778012073f19323d.png"></p>
 <h2 id="运行规则"><a class="markdownIt-Anchor" href="#运行规则">#</a> 运行规则</h2>
 <p>点开项目文件，我们可以看见 ql 下有很多规则<br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cb21766327a9941eca1f56dd455c1ec10.png" alt="b21766327a9941eca1f56dd455c1ec10.png"><br>
+<img src="b21766327a9941eca1f56dd455c1ec10.png" alt="b21766327a9941eca1f56dd455c1ec10.png"><br>
  因为示例源码为 java 语言，我们选择 java 下的规则文件夹<br>
 右键选择 &quot;CodeQL:RunQueries in Selected Files&quot;<br>
  里面有 81 个 CWE 规则<br>
-<img src="C:%5CUsers%5CHAN91%5CDesktop%5CCodeQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cbce12ed22e130d749eeae5b4d9caffcf.png" alt="bce12ed22e130d749eeae5b4d9caffcf.png"></p>
+<img src="bce12ed22e130d749eeae5b4d9caffcf.png" alt="bce12ed22e130d749eeae5b4d9caffcf.png"></p>
 <h2 id="查看结果"><a class="markdownIt-Anchor" href="#查看结果">#</a> 查看结果</h2>
 <p>点击左侧的一条规则，可以看到对应规则运行的结果在右侧<br>
 <img src="ccbdb52e0810eda9b4d99e3ac19c4e0d.png" alt="ccbdb52e0810eda9b4d99e3ac19c4e0d.png"></p>
