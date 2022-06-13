@@ -118,14 +118,14 @@ starter 子模块中包括 C/C++, C#, Java, JavaScript, Python, Ruby 以及 GO �
 &lt;h2 id=&#34;0x3-导入数据库&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#0x3-导入数据库&#34;&gt;#&lt;/a&gt; 0x3 导入数据库&lt;/h2&gt;
 &lt;p&gt;我们生成的数据库为文件夹，那我们就选择 “From a folder”&lt;br&gt;
 &lt;img src=&#34;f34afaeeb873e92b778012073f19323d.png&#34; alt=&#34;f34afaeeb873e92b778012073f19323d.png&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;运行规则&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#运行规则&#34;&gt;#&lt;/a&gt; 运行规则&lt;/h2&gt;
+&lt;h2 id=&#34;0x4-运行规则&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#0x4-运行规则&#34;&gt;#&lt;/a&gt; 0x4 运行规则&lt;/h2&gt;
 &lt;p&gt;点开项目文件，我们可以看见 ql 下有很多规则&lt;br&gt;
 &lt;img src=&#34;b21766327a9941eca1f56dd455c1ec10.png&#34; alt=&#34;b21766327a9941eca1f56dd455c1ec10.png&#34;&gt;&lt;br&gt;
  因为示例源码为 java 语言，我们选择 java 下的规则文件夹&lt;br&gt;
 右键选择 &amp;quot;CodeQL:RunQueries in Selected Files&amp;quot;&lt;br&gt;
  里面有 81 个 CWE 规则&lt;br&gt;
 &lt;img src=&#34;bce12ed22e130d749eeae5b4d9caffcf.png&#34; alt=&#34;bce12ed22e130d749eeae5b4d9caffcf.png&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;查看结果&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#查看结果&#34;&gt;#&lt;/a&gt; 查看结果&lt;/h2&gt;
+&lt;h2 id=&#34;0x5-查看结果&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#0x5-查看结果&#34;&gt;#&lt;/a&gt; 0x5 查看结果&lt;/h2&gt;
 &lt;p&gt;点击左侧的一条规则，可以看到对应规则运行的结果在右侧&lt;br&gt;
 &lt;img src=&#34;ccbdb52e0810eda9b4d99e3ac19c4e0d.png&#34; alt=&#34;ccbdb52e0810eda9b4d99e3ac19c4e0d.png&#34;&gt;&lt;/p&gt;
  ]]></description>
