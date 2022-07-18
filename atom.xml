@@ -578,14 +578,14 @@ GO 语言的规则库并不在 github/codeql 中&lt;br&gt;
 &lt;p&gt;各版本源码下载：&lt;br&gt;
 &lt;a href=&#34;http://archive.apache.org/dist/lucene/solr/7.0.1/&#34;&gt;http://archive.apache.org/dist/lucene/solr/7.0.1/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;此处 win 环境，下载源码&lt;br&gt;
-&lt;img src=&#34;:/312d3247700c41e7bc385411a9e8ada5&#34; alt=&#34;d90b95d958f7a8aa03ec037e23ff6565.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;d90b95d958f7a8aa03ec037e23ff6565.png&#34; alt=&#34;d90b95d958f7a8aa03ec037e23ff6565.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;在源码根目录打开 cmd，运行 &lt;code&gt;ant ivy-bootstrap&lt;/code&gt; &lt;br&gt;
-&lt;img src=&#34;:/6f5d62f573e04359872a5e2d522769cb&#34; alt=&#34;65611596abbf48fd002528219ce04da6.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;65611596abbf48fd002528219ce04da6.png&#34; alt=&#34;65611596abbf48fd002528219ce04da6.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;解压后用 idea 打开&lt;br&gt;
-&lt;img src=&#34;:/cba08f47dd2648029ea82c1667c0a32e&#34; alt=&#34;6398b74ee6a4f3388ea89aa77e051942.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;6398b74ee6a4f3388ea89aa77e051942.png&#34; alt=&#34;6398b74ee6a4f3388ea89aa77e051942.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;（这里可以使用 ant 编译成 idea 项目后，再用 idea 直接打开，在项目根目录下运行 ant 命令即可）&lt;/p&gt;
 &lt;p&gt;在 solr 目录下，运行 &lt;code&gt;ant server&lt;/code&gt;  创建 solr server&lt;br&gt;
-&lt;img src=&#34;:/5c02f7c7549a46e2a814060569170417&#34; alt=&#34;568e847efbb2bd3f814629269b607938.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;568e847efbb2bd3f814629269b607938.png&#34; alt=&#34;568e847efbb2bd3f814629269b607938.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;报错： &lt;code&gt;Could  not find file C:\Users\HAN91\.ant\lib\ivy-2.3.0.jar to generate checksum&lt;/code&gt; &lt;br&gt;
 ivy 下载&lt;br&gt;
 &lt;a href=&#34;http://ant.apache.org/ivy/download.cgi&#34;&gt; http://ant.apache.org/ivy/download.cgi&lt;/a&gt;&lt;/p&gt;
@@ -608,25 +608,25 @@ ivy 下载&lt;br&gt;
 &lt;p&gt;RCE 需要使用到 SolrCloud Collections API，所以 RCE 只影响 Solrcloud 分布式系统&lt;/p&gt;
 &lt;p&gt;漏洞点：&lt;br&gt;
  &lt;code&gt;org.apache.solr.core.RunExecutableListener#exec&lt;/code&gt; &lt;br&gt;
-&lt;img src=&#34;:/51de3416f045459f909444415033be1f&#34; alt=&#34;0f16537ae621dca652c50598b2934616.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;0f16537ae621dca652c50598b2934616.png&#34; alt=&#34;0f16537ae621dca652c50598b2934616.png&#34;&gt;&lt;br&gt;
  我们看见一下这行代码执行了命令，并传入了三个参数&lt;br&gt;
  &lt;code&gt;proc = Runtime.getRuntime().exec(cmd, envp ,dir);&lt;/code&gt; &lt;br&gt;
  查看 API&lt;br&gt;
 cmdarray：命令字符串&lt;br&gt;
  envp：代表 “环境” 变量设置，如果 envp 是 null ，则子进程继承当前进程的环境设置&lt;br&gt;
  dir：新子进程的工作目录由 dir 指定 。 如果 dir 是 null ，则子进程继承当前进程的当前工作目录。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;:/a75c9e8d1f58409c88e9f1ca628a3c1c&#34; alt=&#34;9ec0917d903603b1067a566e250c5627.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;9ec0917d903603b1067a566e250c5627.png&#34; alt=&#34;9ec0917d903603b1067a566e250c5627.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;那么我们怎么才能控制以上这三个参数呢？&lt;br&gt;
 在初始化时，通过初始化传入的参数 args&lt;br&gt;
  分别获得这三个参数 &lt;code&gt;cmd,dir,envp&lt;/code&gt; &lt;br&gt;
-&lt;img src=&#34;:/2417a9d2aee24484b0d8d60a7945c5bf&#34; alt=&#34;eec102985f87ff2f05623f84d74ab34c.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;eec102985f87ff2f05623f84d74ab34c.png&#34; alt=&#34;eec102985f87ff2f05623f84d74ab34c.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;找到调用 exec () 的有两处&lt;br&gt;
  &lt;code&gt;org.apache.solr.core.RunExecutableListener#postCommit&lt;/code&gt; &lt;br&gt;
  &lt;code&gt;org.apache.solr.core.RunExecutableListener#newSearcher&lt;/code&gt; &lt;br&gt;
-&lt;img src=&#34;:/3ce9c774ef2d49e5a5e2ebdf53c84848&#34; alt=&#34;c52c3a71430c5dd42e23cbf7eba7973e.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;c52c3a71430c5dd42e23cbf7eba7973e.png&#34; alt=&#34;c52c3a71430c5dd42e23cbf7eba7973e.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;因此我们可以 config API 调用以上两个命令执行命令&lt;br&gt;
 关于 config API 更多信息可查看传送门中放置的官网链接&lt;br&gt;
-&lt;img src=&#34;:/4c612e57459d403384463b4165fc4786&#34; alt=&#34;fa07883023d57f29334905273587cf9b.png&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;fa07883023d57f29334905273587cf9b.png&#34; alt=&#34;fa07883023d57f29334905273587cf9b.png&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;漏洞修复-2&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#漏洞修复-2&#34;&gt;#&lt;/a&gt; 漏洞修复&lt;/h3&gt;
 &lt;p&gt;官方修复直接将该类删除&lt;/p&gt;
 &lt;h2 id=&#34;cve-2019-0193&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#cve-2019-0193&#34;&gt;#&lt;/a&gt; CVE-2019-0193&lt;/h2&gt;
@@ -635,29 +635,29 @@ cmdarray：命令字符串&lt;br&gt;
 &lt;p&gt;从 Solr 的 8.2.0 版本开始，使用这个参数需要将 Java System 属性  &lt;code&gt;enable.dih.dataConfigParam&lt;/code&gt;  设置为  &lt;code&gt;true&lt;/code&gt; ，此时也将存在该漏洞&lt;/p&gt;
 &lt;p&gt;DHI 和 script 官方文档链接放在传送门中&lt;/p&gt;
 &lt;p&gt;我们可以根据官方文档的说明，插入脚本并执行，其中 entity 标签支持 jndi 以及 script&lt;br&gt;
-&lt;img src=&#34;:/9366ca25d9524160843ca21a3d69b18d&#34; alt=&#34;a6303a016339679c882babc40deace8b.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;a6303a016339679c882babc40deace8b.png&#34; alt=&#34;a6303a016339679c882babc40deace8b.png&#34;&gt;&lt;br&gt;
  漏洞点：&lt;br&gt;
  &lt;code&gt;org.apache.solr.handler.dataimport.DataImportHandler&lt;/code&gt; &lt;br&gt;
  其中 &lt;code&gt;handleRequestBody()&lt;/code&gt;  函数接收了前端传入的 &lt;code&gt;dataConfig&lt;/code&gt; &lt;br&gt;
-&lt;img src=&#34;:/5136fb3fb5994945a840fa8c82b62825&#34; alt=&#34;08710fb1d7d531e129962d80bb22941e.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;08710fb1d7d531e129962d80bb22941e.png&#34; alt=&#34;08710fb1d7d531e129962d80bb22941e.png&#34;&gt;&lt;br&gt;
  后面就不再分析了，因为这个漏洞是 solr 该模块允许执行脚本，官方文档中也描述了该模块以及脚本的使用&lt;/p&gt;
 &lt;h3 id=&#34;漏洞修复-3&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#漏洞修复-3&#34;&gt;#&lt;/a&gt; 漏洞修复&lt;/h3&gt;
 &lt;p&gt;官方修复增加 &lt;code&gt;enable.dih.dataConfigParam&lt;/code&gt;  参数，默认 = false，仅在启动 solr 时带上参数 &lt;code&gt;enable.dih.dataConfigParam=true&lt;/code&gt;  才可启动 debug 模式&lt;/p&gt;
 &lt;h2 id=&#34;remote-streaming-fileread任意文件读取&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#remote-streaming-fileread任意文件读取&#34;&gt;#&lt;/a&gt; Remote-Streaming-Fileread（任意文件读取）&lt;/h2&gt;
 &lt;p&gt;官方文档中写明，solrconfig.xml 中 &lt;code&gt;enableRemoteStreaming=&amp;quot;true&amp;quot;&lt;/code&gt;  时允许远程流&lt;br&gt;
-&lt;img src=&#34;:/b53eef83d3f047f78ea7b9607b951e0f&#34; alt=&#34;d4e2c6715cd93bccb5ba0645bf44d89c.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;d4e2c6715cd93bccb5ba0645bf44d89c.png&#34; alt=&#34;d4e2c6715cd93bccb5ba0645bf44d89c.png&#34;&gt;&lt;br&gt;
  因此我们可以通过 config API，启用远程读取流&lt;br&gt;
  &lt;code&gt;enableRemoteStreaming = “true”&lt;/code&gt; ，将允许任何人向任何 URL 或本地文件发送请求&lt;br&gt;
  &lt;code&gt;DumpRequestHandler = “true”&lt;/code&gt; ，它将允许任何人查看系统上的任何文件。&lt;br&gt;
 漏洞点：&lt;br&gt;
  &lt;code&gt;solr/core/src/java/org/apache/solr/servlet/SolrRequestParsers.java&lt;/code&gt; &lt;br&gt;
-&lt;img src=&#34;:/60256974dd3742f98a58144d8dd67750&#34; alt=&#34;d9c8060b808d32f29db7535380472c6e.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;d9c8060b808d32f29db7535380472c6e.png&#34; alt=&#34;d9c8060b808d32f29db7535380472c6e.png&#34;&gt;&lt;br&gt;
  其中通过以下代码获取前端传入数据&lt;/p&gt;
 &lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;strs = params.getParams( CommonParams.STREAM_FILE );&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;在进行文件获取时，未对传入的 strs 进行任何检测和过滤，并生成 stream&lt;/p&gt;
 &lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;for&lt;/span&gt;( &lt;span class=&#34;keyword&#34;&gt;final&lt;/span&gt; String file : strs ) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        ContentStreamBase stream = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; ContentStreamBase.FileStream( &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; File(file) );&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt;( contentType != &lt;span class=&#34;keyword&#34;&gt;null&lt;/span&gt; ) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          stream.setContentType( contentType );&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        streams.add( stream );&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;在 &lt;code&gt;solr/solrj/src/java/org/apache/solr/common/params/CommonParams.java&lt;/code&gt;  中，写明了 &lt;code&gt;stream.file&lt;/code&gt;  即为传入的 &lt;code&gt;CommonParams.STREAM_FILE&lt;/code&gt; &lt;br&gt;
-&lt;img src=&#34;:/24ec295b558e4aac8846e0ab3e142848&#34; alt=&#34;e0c12b5404c9aa9db8cd8eb2b87f7d3e.png&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;e0c12b5404c9aa9db8cd8eb2b87f7d3e.png&#34; alt=&#34;e0c12b5404c9aa9db8cd8eb2b87f7d3e.png&#34;&gt;&lt;br&gt;
  其中若传入 url 可导致 ssrf，原理同上&lt;/p&gt;
 &lt;h3 id=&#34;修复建议&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#修复建议&#34;&gt;#&lt;/a&gt; 修复建议&lt;/h3&gt;
 &lt;ol&gt;
@@ -851,6 +851,7 @@ port 2344&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h1 id=&#34;传送门&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#传送门&#34;&gt;#&lt;/a&gt; 传送门&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/loopkep/p/11135949.html&#34;&gt;https://www.cnblogs.com/loopkep/p/11135949.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
 </content>
         <category term="redis,未授权,漏洞利用" />
         <updated>2022-01-16T03:14:59.000Z</updated>
@@ -1074,6 +1075,7 @@ port 2344&lt;/p&gt;
 &lt;p&gt;下图是在理解触发原理时自己写的一个大概的流程（尽量简洁但是不是很简洁）&lt;/p&gt;
 &lt;p&gt;看不看得懂就看缘分了😴&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;60.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
 </content>
         <category term="Java反序列化" />
         <updated>2021-09-07T02:12:48.000Z</updated>
@@ -1249,6 +1251,7 @@ port 2344&lt;/p&gt;
 &lt;p&gt;可是 java11 的 api 里面是有 rmi 的🙁&lt;/p&gt;
 &lt;p&gt;果然换成 jdk8_64 所有问题迎刃而解，那么这个问题…&lt;/p&gt;
 &lt;p&gt;当然不能算解决了，未完待续！&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
 </content>
         <category term="ysoserial调试" />
         <updated>2021-08-25T03:38:45.000Z</updated>
@@ -1387,6 +1390,7 @@ Transfer-Encoding: x&lt;/li&gt;
 &lt;p&gt;&lt;a href=&#34;https://portswigger.net/web-security/request-smuggling&#34;&gt;PortSwigger_HTTP request smuggling&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.freebuf.com/column/221488.html&#34;&gt;HTTP 走私漏洞分析&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzAwMzYxNzc1OA==&amp;amp;mid=2247486547&amp;amp;idx=1&amp;amp;sn=de1f1390b6526eb2e45a0e05c4fd444d&amp;amp;chksm=9b392ae2ac4ea3f4fbc01e19a9494a2d8fec4b20fae5e93041cfc6f874f7eebff14d5420c499&amp;amp;mpshare=1&amp;amp;scene=23&amp;amp;srcid=0824Nx28uGiuA86YDMRjhkR0&amp;amp;sharer_sharetime=1598277825562&amp;amp;sharer_shareid=ff83fe2fe7db7fcd8a1fcbc183d841c4#rd&#34;&gt;由一次渗透测试引发的 HTTP 请求走私思考 (牛的)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
 </content>
         <category term="web,HTTP" />
         <updated>2021-08-03T02:20:54.000Z</updated>
@@ -2134,6 +2138,7 @@ Transfer-Encoding: x&lt;/li&gt;
 &lt;h1 id=&#34;最后想说的&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#最后想说的&#34;&gt;#&lt;/a&gt; 最后想说的&lt;/h1&gt;
 &lt;p&gt;要好好努力，跟着自己的节奏，会越来越好的 o (￣ε￣*)&lt;/p&gt;
 &lt;p&gt;还有还有，谢谢小甜甜一直的陪伴，爱您♡&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
 </content>
         <category term="webgoat" />
         <updated>2021-01-28T01:28:50.000Z</updated>
@@ -3967,6 +3972,7 @@ msg(content);&lt;br&gt;
 &lt;p&gt;。&lt;/p&gt;
 &lt;p&gt;突然想接一个不明觉厉ヽ (✿ﾟ▽ﾟ) ノ&lt;/p&gt;
 &lt;p&gt;突然伤感氛围打破&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
 </content>
         <category term="pikachu,web靶场" />
         <updated>2020-10-30T03:46:05.000Z</updated>

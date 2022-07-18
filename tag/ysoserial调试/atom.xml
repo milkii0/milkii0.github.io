@@ -190,6 +190,7 @@
 &lt;p&gt;可是 java11 的 api 里面是有 rmi 的🙁&lt;/p&gt;
 &lt;p&gt;果然换成 jdk8_64 所有问题迎刃而解，那么这个问题…&lt;/p&gt;
 &lt;p&gt;当然不能算解决了，未完待续！&lt;/p&gt;
+&lt;p&gt;Copyright ©milkii0&lt;/p&gt;
 </content>
         <category term="ysoserial调试" />
         <updated>2021-08-25T03:38:45.000Z</updated>
